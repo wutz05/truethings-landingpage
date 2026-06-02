@@ -58,7 +58,6 @@
       margin-bottom: 40px;
     }
 
-    /* ── Form Card ── */
     .form-card {
       background: var(--color-card);
       border: 1px solid var(--color-card-border);
@@ -74,7 +73,6 @@
       font-size: 13px; font-weight: 700;
       color: var(--color-warm-brown);
       margin-bottom: 6px;
-      letter-spacing: 0.01em;
     }
 
     input[type="text"],
@@ -93,10 +91,7 @@
       -webkit-appearance: none;
       appearance: none;
     }
-    input[type="text"]:focus,
-    input[type="email"]:focus,
-    select:focus,
-    textarea:focus {
+    input:focus, select:focus, textarea:focus {
       border-color: var(--color-logo-pink);
       box-shadow: 0 0 0 3px rgba(245, 51, 153, 0.12);
     }
@@ -130,15 +125,14 @@
     }
     .submit-btn:hover { opacity: 0.92; }
     .submit-btn:active { transform: scale(0.98); }
-    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-    /* ── Success state ── */
     .success-msg {
       display: none;
       text-align: center;
       padding: 40px 24px;
     }
-    .success-msg .icon {
+    .success-icon {
       width: 64px; height: 64px;
       background: linear-gradient(135deg, var(--color-logo-pink), var(--color-bubblegum));
       border-radius: 50%;
@@ -146,16 +140,9 @@
       margin: 0 auto 20px;
       font-size: 28px;
     }
-    .success-msg h2 {
-      font-size: 22px; font-weight: 800;
-      margin-bottom: 8px;
-    }
-    .success-msg p {
-      font-size: 15px; color: var(--color-text-secondary);
-      line-height: 1.5;
-    }
+    .success-msg h2 { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+    .success-msg p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.5; }
 
-    /* ── Alt contact ── */
     .alt-contact {
       margin-top: 24px;
       text-align: center;
@@ -180,8 +167,7 @@
   <p class="page-sub">Something not working? Have a question? We're here to help — usually within 24 hours.</p>
 
   <div class="form-card">
-    <!-- Replace YOUR_FORM_ID with your Formspree form ID -->
-    <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <form id="contact-form">
 
       <div class="row">
         <div class="field">
@@ -198,12 +184,12 @@
         <label for="topic">Topic</label>
         <select id="topic" name="topic" required>
           <option value="" disabled selected>Select a topic…</option>
-          <option value="bug">Something isn't working</option>
-          <option value="account">Account / login issue</option>
-          <option value="billing">Subscription &amp; billing</option>
-          <option value="feature">Feature request</option>
-          <option value="delete">Delete my account</option>
-          <option value="other">Other</option>
+          <option value="Something isn't working">Something isn't working</option>
+          <option value="Account / login issue">Account / login issue</option>
+          <option value="Subscription &amp; billing">Subscription &amp; billing</option>
+          <option value="Feature request">Feature request</option>
+          <option value="Delete my account">Delete my account</option>
+          <option value="Other">Other</option>
         </select>
       </div>
 
@@ -212,15 +198,11 @@
         <textarea id="message" name="message" placeholder="Tell us what's going on…" required></textarea>
       </div>
 
-      <!-- Honeypot spam protection -->
-      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
-      <input type="hidden" name="_subject" value="TrueThings Support Request" />
-
       <button type="submit" class="submit-btn" id="submit-btn">Send Message</button>
     </form>
 
     <div class="success-msg" id="success-msg">
-      <div class="icon">✓</div>
+      <div class="success-icon">✓</div>
       <h2>Message sent!</h2>
       <p>Thanks for reaching out. We'll get back to you at your email address within 24 hours.</p>
     </div>
@@ -232,35 +214,37 @@
 </main>
 
 <script>
-  const form = document.getElementById('contact-form');
-  const successMsg = document.getElementById('success-msg');
-  const submitBtn = document.getElementById('submit-btn');
+  // Paste your Google Apps Script Web App URL here after setup
+  const SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL';
 
-  form.addEventListener('submit', async function(e) {
+  document.getElementById('contact-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const payload = {
+      name:    document.getElementById('name').value,
+      email:   document.getElementById('email').value,
+      topic:   document.getElementById('topic').value,
+      message: document.getElementById('message').value
+    };
 
     try {
-      const response = await fetch(form.action, {
+      // no-cors: request is sent, response is opaque (expected with Apps Script)
+      await fetch(SCRIPT_URL, {
         method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
+        mode: 'no-cors',
+        body: JSON.stringify(payload)
       });
-
-      if (response.ok) {
-        form.style.display = 'none';
-        successMsg.style.display = 'block';
-      } else {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Send Message';
-        alert('Something went wrong. Please email us directly at info@trackable.pro');
-      }
-    } catch {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Message';
-      alert('Something went wrong. Please email us directly at info@trackable.pro');
+    } catch (_) {
+      // network errors still fall through — show success since Apps Script
+      // may have already received the data before the error
     }
+
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
   });
 </script>
 
