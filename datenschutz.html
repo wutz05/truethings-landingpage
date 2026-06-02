@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Datenschutzerklärung — TrueThings</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="assets/truethings_icon.png" />
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-cream);
+      color: var(--color-warm-brown);
+      font-family: var(--font-rounded);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: var(--z-sticky);
+      background: rgba(255,245,248,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-card-border);
+      padding: 0 clamp(20px, 5vw, 80px);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: inherit;
+    }
+    .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+    .nav-brand span { font-weight: 800; font-size: 17px; }
+    nav a.back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 600;
+      color: var(--color-logo-pink);
+      text-decoration: none;
+    }
+    nav a.back:hover { opacity: 0.8; }
+
+    /* ── CONTENT ── */
+    main {
+      max-width: 720px;
+      margin: 60px auto 80px;
+      padding: 0 clamp(20px, 5vw, 40px);
+    }
+
+    .page-title {
+      font-size: 32px; font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .page-date {
+      font-size: 14px; color: var(--color-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    section { margin-bottom: 40px; }
+
+    h2 {
+      font-size: 20px; font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-card-border);
+    }
+    h3 {
+      font-size: 16px; font-weight: 700;
+      margin: 20px 0 8px;
+      color: var(--color-warm-brown);
+    }
+
+    p {
+      font-size: 15px; line-height: 1.65;
+      color: var(--color-warm-brown);
+      margin-bottom: 10px;
+    }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--color-logo-pink); }
+
+    ul {
+      margin: 8px 0 10px 20px;
+      font-size: 15px; line-height: 1.65;
+      color: var(--color-warm-brown);
+    }
+    ul li { margin-bottom: 4px; }
+
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin: 12px 0;
+    }
+    .card p { font-size: 14px; }
+    .card-label {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--color-text-tertiary);
+      margin-bottom: 6px;
+    }
+
+    .rights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px) {
+      .rights-grid { grid-template-columns: 1fr; }
+    }
+    .right-item {
+      background: var(--color-card);
+      border: 1px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+    .right-item strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .right-item span { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <img src="assets/truethings_icon.png" alt="TrueThings" />
+    <span>TrueThings</span>
+  </a>
+  <a href="/" class="back">← Zurück</a>
+</nav>
+
+<main>
+  <h1 class="page-title">Datenschutzerklärung</h1>
+  <p class="page-date">Stand: Juni 2026</p>
+
+  <!-- 1. Verantwortlicher -->
+  <section>
+    <h2>1. Verantwortlicher</h2>
+    <p>
+      Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO) und sonstiger nationaler
+      Datenschutzgesetze sowie anderer datenschutzrechtlicher Bestimmungen ist:
+    </p>
+    <div class="card">
+      <p>
+        <strong>Hannes Heißmeyer</strong><br />
+        Ibykusweg 6f · 30629 Hannover · Deutschland<br />
+        E-Mail: <a href="mailto:info@trackable.pro">info@trackable.pro</a><br />
+        Telefon: <a href="tel:+4915751477145">+49 157 51477145</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 2. Geltungsbereich -->
+  <section>
+    <h2>2. Geltungsbereich</h2>
+    <p>
+      Diese Datenschutzerklärung gilt für die Website <strong>truethingsapp.com</strong> (nachfolgend
+      „Website") sowie die iOS-App <strong>TrueThings</strong> (nachfolgend „App"). Beide Angebote
+      werden gemeinsam als „Dienst" bezeichnet.
+    </p>
+  </section>
+
+  <!-- 3. Website -->
+  <section>
+    <h2>3. Datenverarbeitung auf der Website</h2>
+
+    <h3>3.1 Hosting (Vercel)</h3>
+    <p>
+      Die Website wird bei Vercel Inc., 340 Pine Street, Suite 701, San Francisco, CA 94104, USA,
+      gehostet. Beim Aufruf der Website werden technisch notwendige Daten (IP-Adresse, Browser-Typ,
+      Betriebssystem, Datum und Uhrzeit des Zugriffs, aufgerufene URL) in Server-Logfiles gespeichert.
+    </p>
+    <p>
+      Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse am sicheren Betrieb).
+      Die Übertragung in die USA erfolgt auf Basis der Standardvertragsklauseln (Art. 46 Abs. 2 lit. c DSGVO).
+    </p>
+    <p>
+      Datenschutzerklärung Vercel:
+      <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">vercel.com/legal/privacy-policy</a>
+    </p>
+
+    <h3>3.2 Google Analytics</h3>
+    <p>
+      Diese Website verwendet Google Analytics, einen Webanalysedienst der Google Ireland Limited,
+      Gordon House, Barrow Street, Dublin 4, Irland. Google Analytics verwendet Cookies, die eine
+      Analyse der Nutzung der Website ermöglichen. Die durch Cookies erzeugten Informationen über
+      Ihre Nutzung dieser Website werden in der Regel an einen Server von Google in den USA übertragen
+      und dort gespeichert.
+    </p>
+    <p>
+      Google Analytics wird auf dieser Website nur mit Ihrer ausdrücklichen Einwilligung genutzt.
+      Rechtsgrundlage: Art. 6 Abs. 1 lit. a DSGVO. Sie können Ihre Einwilligung jederzeit widerrufen
+      (Cookie-Einstellungen unten auf der Seite).
+    </p>
+    <p>
+      Wir verwenden Google Analytics mit aktivierter IP-Anonymisierung. Die Übertragung in die USA
+      erfolgt auf Basis der Standardvertragsklauseln. Weitere Informationen:
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>
+    </p>
+  </section>
+
+  <!-- 4. App -->
+  <section>
+    <h2>4. Datenverarbeitung in der App</h2>
+
+    <h3>4.1 Registrierung und Nutzerkonto</h3>
+    <p>
+      Zur Nutzung der App ist eine Registrierung erforderlich. Dabei werden folgende Daten erhoben:
+    </p>
+    <ul>
+      <li>Anzeigename</li>
+      <li>Profilfoto (optional)</li>
+      <li>Jahrestag der Beziehung (optional)</li>
+      <li>Geräte-ID zur Partnerkopplung</li>
+    </ul>
+    <p>
+      Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).
+    </p>
+
+    <h3>4.2 Von Nutzern erstellte Inhalte</h3>
+    <p>
+      Im Rahmen der App-Nutzung können folgende Inhalte erstellt werden, die gespeichert werden:
+    </p>
+    <ul>
+      <li>Fotos (Fotogalerie des Paares)</li>
+      <li>Einträge in der gemeinsamen To-Do-Liste</li>
+      <li>Wunschlisten-Einträge</li>
+      <li>Spielfortschritte und Antworten in Paarspielen</li>
+      <li>Streak-Daten (Aktivitätsserie)</li>
+    </ul>
+    <p>
+      Diese Inhalte sind ausschließlich für das verbundene Paar (zwei Nutzerkonten) zugänglich.
+      Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO.
+    </p>
+
+    <h3>4.3 Backend (Supabase)</h3>
+    <p>
+      Alle App-Daten werden bei Supabase Inc. gespeichert. Unser Supabase-Projekt nutzt Server in der
+      EU (Frankfurt, Deutschland), sodass keine Drittlandsübermittlung stattfindet.
+    </p>
+    <p>
+      Wir haben mit Supabase einen Auftragsverarbeitungsvertrag (AVV) gemäß Art. 28 DSGVO geschlossen.
+      Datenschutzerklärung Supabase:
+      <a href="https://supabase.com/privacy" target="_blank" rel="noopener">supabase.com/privacy</a>
+    </p>
+
+    <h3>4.4 Abonnements (RevenueCat)</h3>
+    <p>
+      Für die Verwaltung von In-App-Abonnements nutzen wir RevenueCat, Inc., 633 Tasman Dr.,
+      San Leandro, CA 94577, USA. RevenueCat verarbeitet anonymisierte Kaufdaten (kein vollständiger
+      Name, keine Zahlungsdaten — Zahlungen laufen ausschließlich über Apple).
+    </p>
+    <p>
+      Die Übertragung in die USA erfolgt auf Basis der Standardvertragsklauseln.
+      Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung).
+      Datenschutzerklärung RevenueCat:
+      <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">revenuecat.com/privacy</a>
+    </p>
+
+    <h3>4.5 App Store (Apple)</h3>
+    <p>
+      Die App wird über den Apple App Store vertrieben. Beim Download und bei Käufen verarbeitet
+      Apple Inc. Daten nach eigenen Datenschutzrichtlinien:
+      <a href="https://www.apple.com/de/privacy/" target="_blank" rel="noopener">apple.com/de/privacy</a>
+    </p>
+  </section>
+
+  <!-- 5. Speicherdauer -->
+  <section>
+    <h2>5. Speicherdauer</h2>
+    <p>
+      Personenbezogene Daten werden nur so lange gespeichert, wie es für den jeweiligen Zweck
+      erforderlich ist:
+    </p>
+    <ul>
+      <li><strong>Nutzerkontodaten:</strong> Bis zur Löschung des Kontos durch den Nutzer oder auf Anfrage</li>
+      <li><strong>Von Nutzern erstellte Inhalte:</strong> Bis zur Löschung durch den Nutzer oder Kontoschließung</li>
+      <li><strong>Server-Logfiles (Website):</strong> In der Regel 7 Tage</li>
+      <li><strong>Abonnementdaten:</strong> Gemäß gesetzlicher Aufbewahrungsfristen (bis zu 10 Jahre)</li>
+    </ul>
+  </section>
+
+  <!-- 6. Rechte -->
+  <section>
+    <h2>6. Ihre Rechte</h2>
+    <p>Sie haben gegenüber uns folgende Rechte hinsichtlich Ihrer personenbezogenen Daten:</p>
+
+    <div class="rights-grid">
+      <div class="right-item">
+        <strong>Auskunft (Art. 15 DSGVO)</strong>
+        <span>Sie können Auskunft über die bei uns gespeicherten Daten verlangen.</span>
+      </div>
+      <div class="right-item">
+        <strong>Berichtigung (Art. 16 DSGVO)</strong>
+        <span>Sie können unrichtige Daten berichtigen lassen.</span>
+      </div>
+      <div class="right-item">
+        <strong>Löschung (Art. 17 DSGVO)</strong>
+        <span>Sie können die Löschung Ihrer Daten verlangen ("Recht auf Vergessenwerden").</span>
+      </div>
+      <div class="right-item">
+        <strong>Einschränkung (Art. 18 DSGVO)</strong>
+        <span>Sie können die Verarbeitung Ihrer Daten einschränken lassen.</span>
+      </div>
+      <div class="right-item">
+        <strong>Datenübertragbarkeit (Art. 20 DSGVO)</strong>
+        <span>Sie können Ihre Daten in einem maschinenlesbaren Format anfordern.</span>
+      </div>
+      <div class="right-item">
+        <strong>Widerspruch (Art. 21 DSGVO)</strong>
+        <span>Sie können der Verarbeitung auf Basis berechtigter Interessen widersprechen.</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px;">
+      Zur Ausübung Ihrer Rechte wenden Sie sich an:
+      <a href="mailto:info@trackable.pro">info@trackable.pro</a>
+    </p>
+    <p>
+      Sie haben außerdem das Recht, sich bei der zuständigen Datenschutzaufsichtsbehörde zu beschweren.
+      Zuständig für Hannover ist die <strong>Landesbeauftragte für den Datenschutz Niedersachsen (LfD)</strong>:
+      <a href="https://lfd.niedersachsen.de" target="_blank" rel="noopener">lfd.niedersachsen.de</a>
+    </p>
+  </section>
+
+  <!-- 7. Widerrufsrecht -->
+  <section>
+    <h2>7. Widerruf von Einwilligungen</h2>
+    <p>
+      Sofern die Verarbeitung Ihrer Daten auf einer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO) beruht,
+      können Sie diese jederzeit mit Wirkung für die Zukunft widerrufen. Die Rechtmäßigkeit der bis
+      zum Widerruf erfolgten Verarbeitung bleibt davon unberührt.
+    </p>
+    <p>
+      Einwilligung in Google Analytics: Über die Cookie-Einstellungen am unteren Rand der Website
+      jederzeit widerrufbar.
+    </p>
+  </section>
+
+  <!-- 8. Cookies -->
+  <section>
+    <h2>8. Cookies</h2>
+    <p>
+      Diese Website setzt technisch notwendige Cookies ein, die für den Betrieb der Website
+      erforderlich sind. Darüber hinaus werden — nur mit Ihrer Einwilligung — Analyse-Cookies von
+      Google Analytics gesetzt. Über den Cookie-Banner beim ersten Aufruf der Website können Sie
+      entscheiden, ob Sie Analyse-Cookies akzeptieren. Ihre Entscheidung können Sie jederzeit
+      über den Link „Cookie-Einstellungen" im Footer ändern.
+    </p>
+  </section>
+
+  <!-- 9. Änderungen -->
+  <section>
+    <h2>9. Änderungen dieser Datenschutzerklärung</h2>
+    <p>
+      Wir behalten uns vor, diese Datenschutzerklärung bei Bedarf anzupassen, um sie an geänderte
+      rechtliche Anforderungen oder bei Änderungen des Dienstes zu aktualisieren. Die jeweils aktuelle
+      Fassung ist auf dieser Seite abrufbar.
+    </p>
+  </section>
+
+</main>
+
+</body>
+</html>
