@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy — TrueThings</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="assets/truethings_icon.png" />
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--color-cream);
+      color: var(--color-warm-brown);
+      font-family: var(--font-rounded);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: sticky; top: 0; z-index: var(--z-sticky);
+      background: rgba(255,245,248,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--color-card-border);
+      padding: 0 clamp(20px, 5vw, 80px);
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: inherit;
+    }
+    .nav-brand img { width: 32px; height: 32px; border-radius: 8px; }
+    .nav-brand span { font-weight: 800; font-size: 17px; }
+    nav a.back {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 600;
+      color: var(--color-logo-pink);
+      text-decoration: none;
+    }
+    nav a.back:hover { opacity: 0.8; }
+
+    main {
+      max-width: 720px;
+      margin: 60px auto 80px;
+      padding: 0 clamp(20px, 5vw, 40px);
+    }
+
+    .page-title {
+      font-size: 32px; font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+    .page-date {
+      font-size: 14px; color: var(--color-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    section { margin-bottom: 40px; }
+
+    h2 {
+      font-size: 20px; font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--color-card-border);
+    }
+    h3 {
+      font-size: 16px; font-weight: 700;
+      margin: 20px 0 8px;
+    }
+
+    p {
+      font-size: 15px; line-height: 1.65;
+      color: var(--color-warm-brown);
+      margin-bottom: 10px;
+    }
+    p:last-child { margin-bottom: 0; }
+    a { color: var(--color-logo-pink); }
+
+    ul {
+      margin: 8px 0 10px 20px;
+      font-size: 15px; line-height: 1.65;
+      color: var(--color-warm-brown);
+    }
+    ul li { margin-bottom: 4px; }
+
+    .card {
+      background: var(--color-card);
+      border: 1px solid var(--color-card-border);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      margin: 12px 0;
+    }
+    .card p { font-size: 14px; }
+
+    .rights-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px) { .rights-grid { grid-template-columns: 1fr; } }
+    .right-item {
+      background: var(--color-card);
+      border: 1px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+    .right-item strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .right-item span { font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">
+    <img src="assets/truethings_icon.png" alt="TrueThings" />
+    <span>TrueThings</span>
+  </a>
+  <a href="/" class="back">← Back</a>
+</nav>
+
+<main>
+  <h1 class="page-title">Privacy Policy</h1>
+  <p class="page-date">Last updated: June 2026</p>
+
+  <section>
+    <h2>1. Controller</h2>
+    <p>The controller responsible for data processing within the meaning of the GDPR is:</p>
+    <div class="card">
+      <p>
+        <strong>Hannes Heißmeyer</strong><br />
+        Ibykusweg 6f · 30629 Hannover · Germany<br />
+        Email: <a href="mailto:info@trackable.pro">info@trackable.pro</a><br />
+        Phone: <a href="tel:+4915751477145">+49 157 51477145</a>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Scope</h2>
+    <p>
+      This Privacy Policy applies to the website <strong>truethingsapp.com</strong> and the iOS app
+      <strong>TrueThings</strong> (together: "the Service"). It explains what data we collect, how
+      we use it, and your rights.
+    </p>
+  </section>
+
+  <section>
+    <h2>3. Website Data</h2>
+
+    <h3>3.1 Hosting (Vercel)</h3>
+    <p>
+      The website is hosted by Vercel Inc., 340 Pine Street, Suite 701, San Francisco, CA 94104,
+      USA. When you visit, standard technical data is logged (IP address, browser type, OS, access
+      time, URL). This data is used solely for security and operational purposes.
+    </p>
+    <p>
+      Legal basis: Art. 6(1)(f) GDPR (legitimate interest). Transfer to the US is covered by
+      Standard Contractual Clauses (Art. 46(2)(c) GDPR).
+      <a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Vercel Privacy Policy →</a>
+    </p>
+
+    <h3>3.2 Google Analytics</h3>
+    <p>
+      We use Google Analytics (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4,
+      Ireland) to understand how visitors use this website. Google Analytics uses cookies and
+      collects anonymised usage data. IP anonymisation is enabled.
+    </p>
+    <p>
+      Google Analytics is only loaded <strong>after you give consent</strong> via the cookie
+      banner. You can withdraw consent at any time via "Cookie Settings" in the footer.
+    </p>
+    <p>
+      Legal basis: Art. 6(1)(a) GDPR (consent).
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy →</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>4. App Data</h2>
+
+    <h3>4.1 Account &amp; Profile</h3>
+    <p>To use TrueThings you create an account. We collect:</p>
+    <ul>
+      <li>Display name</li>
+      <li>Profile photo (optional)</li>
+      <li>Relationship anniversary date (optional)</li>
+      <li>A device identifier used to pair two accounts into a couple</li>
+    </ul>
+    <p>Legal basis: Art. 6(1)(b) GDPR (performance of contract).</p>
+
+    <h3>4.2 User-Generated Content</h3>
+    <p>
+      While using the app, you and your partner may create content that is stored and shared
+      between your two accounts only:
+    </p>
+    <ul>
+      <li>Couple photos (shared gallery)</li>
+      <li>To-do list entries</li>
+      <li>Wishlist items</li>
+      <li>Game answers and progress</li>
+      <li>Activity streak data</li>
+    </ul>
+    <p>Legal basis: Art. 6(1)(b) GDPR (performance of contract).</p>
+
+    <h3>4.3 Backend — Supabase</h3>
+    <p>
+      All app data is stored with Supabase Inc. Our Supabase project is hosted in the
+      <strong>EU (Frankfurt, Germany)</strong>, so no international data transfer takes place.
+      We have a Data Processing Agreement (DPA) with Supabase in place per Art. 28 GDPR.
+      <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy →</a>
+    </p>
+
+    <h3>4.4 Subscriptions — RevenueCat</h3>
+    <p>
+      In-app subscription management is handled by RevenueCat, Inc., 633 Tasman Dr., San Leandro,
+      CA 94577, USA. RevenueCat processes anonymised purchase data. Payment details are handled
+      exclusively by Apple and never reach us or RevenueCat.
+    </p>
+    <p>
+      Legal basis: Art. 6(1)(b) GDPR. US transfer via Standard Contractual Clauses.
+      <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">RevenueCat Privacy Policy →</a>
+    </p>
+
+    <h3>4.5 Apple App Store</h3>
+    <p>
+      The app is distributed via the Apple App Store. Apple processes data according to their own
+      privacy policy when you download or purchase.
+      <a href="https://www.apple.com/privacy/" target="_blank" rel="noopener">Apple Privacy Policy →</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>5. Retention</h2>
+    <ul>
+      <li><strong>Account &amp; profile data:</strong> Until you delete your account or request deletion</li>
+      <li><strong>User-generated content:</strong> Until deleted by you or upon account closure</li>
+      <li><strong>Website server logs:</strong> Typically 7 days</li>
+      <li><strong>Subscription records:</strong> As required by law (up to 10 years)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6. Your Rights</h2>
+    <p>Under the GDPR you have the following rights regarding your personal data:</p>
+    <div class="rights-grid">
+      <div class="right-item">
+        <strong>Access (Art. 15)</strong>
+        <span>Request a copy of the data we hold about you.</span>
+      </div>
+      <div class="right-item">
+        <strong>Rectification (Art. 16)</strong>
+        <span>Ask us to correct inaccurate data.</span>
+      </div>
+      <div class="right-item">
+        <strong>Erasure (Art. 17)</strong>
+        <span>Request deletion of your data ("right to be forgotten").</span>
+      </div>
+      <div class="right-item">
+        <strong>Restriction (Art. 18)</strong>
+        <span>Ask us to limit how we process your data.</span>
+      </div>
+      <div class="right-item">
+        <strong>Portability (Art. 20)</strong>
+        <span>Receive your data in a machine-readable format.</span>
+      </div>
+      <div class="right-item">
+        <strong>Objection (Art. 21)</strong>
+        <span>Object to processing based on legitimate interests.</span>
+      </div>
+    </div>
+    <p style="margin-top:16px;">
+      To exercise any right, contact us at
+      <a href="mailto:info@trackable.pro">info@trackable.pro</a>.
+    </p>
+    <p>
+      You also have the right to lodge a complaint with a supervisory authority. The authority
+      responsible for Hannes Heißmeyer's location is the
+      <strong>Landesbeauftragte für den Datenschutz Niedersachsen (LfD)</strong>:
+      <a href="https://lfd.niedersachsen.de" target="_blank" rel="noopener">lfd.niedersachsen.de</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>7. Consent Withdrawal</h2>
+    <p>
+      Where processing is based on your consent (Art. 6(1)(a) GDPR), you may withdraw it at any
+      time without affecting the lawfulness of prior processing.
+    </p>
+    <p>
+      Google Analytics consent: withdraw via "Cookie Settings" in the website footer at any time.
+    </p>
+  </section>
+
+  <section>
+    <h2>8. Cookies</h2>
+    <p>
+      This website uses technically necessary cookies required for operation. Analytical cookies
+      (Google Analytics) are only set with your explicit consent via the cookie banner shown on
+      first visit. You can change your choice at any time via "Cookie Settings" in the footer.
+    </p>
+  </section>
+
+  <section>
+    <h2>9. Changes</h2>
+    <p>
+      We may update this Privacy Policy to reflect changes in law or to the Service. The current
+      version is always available at this URL.
+    </p>
+  </section>
+
+</main>
+
+</body>
+</html>
