@@ -7,6 +7,7 @@ class TrueThingsGame {
     this.mode       = opts.mode       ?? 'quiz'; // 'quiz' | 'binary'
     this.ctaUrl     = opts.ctaUrl     ?? '#';
     this.lang       = opts.lang       ?? 'en';
+    this.labels     = opts.labels     ?? null;
     this.current    = 0;
     this.busy       = false;
 
@@ -56,8 +57,8 @@ class TrueThingsGame {
       const label = this.lang === 'de' ? 'Weiter →' : 'Next →';
       el.innerHTML = `<button class="game-btn-next" onclick="window.ttGame.next()">${label}</button>`;
     } else {
-      const yes = this.lang === 'de' ? 'Ja 😬' : 'Yes 😬';
-      const no  = this.lang === 'de' ? 'Nein 😌' : 'No 😌';
+      const yes = this.labels?.yes ?? (this.lang === 'de' ? 'Ja 😬' : 'Yes 😬');
+      const no  = this.labels?.no  ?? (this.lang === 'de' ? 'Nein 😌' : 'No 😌');
       el.innerHTML = `
         <button class="game-btn game-btn-no"  onclick="window.ttGame.answer('no')">${no}</button>
         <button class="game-btn game-btn-yes" onclick="window.ttGame.answer('yes')">${yes}</button>
