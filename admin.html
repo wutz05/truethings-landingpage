@@ -1,0 +1,1282 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TrueThings Admin · Onboarding</title>
+<link rel="icon" type="image/png" href="assets/admin-icon.png">
+<style>
+/* TrueThings admin: onboarding funnel. Data comes from the Supabase Edge
+   Function admin-onboarding, which reads PostHog server-side. */
+:root {
+  color-scheme: light;
+  --page: #f5f3f4;
+  --surface: #ffffff;
+  --surface-2: #faf8f9;
+  --hover: rgba(29, 26, 28, .04);
+  --border: rgba(29, 26, 28, .09);
+  --border-strong: rgba(29, 26, 28, .16);
+  --text: #1d1a1c;
+  --text-2: #5f565b;
+  --muted: #8d8489;
+  --grid: #eeeaec;
+  --axis: #d6d0d3;
+  --series-1: #d6237f;
+  --series-2: #2a78d6;
+  --track: #f8dcea;
+  --none: #bdb5ba;
+  --good: #11743a;
+  --bad: #c42f39;
+  --bad-soft: rgba(196, 47, 57, .09);
+  --brand: #f4339a;
+  --shadow: 0 1px 2px rgba(42, 26, 34, .05), 0 4px 16px -8px rgba(42, 26, 34, .08);
+  --tooltip: #1d1a1c;
+  --tooltip-text: #ffffff;
+  --tooltip-2: rgba(255, 255, 255, .66);
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #121012; --surface: #1c181b; --surface-2: #221d21; --hover: rgba(255, 255, 255, .04);
+    --border: rgba(255, 255, 255, .08); --border-strong: rgba(255, 255, 255, .15);
+    --text: #f6f2f4; --text-2: #b9b0b5; --muted: #8a8187; --grid: #2a2528; --axis: #3c363a;
+    --series-1: #ec3d98; --series-2: #3987e5; --track: #3a2131; --none: #6b6368;
+    --good: #46c77a; --bad: #f07070; --bad-soft: rgba(240, 112, 112, .12);
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3); --tooltip: #f6f2f4; --tooltip-text: #1d1a1c; --tooltip-2: rgba(29, 26, 28, .62);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #121012; --surface: #1c181b; --surface-2: #221d21; --hover: rgba(255, 255, 255, .04);
+  --border: rgba(255, 255, 255, .08); --border-strong: rgba(255, 255, 255, .15);
+  --text: #f6f2f4; --text-2: #b9b0b5; --muted: #8a8187; --grid: #2a2528; --axis: #3c363a;
+  --series-1: #ec3d98; --series-2: #3987e5; --track: #3a2131; --none: #6b6368;
+  --good: #46c77a; --bad: #f07070; --bad-soft: rgba(240, 112, 112, .12);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3); --tooltip: #f6f2f4; --tooltip-text: #1d1a1c; --tooltip-2: rgba(29, 26, 28, .62);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--page); color: var(--text);
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased; min-height: 100vh;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; }
+[hidden] { display: none !important; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20; height: 56px; padding: 0 24px;
+  display: flex; align-items: center; gap: 14px;
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px); backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; letter-spacing: -.01em; }
+.brand img { width: 26px; height: 26px; border-radius: 7px; }
+.brand small { font-weight: 500; color: var(--muted); }
+.crumb { color: var(--border-strong); }
+.nav-item { font-weight: 550; padding: 6px 10px; border-radius: 8px; background: var(--hover); }
+.spacer { flex: 1; }
+.updated { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.icon-btn {
+  width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center;
+  color: var(--text-2); border: 1px solid var(--border);
+}
+.icon-btn:hover { background: var(--hover); color: var(--text); }
+.icon-btn svg { width: 17px; height: 17px; }
+.icon-btn.spin svg { animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Layout ---------- */
+main { max-width: 1240px; margin: 0 auto; padding: 28px 24px 64px; }
+.page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+h1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
+.lede { color: var(--text-2); margin-top: 4px; max-width: 640px; }
+.demo-flag {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 4px 10px; border-radius: 999px;
+  background: var(--bad-soft); color: var(--bad); font-weight: 600; font-size: 12.5px;
+}
+
+/* ---------- Filters (one row, above everything they scope) ---------- */
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 22px 0 18px; }
+.seg {
+  display: inline-flex; padding: 3px; gap: 2px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow);
+}
+.seg button { padding: 5px 11px; border-radius: 7px; color: var(--text-2); font-weight: 550; font-size: 13px; white-space: nowrap; }
+.seg button:hover { color: var(--text); background: var(--hover); }
+.seg button[aria-pressed="true"] { background: var(--text); color: var(--surface); }
+.field {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border); box-shadow: var(--shadow); color: var(--text-2); font-size: 13px;
+}
+.field select, .field input[type=date] { border: 0; background: transparent; color: var(--text); font-weight: 550; outline: none; }
+.field input[type=checkbox] { accent-color: var(--series-1); width: 15px; height: 15px; }
+.compare { color: var(--muted); font-size: 12.5px; margin-left: auto; }
+
+/* ---------- Cards ---------- */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); }
+.card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 0; }
+.card-head > :first-child { flex: 1; min-width: 0; }
+.card-title { font-weight: 650; font-size: 15px; letter-spacing: -.01em; }
+.card-sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+.card-body { padding: 16px 20px 20px; }
+.grid { display: grid; gap: 16px; }
+.loading .grid, .loading .kpis { opacity: .5; transition: opacity .2s; }
+
+/* ---------- KPI tiles ---------- */
+.kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.kpi { padding: 14px 16px 14px; display: flex; flex-direction: column; gap: 4px; min-height: 118px; }
+.kpi-label { color: var(--text-2); font-size: 12.5px; font-weight: 550; display: flex; align-items: flex-start; gap: 6px; min-height: 18px; }
+.kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -.025em; line-height: 1.15; }
+.kpi-foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; }
+.delta { font-size: 12.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
+.delta.up { color: var(--good); }
+.delta.down { color: var(--bad); }
+.delta.flat { color: var(--muted); }
+.delta small { color: var(--muted); font-weight: 500; }
+.kpi-note { color: var(--muted); font-size: 12px; }
+.spark { width: 72px; height: 24px; flex: 0 1 72px; min-width: 0; }
+.info { color: var(--muted); display: inline-grid; place-items: center; cursor: help; }
+.info svg { width: 13px; height: 13px; }
+
+/* ---------- Funnel ---------- */
+.two-col { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+.tabs { display: inline-flex; gap: 2px; padding: 3px; border-radius: 9px; background: var(--surface-2); border: 1px solid var(--border); }
+.tabs button { padding: 4px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+.tabs button[aria-pressed="true"] { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0, 0, 0, .08); }
+.head-tools { display: flex; gap: 8px; align-items: center; justify-content: flex-end; flex: none; }
+@media (max-width: 560px) { .card-head { flex-wrap: wrap; } }
+.view-toggle { font-size: 12.5px; color: var(--text-2); font-weight: 550; padding: 5px 9px; border-radius: 7px; border: 1px solid var(--border); }
+.view-toggle:hover { background: var(--hover); color: var(--text); }
+
+.funnel { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr) 128px 118px; column-gap: 16px; }
+.f-head { display: contents; }
+.f-head span { color: var(--muted); font-size: 11.5px; font-weight: 600; letter-spacing: .02em; padding-bottom: 8px; border-bottom: 1px solid var(--grid); }
+.f-head span.r { text-align: right; }
+.f-row { display: contents; }
+.f-row > * { padding: 7px 0; border-bottom: 1px solid var(--grid); display: flex; align-items: center; min-height: 44px; }
+.f-row:last-child > * { border-bottom: 0; }
+.f-row:hover > *, .f-row:focus-within > *, .f-row.hot > * { background: var(--hover); }
+.f-row > :first-child { padding-left: 8px; margin-left: -8px; border-radius: 8px 0 0 8px; }
+.f-row > :last-child { padding-right: 8px; margin-right: -8px; border-radius: 0 8px 8px 0; }
+.f-label { flex-direction: column; align-items: flex-start !important; justify-content: center; gap: 1px; }
+.f-label b { font-weight: 600; font-size: 13.5px; line-height: 1.25; }
+.f-label code { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.f-bar { position: relative; outline: none; }
+.f-track { position: relative; width: 100%; height: 20px; border-radius: 0 4px 4px 0; background: var(--track); }
+.f-fill { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; background: var(--series-1); min-width: 2px; transition: width .35s ease; }
+.f-val { justify-content: flex-end; gap: 8px; white-space: nowrap; }
+.f-val b { font-weight: 650; }
+.f-val span { color: var(--muted); font-size: 12.5px; min-width: 46px; text-align: right; }
+.f-conv { justify-content: center; flex-direction: column; align-items: flex-end !important; gap: 0; white-space: nowrap; }
+.f-conv b { font-weight: 600; font-size: 13px; }
+.f-conv span { color: var(--muted); font-size: 12px; }
+.f-conv .worst { color: var(--bad); }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 1px 7px; border-radius: 999px; font-size: 11px; font-weight: 650;
+  background: var(--bad-soft); color: var(--bad); margin-top: 2px;
+}
+.badge svg { width: 11px; height: 11px; }
+.f-section { grid-column: 1 / -1; padding: 14px 0 6px; color: var(--muted); font-size: 11.5px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; }
+.note { color: var(--muted); font-size: 12.5px; margin-top: 12px; line-height: 1.5; }
+
+/* ---------- Split (part-to-whole) ---------- */
+.split-bar { display: flex; gap: 2px; height: 20px; margin: 4px 0 16px; }
+.split-bar div { border-radius: 0; min-width: 2px; position: relative; outline: none; }
+.split-bar div:first-child { border-radius: 4px 0 0 4px; }
+.split-bar div:last-child { border-radius: 0 4px 4px 0; }
+.split-bar div:only-child { border-radius: 4px; }
+.legend { display: grid; gap: 10px; }
+.legend-row { display: grid; grid-template-columns: 12px 1fr auto auto; align-items: center; gap: 10px; }
+.swatch { width: 12px; height: 12px; border-radius: 3px; }
+.legend-row .n { font-weight: 650; }
+.legend-row .p { color: var(--muted); font-size: 12.5px; min-width: 44px; text-align: right; }
+.mini-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--grid); }
+.mini-stats div { display: flex; flex-direction: column; gap: 2px; }
+.mini-stats span { color: var(--text-2); font-size: 12px; }
+.mini-stats b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+
+/* ---------- Trend ---------- */
+.chart-legend { display: flex; gap: 16px; align-items: center; font-size: 12.5px; color: var(--text-2); }
+.chart-legend i { display: inline-block; width: 14px; height: 2px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; overflow: visible; }
+.chart text { fill: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.chart .end-label { fill: var(--text-2); font-weight: 600; }
+
+/* ---------- Tables ---------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; color: var(--muted); font-weight: 600; font-size: 11.5px; letter-spacing: .02em; padding: 0 10px 8px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+td { padding: 9px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+tbody tr:hover td { background: var(--hover); }
+th.r, td.r { text-align: right; font-variant-numeric: tabular-nums; }
+td.muted { color: var(--muted); }
+td code { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.done { color: var(--good); }
+.pill.bought { color: var(--series-1); }
+.pill.lost { color: var(--bad); }
+.pill.live { color: var(--series-2); }
+.flow-dot { display: inline-flex; align-items: center; gap: 6px; }
+.flow-dot i { width: 8px; height: 8px; border-radius: 2px; }
+
+/* ---------- Tooltip ---------- */
+.tooltip {
+  position: fixed; z-index: 50; pointer-events: none; min-width: 168px; max-width: 260px;
+  padding: 10px 12px; border-radius: 10px; background: var(--tooltip); color: var(--tooltip-text);
+  box-shadow: 0 10px 30px -8px rgba(0, 0, 0, .35); font-size: 12.5px; opacity: 0; transition: opacity .1s;
+}
+.tooltip.on { opacity: 1; }
+.tooltip h4 { font-size: 12px; font-weight: 600; color: var(--tooltip-2); margin-bottom: 6px; }
+.tooltip .row { display: flex; align-items: center; gap: 8px; justify-content: space-between; margin-top: 3px; }
+.tooltip .row span { color: var(--tooltip-2); display: inline-flex; align-items: center; gap: 6px; }
+.tooltip .row b { font-weight: 650; font-variant-numeric: tabular-nums; }
+.tooltip .key { width: 12px; height: 2px; border-radius: 2px; display: inline-block; }
+
+/* ---------- Login, states ---------- */
+.center { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+.login { width: 100%; max-width: 380px; padding: 30px 28px 26px; }
+.login img { width: 44px; height: 44px; border-radius: 11px; }
+.login h1 { font-size: 20px; margin-top: 16px; }
+.login p { color: var(--text-2); margin-top: 4px; }
+.login form { margin-top: 22px; display: grid; gap: 12px; }
+.input {
+  width: 100%; height: 42px; padding: 0 12px; border-radius: 10px; border: 1px solid var(--border-strong);
+  background: var(--surface); outline: none;
+}
+.input:focus { border-color: var(--series-1); box-shadow: 0 0 0 3px color-mix(in srgb, var(--series-1) 18%, transparent); }
+.btn {
+  height: 42px; border-radius: 10px; background: var(--text); color: var(--surface); font-weight: 650;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px;
+}
+.btn:disabled { opacity: .6; cursor: default; }
+.btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--border-strong); height: 36px; }
+.error-text { color: var(--bad); font-size: 13px; min-height: 18px; }
+.state { padding: 36px 32px; max-width: 720px; margin: 8px auto 0; }
+.state h2 { font-size: 18px; letter-spacing: -.01em; }
+.state p { color: var(--text-2); margin-top: 8px; }
+.state ol { margin: 14px 0 0 20px; color: var(--text-2); display: grid; gap: 8px; }
+.state code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); padding: 1px 6px; border-radius: 6px; color: var(--text); }
+.state pre { margin-top: 12px; font-family: var(--mono); font-size: 12px; background: var(--surface-2); border: 1px solid var(--border); padding: 12px; border-radius: 10px; white-space: pre-wrap; word-break: break-all; color: var(--text); }
+.state .actions { margin-top: 18px; display: flex; gap: 10px; }
+.empty { padding: 26px 0 8px; text-align: center; color: var(--muted); }
+footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.6; }
+:focus-visible { outline: 2px solid var(--series-2); outline-offset: 2px; }
+
+@media (max-width: 1100px) {
+  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .two-col { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .topbar { padding: 0 16px; }
+  .brand small, .crumb, .nav-item, .updated { display: none; }
+  main { padding: 20px 16px 48px; }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .compare { margin-left: 0; width: 100%; }
+  .delta small { display: none; }
+  .card-head { flex-wrap: wrap; }
+  .head-tools { flex-wrap: wrap; justify-content: flex-start; flex: 1 1 100%; }
+  .card-body { padding: 14px 16px 18px; }
+  .card-head { padding: 16px 16px 0; }
+  /* Funnel rows stack: name and numbers on top, the bar underneath. */
+  .funnel { display: block; }
+  .f-head { display: none; }
+  .f-row {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 12px;
+    grid-template-areas: "label val conv" "bar bar bar"; padding: 9px 0; border-bottom: 1px solid var(--grid);
+  }
+  .f-row:last-child { border-bottom: 0; }
+  .f-row > * { border-bottom: 0 !important; min-height: 0; padding: 0 !important; margin: 0 !important; background: none !important; border-radius: 0 !important; }
+  .f-label { grid-area: label; }
+  .f-val { grid-area: val; }
+  .f-conv { grid-area: conv; min-width: 58px; }
+  .f-bar { grid-area: bar; padding-top: 7px !important; }
+  .f-section { padding: 12px 0 2px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="login-view" class="center" hidden>
+  <div class="card login">
+    <img src="assets/admin-icon.png" alt="">
+    <h1>TrueThings Admin</h1>
+    <p>Melde dich an, um die Auswertungen zu sehen.</p>
+    <form id="login-form" autocomplete="on">
+      <input id="login-user" type="text" name="username" value="admin" autocomplete="username" hidden>
+      <input id="login-password" class="input" type="password" name="password" placeholder="Passwort" autocomplete="current-password" required>
+      <div id="login-error" class="error-text" role="alert"></div>
+      <button id="login-button" class="btn" type="submit">Anmelden</button>
+    </form>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="app-view" hidden>
+  <header class="topbar">
+    <div class="brand"><img src="assets/admin-icon.png" alt="">TrueThings <small>Admin</small></div>
+    <span class="crumb">/</span>
+    <span class="nav-item">Onboarding</span>
+    <div class="spacer"></div>
+    <span id="updated" class="updated"></span>
+    <button id="refresh" class="icon-btn" title="Neu laden (ohne Cache)" aria-label="Neu laden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></svg>
+    </button>
+    <button id="theme" class="icon-btn" title="Hell / Dunkel" aria-label="Darstellung wechseln">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+    </button>
+    <button id="logout" class="icon-btn" title="Abmelden" aria-label="Abmelden">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3"/><path d="M10 17l-5-5 5-5"/><path d="M5 12h11"/></svg>
+    </button>
+  </header>
+
+  <main id="main">
+    <div class="page-head">
+      <div>
+        <h1>Onboarding-Funnel</h1>
+        <p class="lede">Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele danach ein Abo abschließen.</p>
+        <span id="demo-flag" class="demo-flag" hidden>● Demo-Daten, nicht echt</span>
+      </div>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter">
+      <div class="seg" id="range-presets" role="group" aria-label="Zeitraum">
+        <button data-days="7">7 Tage</button>
+        <button data-days="14">14 Tage</button>
+        <button data-days="30">30 Tage</button>
+        <button data-days="90">90 Tage</button>
+        <button data-days="custom">Eigener</button>
+      </div>
+      <label class="field" id="custom-range" hidden>
+        <input type="date" id="from" aria-label="Von"> – <input type="date" id="to" aria-label="Bis">
+      </label>
+      <label class="field">Version
+        <select id="version"><option value="v2">Alle 2.x</option></select>
+      </label>
+      <label class="field"><input type="checkbox" id="hide-sim" checked> Simulatoren ausblenden</label>
+      <span class="compare" id="compare"></span>
+    </div>
+
+    <div id="state" class="card state" hidden></div>
+
+    <div id="content">
+      <section class="kpis" id="kpis" aria-label="Kennzahlen"></section>
+
+      <div class="grid two-col">
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Funnel</div>
+              <div class="card-sub" id="funnel-sub"></div>
+            </div>
+            <div class="head-tools">
+              <div class="tabs" id="funnel-tabs" role="group" aria-label="Weg">
+                <button data-flow="all">Gesamt</button>
+                <button data-flow="create">Paar anlegen</button>
+                <button data-flow="join">Beitreten</button>
+              </div>
+              <button class="view-toggle" data-toggle="funnel">Tabelle</button>
+            </div>
+          </div>
+          <div class="card-body" id="funnel"></div>
+        </section>
+
+        <div class="grid" style="align-content:start">
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Anlegen oder beitreten</div>
+                <div class="card-sub">Wahl auf dem zweiten Screen</div>
+              </div>
+            </div>
+            <div class="card-body" id="split"></div>
+          </section>
+          <section class="card">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Nach dem Onboarding</div>
+                <div class="card-sub">Paywall und Abo, wer abgeschlossen hat</div>
+              </div>
+            </div>
+            <div class="card-body" id="after"></div>
+          </section>
+        </div>
+      </div>
+
+      <section class="card" style="margin-top:16px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Verlauf pro Tag</div>
+            <div class="card-sub">Nach Starttag: gestartete und abgeschlossene Onboardings</div>
+          </div>
+          <div class="head-tools">
+            <div class="chart-legend" id="trend-legend">
+              <span><i style="background:var(--series-1)"></i>Gestartet</span>
+              <span><i style="background:var(--series-2)"></i>Abgeschlossen</span>
+            </div>
+            <button class="view-toggle" data-toggle="trend">Tabelle</button>
+          </div>
+        </div>
+        <div class="card-body"><div class="chart" id="trend"></div></div>
+      </section>
+
+      <section class="card" style="margin-top:16px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Letzte Onboardings</div>
+            <div class="card-sub">Die 25 neuesten Starts im Zeitraum, pseudonym</div>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="recent"></div></div>
+      </section>
+
+      <footer>
+        Quelle: PostHog (Events der App ab Version 2.0). Eine Person zählt in dem Zeitraum, in dem sie zum ersten Mal den Willkommens-Screen gesehen hat; spätere Schritte zählen auch nach dem Zeitraum.
+        Schritte vor dem Konto sind anonym und werden nach der Registrierung der Person zugeordnet. Wiederholte Onboardings aus dem Profil sind ausgeschlossen.
+        Der Weg (anlegen / beitreten) steht ab Build 36 direkt im Event, bei älteren Builds wird er aus den Schritten abgeleitet.
+      </footer>
+    </div>
+  </main>
+</div>
+
+<div id="tooltip" class="tooltip" role="tooltip"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  const API = 'https://bpmuuvqlorfwzygmaonw.supabase.co/functions/v1/admin-onboarding';
+  const DEMO = new URLSearchParams(location.search).has('demo');
+  const SESSION_KEY = 'tt-admin-session';
+  const PREFS_KEY = 'tt-admin-prefs';
+
+  // ---------------------------------------------------------------- steps
+
+  const LABELS = {
+    started: 'Gestartet',
+    welcome: 'Willkommen',
+    create_or_join: 'Anlegen oder beitreten',
+    chosen: 'Weg gewählt',
+    your_name: 'Namen',
+    anniversary_date: 'Jahrestag',
+    days_together: 'Tage zusammen',
+    distance: 'Entfernung',
+    distance_message: 'Entfernungs-Info',
+    goals: 'Ziele',
+    auth: 'Konto',
+    invite_code: 'Einladungscode',
+    join_code: 'Code eingeben',
+    thing: 'Thing gestalten',
+    preview: 'Vorschau',
+    done: 'Fertig-Screen',
+    shared_plan: 'Paar-Abo-Info',
+    completed: 'Onboarding abgeschlossen',
+    paywall: 'Paywall gesehen',
+    purchase: 'Abo abgeschlossen',
+  };
+  const KEYS = {
+    started: 'welcome', chosen: 'flow', completed: 'onboarding_completed',
+    paywall: 'paywall_viewed', purchase: 'purchase_completed',
+  };
+
+  // Rows per funnel. `section` rows start a group; the first row is 100 %.
+  const FUNNELS = {
+    all: {
+      sub: 'Alle neuen Nutzer, gemeinsame Meilensteine beider Wege',
+      rows: [
+        { section: 'App' }, 'welcome', 'create_or_join', 'chosen', 'auth', 'completed',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+      ],
+      note: 'Wer einem Paar beitritt, das schon ein Abo hat, sieht keine Paywall; das drückt die Paywall-Zeile unter die Abschlüsse.',
+    },
+    create: {
+      sub: 'Wer „Neues Paar anlegen“ gewählt hat',
+      rows: [
+        { section: 'App' }, 'your_name', 'anniversary_date', 'days_together', 'distance', 'distance_message', 'goals',
+        'auth', 'invite_code', 'thing', 'preview', 'done', 'shared_plan', 'completed',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+      ],
+    },
+    join: {
+      sub: 'Wer einen Code vom Partner eingegeben hat',
+      rows: [
+        { section: 'App' }, 'auth', 'join_code', 'preview', 'completed',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+      ],
+      note: 'Ältere Builds (vor 36) erkennen Beitretende erst ab „Code eingeben“; wer vorher abbricht, zählt dort unter „ohne Wahl“. Den Paar-Abo-Screen sehen nur Beitretende ohne Abo im Paar.',
+    },
+  };
+
+  // ---------------------------------------------------------------- format
+
+  const nf = new Intl.NumberFormat('de-DE');
+  const pf = new Intl.NumberFormat('de-DE', { maximumFractionDigits: 1, minimumFractionDigits: 0 });
+  const fmt = (n) => (n === null || n === undefined ? '–' : nf.format(Math.round(n)));
+  const pct = (part, whole) => (whole > 0 ? part / whole : null);
+  const fmtPct = (r, digits = 1) => (r === null || !Number.isFinite(r) ? '–' : `${new Intl.NumberFormat('de-DE', { maximumFractionDigits: digits }).format(r * 100)} %`);
+  const fmtDuration = (s) => {
+    if (s === null || s === undefined || !Number.isFinite(s)) return '–';
+    if (s < 90) return `${Math.round(s)} s`;
+    if (s < 3600 * 2) return `${pf.format(Math.round(s / 6) / 10)} min`;
+    if (s < 86400 * 2) return `${pf.format(Math.round(s / 360) / 10)} h`;
+    return `${pf.format(Math.round(s / 8640) / 10)} Tage`;
+  };
+  const dayLabel = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+  const longDay = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: 'numeric', month: 'short', year: 'numeric' });
+  const when = (iso) => {
+    const d = new Date(iso);
+    const mins = Math.round((Date.now() - d.getTime()) / 60000);
+    if (mins < 1) return 'gerade eben';
+    if (mins < 60) return `vor ${mins} min`;
+    if (mins < 60 * 24) return `vor ${Math.round(mins / 60)} h`;
+    return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  };
+  const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+
+  // ---------------------------------------------------------------- dom
+
+  const $ = (id) => document.getElementById(id);
+  function el(tag, attrs = {}, children = []) {
+    const node = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v === undefined || v === null || v === false) continue;
+      if (k === 'class') node.className = v;
+      else if (k === 'text') node.textContent = v;
+      else if (k === 'style') node.style.cssText = v;
+      else if (k.startsWith('on')) node.addEventListener(k.slice(2), v);
+      else node.setAttribute(k, v === true ? '' : v);
+    }
+    for (const c of [].concat(children)) {
+      if (c === null || c === undefined || c === false) continue;
+      node.append(c instanceof Node ? c : document.createTextNode(String(c)));
+    }
+    return node;
+  }
+  const SVGNS = 'http://www.w3.org/2000/svg';
+  function svg(tag, attrs = {}) {
+    const node = document.createElementNS(SVGNS, tag);
+    for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+    return node;
+  }
+  const ICON_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01" stroke-linecap="round"/></svg>';
+  const ICON_DOWN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>';
+  const icon = (markup) => { const s = el('span'); s.innerHTML = markup; return s.firstChild; };
+
+  // ---------------------------------------------------------------- storage
+
+  const store = {
+    get(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } },
+    set(key, value) { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* private mode */ } },
+    drop(key) { try { localStorage.removeItem(key); } catch { /* private mode */ } },
+  };
+
+  // ---------------------------------------------------------------- state
+
+  const prefs = Object.assign({ days: '30', version: 'v2', hideSim: true, flow: 'all', from: null, to: null }, store.get(PREFS_KEY) || {});
+  let data = null;
+  const views = { funnel: 'chart', trend: 'chart' };
+  let session = store.get(SESSION_KEY);
+  let loadToken = 0;
+
+  function range() {
+    if (prefs.days === 'custom' && prefs.from && prefs.to) return { from: prefs.from, to: prefs.to };
+    const days = Number(prefs.days) || 30;
+    const to = new Date();
+    const from = new Date();
+    from.setDate(to.getDate() - (days - 1));
+    return { from: isoDay(from), to: isoDay(to) };
+  }
+
+  // ---------------------------------------------------------------- api
+
+  async function call(body) {
+    const res = await fetch(API, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...(session ? { 'x-admin-session': session.token } : {}) },
+      body: JSON.stringify(body),
+    });
+    const payload = await res.json().catch(() => ({ error: 'bad_response' }));
+    if (!res.ok) throw Object.assign(new Error(payload.error || 'error'), { status: res.status, payload });
+    return payload;
+  }
+
+  async function load(refresh = false) {
+    const ticket = ++loadToken;
+    const r = range();
+    $('main').classList.add('loading');
+    $('refresh').classList.add('spin');
+    try {
+      const next = DEMO
+        ? demoData(r)
+        : await call({ action: 'funnel', ...r, version: prefs.version, simulators: !prefs.hideSim, refresh });
+      if (ticket !== loadToken) return;
+      data = next;
+      showState(null);
+      render();
+    } catch (err) {
+      if (ticket !== loadToken) return;
+      if (err.status === 401) return logout('Sitzung abgelaufen, bitte neu anmelden.');
+      showState(err);
+    } finally {
+      if (ticket === loadToken) {
+        $('main').classList.remove('loading');
+        $('refresh').classList.remove('spin');
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------- states
+
+  function showState(err) {
+    const box = $('state');
+    if (!err) { box.hidden = true; $('content').hidden = false; return; }
+    box.replaceChildren();
+    const code = err.payload && err.payload.error;
+    if (code === 'posthog_not_configured') {
+      box.append(
+        el('h2', { text: 'Noch ein Schritt: PostHog verbinden' }),
+        el('p', { text: 'Das Dashboard liest die Onboarding-Events direkt aus PostHog. Dafür braucht der Server einen eigenen, nur lesenden Schlüssel.' }),
+        el('ol', {}, [
+          el('li', {}, ['In PostHog: Einstellungen → ', el('b', { text: 'Persönliche API-Schlüssel' }), ' → „Schlüssel erstellen“.']),
+          el('li', {}, ['Berechtigungen: ', el('code', { text: 'Query: Read' }), ' und ', el('code', { text: 'Project: Read' }), ', Projekt: TrueThings.']),
+          el('li', {}, ['Im Terminal im Ordner ', el('code', { text: 'truethings' }), ' ausführen:']),
+        ]),
+        el('pre', { text: 'supabase secrets set POSTHOG_PERSONAL_API_KEY=phx_… --project-ref bpmuuvqlorfwzygmaonw' }),
+        el('div', { class: 'actions' }, [el('button', { class: 'btn', text: 'Erneut laden', onclick: () => load(true) })]),
+      );
+    } else {
+      const detail = (err.payload && (err.payload.detail || err.payload.error)) || err.message;
+      box.append(
+        el('h2', { text: err.status === 429 ? 'PostHog-Limit erreicht' : 'Daten konnten nicht geladen werden' }),
+        el('p', { text: err.status === 429 ? 'Der Schlüssel hat sein stündliches Abfrage-Budget aufgebraucht. In ein paar Minuten noch einmal versuchen.' : 'Die Abfrage an PostHog ist fehlgeschlagen.' }),
+        el('pre', { text: String(detail) }),
+        el('div', { class: 'actions' }, [el('button', { class: 'btn', text: 'Erneut versuchen', onclick: () => load(true) })]),
+      );
+    }
+    box.hidden = false;
+    $('content').hidden = true;
+  }
+
+  // ---------------------------------------------------------------- render
+
+  function render() {
+    if (!data) return;
+    $('demo-flag').hidden = !DEMO;
+    $('updated').textContent = `Stand ${new Date(data.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}${data.cached ? ' · aus Cache' : ''}`;
+    $('compare').textContent = `${longDay(data.range.from)} – ${longDay(data.range.to)} · verglichen mit ${longDay(data.previousRange.from)} – ${longDay(data.previousRange.to)}`;
+    renderVersions();
+    renderKpis();
+    renderFunnel();
+    renderSplit();
+    renderAfter();
+    renderTrend();
+    renderRecent();
+  }
+
+  function renderVersions() {
+    const select = $('version');
+    const known = new Set([...select.options].map((o) => o.value));
+    for (const v of data.versions || []) {
+      if (known.has(v.version)) continue;
+      select.append(el('option', { value: v.version, text: `${v.version} (${fmt(v.people)})` }));
+    }
+    select.value = prefs.version;
+  }
+
+  // KPI tiles: value, delta vs the previous period, small sparkline.
+  function renderKpis() {
+    const c = data.current.all;
+    const p = data.previous.all;
+    const series = (key) => fillDays().map((d) => d[key]);
+    const tiles = [
+      { label: 'Gestartet', value: fmt(c.started), delta: relDelta(c.started, p.started), spark: series('started'),
+        info: 'Personen, die zum ersten Mal den Willkommens-Screen gesehen haben' },
+      { label: 'Abgeschlossen', value: fmt(c.completed), delta: relDelta(c.completed, p.completed), spark: series('completed') },
+      { label: 'Abschlussquote', value: fmtPct(pct(c.completed, c.started)),
+        delta: ptDelta(pct(c.completed, c.started), pct(p.completed, p.started)) },
+      { label: 'Paywall → Abo', value: fmtPct(pct(c.purchase, c.paywall)),
+        delta: ptDelta(pct(c.purchase, c.paywall), pct(p.purchase, p.paywall)),
+        info: 'Anteil derer, die nach dem Onboarding die Paywall gesehen und ein Abo abgeschlossen haben' },
+      { label: 'Abos', value: fmt(c.purchase), delta: relDelta(c.purchase, p.purchase), spark: series('purchased'),
+        note: c.purchase ? `${fmt(c.trial)} mit Testphase` : null, info: 'Abos, die direkt auf der Paywall nach dem Onboarding abgeschlossen wurden' },
+      { label: 'Dauer (Median)', value: fmtDuration(c.median_complete),
+        delta: relDelta(c.median_complete, p.median_complete, true), info: 'Median vom Willkommens-Screen bis zum Abschluss' },
+    ];
+    $('kpis').replaceChildren(...tiles.map((t) => el('div', { class: 'card kpi' }, [
+      el('div', { class: 'kpi-label' }, [t.label, t.info ? el('span', { class: 'info', title: t.info }, [icon(ICON_INFO)]) : null]),
+      el('div', { class: 'kpi-value', text: t.value }),
+      t.note ? el('div', { class: 'kpi-note', text: t.note }) : null,
+      el('div', { class: 'kpi-foot' }, [deltaNode(t.delta), t.spark ? sparkline(t.spark) : null]),
+    ])));
+  }
+
+  /** Relative change; `lowerIsBetter` flips the colour. */
+  function relDelta(cur, prev, lowerIsBetter = false) {
+    if (cur === null || prev === null || prev === undefined || !Number.isFinite(cur) || !Number.isFinite(prev)) return null;
+    if (prev === 0) return cur === 0 ? { text: '±0 %', dir: 'flat' } : { text: 'neu', dir: lowerIsBetter ? 'down' : 'up' };
+    const r = (cur - prev) / prev;
+    if (Math.abs(r) < 0.005) return { text: '±0 %', dir: 'flat' };
+    const good = lowerIsBetter ? r < 0 : r > 0;
+    return { text: `${r > 0 ? '+' : '−'}${fmtPct(Math.abs(r), 0)}`, dir: good ? 'up' : 'down', arrow: r > 0 ? '▲' : '▼' };
+  }
+  /** Change of a rate in percentage points. */
+  function ptDelta(cur, prev) {
+    if (cur === null || prev === null) return null;
+    const d = (cur - prev) * 100;
+    if (Math.abs(d) < 0.05) return { text: '±0 Pp.', dir: 'flat' };
+    return { text: `${d > 0 ? '+' : '−'}${pf.format(Math.abs(Math.round(d * 10) / 10))} Pp.`, dir: d > 0 ? 'up' : 'down', arrow: d > 0 ? '▲' : '▼' };
+  }
+  function deltaNode(d) {
+    if (!d) return el('span', { class: 'delta flat', text: 'kein Vergleich' });
+    return el('span', { class: `delta ${d.dir}` }, [d.arrow ? `${d.arrow} ` : '', d.text, el('small', { text: ' vs. davor' })]);
+  }
+
+  function sparkline(values) {
+    const w = 72, h = 24, pad = 3;
+    const max = Math.max(1, ...values);
+    const s = svg('svg', { class: 'spark', viewBox: `0 0 ${w} ${h}`, 'aria-hidden': 'true' });
+    if (values.length < 2) return s;
+    const pts = values.map((v, i) => [pad + (i * (w - 2 * pad)) / (values.length - 1), h - pad - (v / max) * (h - 2 * pad)]);
+    s.append(svg('path', { d: pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(''), fill: 'none', stroke: 'var(--muted)', 'stroke-width': 1.5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+    const last = pts[pts.length - 1];
+    s.append(svg('circle', { cx: last[0], cy: last[1], r: 2.5, fill: 'var(--series-1)' }));
+    return s;
+  }
+
+  // ---------------------------------------------------------------- funnel
+
+  function funnelRows(flow) {
+    const t = data.current[flow];
+    const chosen = data.current.create.started + data.current.join.started;
+    return FUNNELS[flow].rows.map((r) => {
+      if (typeof r !== 'string') return r;
+      const n = r === 'chosen' ? chosen : (r === 'welcome' && flow === 'all' ? t.started : t[r] ?? 0);
+      return { key: r, n };
+    });
+  }
+
+  function renderFunnel() {
+    const flow = prefs.flow;
+    for (const b of $('funnel-tabs').children) b.setAttribute('aria-pressed', String(b.dataset.flow === flow));
+    const def = FUNNELS[flow];
+    const rows = funnelRows(flow);
+    const steps = rows.filter((r) => r.key);
+    const first = steps.length ? steps[0].n : 0;
+    $('funnel-sub').textContent = `${def.sub} · ${fmt(first)} Personen`;
+
+    // The biggest loss between two consecutive steps gets a badge.
+    // Only app steps compete: paywall → subscription is always the steepest.
+    let worst = -1, worstLoss = 0;
+    const lastApp = steps.findIndex((s) => s.key === 'completed');
+    steps.forEach((s, i) => {
+      if (i && i <= lastApp && steps[i - 1].n - s.n > worstLoss) { worstLoss = steps[i - 1].n - s.n; worst = i; }
+    });
+
+    const body = $('funnel');
+    if (!first) {
+      body.replaceChildren(el('div', { class: 'empty', text: 'Im gewählten Zeitraum hat niemand diesen Weg begonnen.' }));
+      return;
+    }
+    if (views.funnel === 'table') {
+      body.replaceChildren(funnelTable(steps, first, def));
+      return;
+    }
+    const grid = el('div', { class: 'funnel', role: 'list' }, [
+      el('div', { class: 'f-head' }, [el('span', { text: 'Schritt' }), el('span', { text: 'Anteil der Startenden' }), el('span', { class: 'r', text: 'Personen' }), el('span', { class: 'r', text: 'zum Vorschritt' })]),
+    ]);
+    let i = 0;
+    for (const r of rows) {
+      if (!r.key) { grid.append(el('div', { class: 'f-section', text: r.section })); continue; }
+      const idx = i++;
+      const prev = idx ? steps[idx - 1].n : null;
+      const share = pct(r.n, first);
+      const conv = prev !== null ? pct(r.n, prev) : null;
+      const isWorst = idx === worst;
+      const row = el('div', { class: 'f-row', role: 'listitem' }, [
+        el('div', { class: 'f-label' }, [el('b', { text: LABELS[r.key] }), el('code', { text: KEYS[r.key] || r.key })]),
+        el('div', { class: 'f-bar', tabindex: '0', 'aria-label': `${LABELS[r.key]}: ${fmt(r.n)} Personen, ${fmtPct(share)} der Startenden` }, [
+          el('div', { class: 'f-track' }, [el('div', { class: 'f-fill', style: `width:${Math.min(100, (share || 0) * 100)}%` })]),
+        ]),
+        el('div', { class: 'f-val num' }, [el('b', { text: fmt(r.n) }), el('span', { text: fmtPct(share, 0) })]),
+        el('div', { class: 'f-conv num' }, prev === null
+          ? [el('span', { text: 'Start' })]
+          : [el('b', { class: isWorst ? 'worst' : '', text: fmtPct(conv, 0) }),
+            isWorst ? el('span', { class: 'badge', title: 'Größter Abbruch in der App' }, [icon(ICON_DOWN), `−${fmt(prev - r.n)}`]) : el('span', { text: prev - r.n > 0 ? `−${fmt(prev - r.n)}` : '±0' })]),
+      ]);
+      const tip = () => [
+        LABELS[r.key],
+        ['Personen', fmt(r.n)],
+        ['Anteil der Startenden', fmtPct(share)],
+        prev !== null ? ['Vom Vorschritt', fmtPct(conv)] : null,
+        prev !== null ? ['Abgesprungen', fmt(Math.max(0, prev - r.n))] : null,
+        isWorst ? ['', 'Größter Abbruch in der App'] : null,
+      ];
+      bindTip(row, tip);
+      grid.append(row);
+    }
+    const legend = worst > 0 ? el('p', { class: 'note' }, [el('span', { class: 'badge', style: 'margin:0 4px 0 0' }, [icon(ICON_DOWN), 'rot']), 'markiert den größten Abbruch zwischen zwei App-Schritten.']) : '';
+    body.replaceChildren(grid, legend, def.note ? el('p', { class: 'note', text: def.note }) : '');
+  }
+
+  function funnelTable(steps, first, def) {
+    const rows = steps.map((s, i) => {
+      const prev = i ? steps[i - 1].n : null;
+      return el('tr', {}, [
+        el('td', {}, [LABELS[s.key], ' ', el('code', { text: KEYS[s.key] || s.key })]),
+        el('td', { class: 'r', text: fmt(s.n) }),
+        el('td', { class: 'r', text: fmtPct(pct(s.n, first)) }),
+        el('td', { class: 'r', text: prev === null ? '–' : fmtPct(pct(s.n, prev)) }),
+        el('td', { class: 'r', text: prev === null ? '–' : fmt(Math.max(0, prev - s.n)) }),
+      ]);
+    });
+    return el('div', {}, [
+      el('div', { class: 'table-wrap' }, [el('table', {}, [
+        el('thead', {}, [el('tr', {}, ['Schritt', 'Personen', 'Anteil Start', 'Zum Vorschritt', 'Abgesprungen'].map((h, i) => el('th', { class: i ? 'r' : '', text: h })))]),
+        el('tbody', {}, rows),
+      ])]),
+      def.note ? el('p', { class: 'note', text: def.note }) : '',
+    ]);
+  }
+
+  // ---------------------------------------------------------------- split
+
+  function renderSplit() {
+    const c = data.current;
+    const parts = [
+      { label: 'Paar anlegen', n: c.create.started, color: 'var(--series-1)' },
+      { label: 'Beitreten', n: c.join.started, color: 'var(--series-2)' },
+      { label: 'Ohne Wahl ausgestiegen', n: c.none.started, color: 'var(--none)' },
+    ];
+    const total = parts.reduce((a, p) => a + p.n, 0);
+    const box = $('split');
+    if (!total) { box.replaceChildren(el('div', { class: 'empty', text: 'Keine Starts im Zeitraum.' })); return; }
+    const bar = el('div', { class: 'split-bar', role: 'img', 'aria-label': parts.map((p) => `${p.label} ${fmtPct(pct(p.n, total), 0)}`).join(', ') });
+    for (const p of parts.filter((p) => p.n > 0)) {
+      const seg = el('div', { style: `flex:${p.n} 0 0;background:${p.color}`, tabindex: '0' });
+      bindTip(seg, () => [p.label, ['Personen', fmt(p.n)], ['Anteil', fmtPct(pct(p.n, total))]]);
+      bar.append(seg);
+    }
+    box.replaceChildren(
+      bar,
+      el('div', { class: 'legend' }, parts.map((p) => el('div', { class: 'legend-row' }, [
+        el('span', { class: 'swatch', style: `background:${p.color}` }),
+        el('span', { text: p.label }),
+        el('span', { class: 'n num', text: fmt(p.n) }),
+        el('span', { class: 'p num', text: fmtPct(pct(p.n, total), 0) }),
+      ]))),
+      el('div', { class: 'mini-stats' }, [
+        el('div', {}, [el('span', { text: 'Anlegen → abgeschlossen' }), el('b', { text: fmtPct(pct(c.create.completed, c.create.started), 0) })]),
+        el('div', {}, [el('span', { text: 'Beitreten → abgeschlossen' }), el('b', { text: fmtPct(pct(c.join.completed, c.join.started), 0) })]),
+      ]),
+    );
+  }
+
+  function renderAfter() {
+    const c = data.current.all;
+    const j = data.current.join;
+    const items = [
+      ['Abgeschlossen', fmt(c.completed)],
+      ['Paywall gesehen', fmt(c.paywall)],
+      ['Abo abgeschlossen', fmt(c.purchase)],
+      ['davon mit Testphase', fmt(c.trial)],
+      ['In Paar mit Abo beigetreten', fmt(j.joined_pro)],
+      ['Abschluss → Abo', fmtPct(pct(c.purchase, c.completed), 0)],
+    ];
+    $('after').replaceChildren(el('div', { class: 'mini-stats', style: 'margin:0;padding:0;border:0' },
+      items.map(([k, v]) => el('div', {}, [el('span', { text: k }), el('b', { class: 'num', text: v })]))));
+  }
+
+  // ---------------------------------------------------------------- trend
+
+  /** One entry per day of the range; days without starts are zeros. */
+  function fillDays() {
+    const byDay = new Map((data.trend || []).map((d) => [d.day, d]));
+    const out = [];
+    const d = new Date(`${data.range.from}T12:00:00`);
+    const end = new Date(`${data.range.to}T12:00:00`);
+    while (d <= end) {
+      const key = isoDay(d);
+      out.push(byDay.get(key) || { day: key, started: 0, completed: 0, purchased: 0 });
+      d.setDate(d.getDate() + 1);
+    }
+    return out;
+  }
+
+  function niceMax(v) {
+    if (v <= 5) return 5;
+    const exp = Math.pow(10, Math.floor(Math.log10(v)));
+    for (const m of [1, 2, 2.5, 5, 10]) if (m * exp >= v) return m * exp;
+    return 10 * exp;
+  }
+
+  function renderTrend() {
+    const box = $('trend');
+    const days = fillDays();
+    if (views.trend === 'table') {
+      box.replaceChildren(el('div', { class: 'table-wrap' }, [el('table', {}, [
+        el('thead', {}, [el('tr', {}, ['Tag', 'Gestartet', 'Abgeschlossen', 'Quote', 'Abos'].map((h, i) => el('th', { class: i ? 'r' : '', text: h })))]),
+        el('tbody', {}, days.slice().reverse().map((d) => el('tr', {}, [
+          el('td', { text: longDay(d.day) }), el('td', { class: 'r', text: fmt(d.started) }), el('td', { class: 'r', text: fmt(d.completed) }),
+          el('td', { class: 'r', text: fmtPct(pct(d.completed, d.started), 0) }), el('td', { class: 'r', text: fmt(d.purchased) }),
+        ]))),
+      ])]));
+      return;
+    }
+    const W = Math.max(320, box.clientWidth || 800);
+    // Narrow cards drop the end labels; the legend above carries identity.
+    const wide = W >= 560;
+    const H = 240, padL = 36, padR = wide ? 92 : 12, padT = 10, padB = 26;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const max = niceMax(Math.max(1, ...days.map((d) => d.started)));
+    const x = (i) => padL + (days.length === 1 ? plotW / 2 : (i * plotW) / (days.length - 1));
+    const y = (v) => padT + plotH - (v / max) * plotH;
+    const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Gestartete und abgeschlossene Onboardings pro Tag' });
+
+    for (let k = 0; k <= 4; k++) {
+      const v = (max / 4) * k;
+      s.append(svg('line', { x1: padL, x2: padL + plotW, y1: y(v), y2: y(v), stroke: k ? 'var(--grid)' : 'var(--axis)', 'stroke-width': 1 }));
+      const t = svg('text', { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end' });
+      t.textContent = nf.format(v);
+      s.append(t);
+    }
+    const every = Math.max(1, Math.ceil(days.length / Math.max(2, Math.floor(plotW / 64))));
+    for (let i = days.length - 1; i >= 0; i -= every) {
+      const t = svg('text', { x: x(i), y: H - 6, 'text-anchor': i === days.length - 1 && days.length > 1 ? 'end' : 'middle' });
+      t.textContent = dayLabel(days[i].day);
+      s.append(t);
+    }
+
+    const series = [
+      { key: 'started', label: 'Gestartet', color: 'var(--series-1)' },
+      { key: 'completed', label: 'Abgeschlossen', color: 'var(--series-2)' },
+    ];
+    const ends = [];
+    for (const se of series) {
+      const path = days.map((d, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(d[se.key]).toFixed(1)}`).join('');
+      if (se.key === 'started') {
+        s.append(svg('path', { d: `${path}L${x(days.length - 1)},${y(0)}L${x(0)},${y(0)}Z`, fill: se.color, opacity: 0.08 }));
+      }
+      s.append(svg('path', { d: path, fill: 'none', stroke: se.color, 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }));
+      const last = days[days.length - 1];
+      s.append(svg('circle', { cx: x(days.length - 1), cy: y(last[se.key]), r: 4, fill: se.color, stroke: 'var(--surface)', 'stroke-width': 2 }));
+      ends.push({ y: y(last[se.key]), text: `${se.label} ${fmt(last[se.key])}` });
+    }
+    // End labels only when the two ends sit apart; otherwise the legend carries identity.
+    if (wide && Math.abs(ends[0].y - ends[1].y) >= 16) {
+      for (const e of ends) {
+        const t = svg('text', { x: padL + plotW + 10, y: e.y + 4, class: 'end-label' });
+        t.textContent = e.text;
+        s.append(t);
+      }
+    }
+
+    // Crosshair: snaps to the nearest day, one tooltip lists both series.
+    const cross = svg('line', { y1: padT, y2: padT + plotH, stroke: 'var(--axis)', 'stroke-width': 1, visibility: 'hidden' });
+    const dots = series.map((se) => svg('circle', { r: 4, fill: se.color, stroke: 'var(--surface)', 'stroke-width': 2, visibility: 'hidden' }));
+    s.append(cross, ...dots);
+    const hit = svg('rect', { x: padL, y: padT, width: plotW, height: plotH, fill: 'transparent', tabindex: '0', style: 'outline:none' });
+    let focusIndex = days.length - 1;
+    const show = (i, clientX, clientY) => {
+      const d = days[i];
+      cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.setAttribute('visibility', 'visible');
+      dots.forEach((dot, k) => { dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(d[series[k].key])); dot.setAttribute('visibility', 'visible'); });
+      showTip([
+        longDay(d.day),
+        ['Gestartet', fmt(d.started), 'var(--series-1)'],
+        ['Abgeschlossen', fmt(d.completed), 'var(--series-2)'],
+        ['Quote', fmtPct(pct(d.completed, d.started), 0)],
+        ['Abos', fmt(d.purchased)],
+      ], clientX, clientY);
+    };
+    const hide = () => { cross.setAttribute('visibility', 'hidden'); dots.forEach((dot) => dot.setAttribute('visibility', 'hidden')); hideTip(); };
+    hit.addEventListener('pointermove', (e) => {
+      const rect = s.getBoundingClientRect();
+      const px = ((e.clientX - rect.left) / rect.width) * W;
+      const i = Math.max(0, Math.min(days.length - 1, Math.round(((px - padL) / plotW) * (days.length - 1))));
+      focusIndex = i;
+      show(i, e.clientX, e.clientY);
+    });
+    hit.addEventListener('pointerleave', hide);
+    hit.addEventListener('focus', () => { const r = hit.getBoundingClientRect(); show(focusIndex, r.left + (x(focusIndex) / W) * r.width, r.top + 20); });
+    hit.addEventListener('blur', hide);
+    hit.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      focusIndex = Math.max(0, Math.min(days.length - 1, focusIndex + (e.key === 'ArrowRight' ? 1 : -1)));
+      const r = hit.getBoundingClientRect();
+      show(focusIndex, r.left + ((x(focusIndex) - padL) / plotW) * r.width, r.top + 20);
+    });
+    s.append(hit);
+    box.replaceChildren(s);
+  }
+
+  // ---------------------------------------------------------------- recent
+
+  const FLOW_LABEL = { create: ['Anlegen', 'var(--series-1)'], join: ['Beitreten', 'var(--series-2)'], none: ['–', 'var(--none)'] };
+  const PATH = {
+    create: ['welcome', 'create_or_join', 'your_name', 'anniversary_date', 'days_together', 'distance', 'distance_message', 'goals', 'auth', 'invite_code', 'thing', 'preview', 'done', 'shared_plan'],
+    join: ['welcome', 'create_or_join', 'auth', 'join_code', 'preview', 'shared_plan'],
+    none: ['welcome', 'create_or_join'],
+  };
+
+  function renderRecent() {
+    const list = data.recent || [];
+    const box = $('recent');
+    if (!list.length) { box.replaceChildren(el('div', { class: 'empty', text: 'Noch keine Onboardings im Zeitraum.' })); return; }
+    const rows = list.map((p) => {
+      const path = PATH[p.flow] || PATH.none;
+      let furthest = 'welcome';
+      for (const s of path) if (p.steps && p.steps[s]) furthest = s;
+      const lastAt = [p.purchaseAt, p.paywallAt, p.completedAt, ...Object.values(p.steps || {})].filter(Boolean).sort().pop();
+      const idleHours = lastAt ? (Date.now() - Date.parse(lastAt)) / 3600000 : 0;
+      let status;
+      if (p.purchaseAt) status = el('span', { class: 'pill bought' }, [el('i'), p.trial ? 'Abo (Testphase)' : 'Abo']);
+      else if (p.completedAt) status = el('span', { class: 'pill done' }, [el('i'), p.joinedPro ? 'Fertig, Paar mit Abo' : p.paywallAt ? 'Fertig, Paywall gesehen' : 'Fertig']);
+      else if (idleHours < 1) status = el('span', { class: 'pill live' }, [el('i'), 'Gerade dabei']);
+      else status = el('span', { class: 'pill lost' }, [el('i'), `Ausgestiegen: ${LABELS[furthest]}`]);
+      const duration = p.completedAt && p.startedAt ? fmtDuration((Date.parse(p.completedAt) - Date.parse(p.startedAt)) / 1000) : '–';
+      const [flowLabel, flowColor] = FLOW_LABEL[p.flow] || FLOW_LABEL.none;
+      return el('tr', {}, [
+        el('td', { text: p.startedAt ? when(p.startedAt) : '–' }),
+        el('td', {}, [el('span', { class: 'flow-dot' }, [el('i', { style: `background:${flowColor}` }), flowLabel])]),
+        el('td', {}, [status]),
+        el('td', { class: 'muted', text: p.completedAt ? 'Abgeschlossen' : LABELS[furthest] }),
+        el('td', { class: 'r', text: duration }),
+        el('td', { class: 'muted', text: p.version || '–' }),
+        el('td', {}, [el('code', { text: p.id })]),
+      ]);
+    });
+    box.replaceChildren(el('table', {}, [
+      el('thead', {}, [el('tr', {}, ['Start', 'Weg', 'Status', 'Weitester Schritt', 'Dauer', 'Version', 'Person'].map((h) => el('th', { class: h === 'Dauer' ? 'r' : '', text: h })))]),
+      el('tbody', {}, rows),
+    ]));
+  }
+
+  // ---------------------------------------------------------------- tooltip
+
+  const tipBox = $('tooltip');
+  function showTip(lines, clientX, clientY) {
+    tipBox.replaceChildren();
+    const [title, ...rows] = lines.filter(Boolean);
+    tipBox.append(el('h4', { text: title }));
+    for (const [k, v, color] of rows) {
+      tipBox.append(el('div', { class: 'row' }, [
+        el('span', {}, [color ? el('i', { class: 'key', style: `background:${color}` }) : null, k]),
+        el('b', { text: v }),
+      ]));
+    }
+    tipBox.classList.add('on');
+    const w = tipBox.offsetWidth, h = tipBox.offsetHeight;
+    let left = clientX + 14, top = clientY + 14;
+    if (left + w > innerWidth - 8) left = clientX - w - 14;
+    if (top + h > innerHeight - 8) top = clientY - h - 14;
+    tipBox.style.left = `${Math.max(8, left)}px`;
+    tipBox.style.top = `${Math.max(8, top)}px`;
+  }
+  function hideTip() { tipBox.classList.remove('on'); }
+  function bindTip(node, lines) {
+    node.addEventListener('pointermove', (e) => { node.classList.add('hot'); showTip(lines(), e.clientX, e.clientY); });
+    node.addEventListener('pointerleave', () => { node.classList.remove('hot'); hideTip(); });
+    node.addEventListener('focusin', () => { const r = node.getBoundingClientRect(); showTip(lines(), r.left + r.width / 2, r.bottom - 6); });
+    node.addEventListener('focusout', hideTip);
+  }
+
+  // ---------------------------------------------------------------- controls
+
+  function syncControls() {
+    for (const b of $('range-presets').children) b.setAttribute('aria-pressed', String(b.dataset.days === prefs.days));
+    $('custom-range').hidden = prefs.days !== 'custom';
+    const r = range();
+    $('from').value = r.from; $('to').value = r.to;
+    $('to').max = isoDay(new Date());
+    $('hide-sim').checked = prefs.hideSim;
+  }
+  function savePrefs() { store.set(PREFS_KEY, prefs); }
+
+  $('range-presets').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    if (b.dataset.days === 'custom') { const r = range(); prefs.from = r.from; prefs.to = r.to; }
+    prefs.days = b.dataset.days; savePrefs(); syncControls(); load();
+  });
+  for (const id of ['from', 'to']) {
+    $(id).addEventListener('change', () => {
+      if (!$('from').value || !$('to').value || $('from').value > $('to').value) return;
+      prefs.from = $('from').value; prefs.to = $('to').value; savePrefs(); load();
+    });
+  }
+  $('version').addEventListener('change', (e) => { prefs.version = e.target.value; savePrefs(); load(); });
+  $('hide-sim').addEventListener('change', (e) => { prefs.hideSim = e.target.checked; savePrefs(); load(); });
+  $('funnel-tabs').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    prefs.flow = b.dataset.flow; savePrefs(); renderFunnel();
+  });
+  document.querySelectorAll('[data-toggle]').forEach((b) => b.addEventListener('click', () => {
+    const k = b.dataset.toggle;
+    views[k] = views[k] === 'chart' ? 'table' : 'chart';
+    b.textContent = views[k] === 'chart' ? 'Tabelle' : 'Diagramm';
+    k === 'funnel' ? renderFunnel() : renderTrend();
+  }));
+  $('refresh').addEventListener('click', () => load(true));
+  $('logout').addEventListener('click', () => logout());
+  $('theme').addEventListener('click', () => {
+    const dark = document.documentElement.dataset.theme
+      ? document.documentElement.dataset.theme === 'dark'
+      : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.dataset.theme = dark ? 'light' : 'dark';
+    store.set('tt-admin-theme', document.documentElement.dataset.theme);
+  });
+  let resizeTimer;
+  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => data && views.trend === 'chart' && renderTrend(), 120); });
+
+  // ---------------------------------------------------------------- auth
+
+  function showApp() {
+    $('login-view').hidden = true;
+    $('app-view').hidden = false;
+    syncControls();
+    load();
+  }
+  function logout(message) {
+    session = null;
+    store.drop(SESSION_KEY);
+    data = null;
+    $('app-view').hidden = true;
+    $('login-view').hidden = false;
+    $('login-error').textContent = message || '';
+    $('login-password').value = '';
+    $('login-password').focus();
+  }
+  $('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = $('login-button');
+    button.disabled = true; button.textContent = 'Prüfe…';
+    $('login-error').textContent = '';
+    try {
+      session = await call({ action: 'login', password: $('login-password').value });
+      store.set(SESSION_KEY, session);
+      showApp();
+    } catch (err) {
+      $('login-error').textContent = err.status === 401 ? 'Falsches Passwort.' : 'Anmeldung gerade nicht möglich.';
+    } finally {
+      button.disabled = false; button.textContent = 'Anmelden';
+    }
+  });
+
+  // ---------------------------------------------------------------- demo
+
+  // ?demo shows the layout with simulated people, clearly flagged. Never
+  // mixed with real data: demo mode does not call the API at all.
+  function demoData(r) {
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const days = [];
+    for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= r.to; d.setDate(d.getDate() + 1)) days.push(isoDay(d));
+    const count = days.length;
+    const prevDays = [];
+    for (let i = count; i >= 1; i--) { const d = new Date(`${r.from}T12:00:00`); d.setDate(d.getDate() - i); prevDays.push(isoDay(d)); }
+    const CREATE = [['create_or_join', .93], ['your_name', .97], ['anniversary_date', .96], ['days_together', .98], ['distance', .97], ['distance_message', .99], ['goals', .95], ['auth', .74], ['invite_code', .95], ['thing', .96], ['preview', .97], ['done', .99], ['shared_plan', .98], ['completed', .99], ['paywall', .97], ['purchase', .11]];
+    const JOIN = [['create_or_join', 1], ['auth', .86], ['join_code', .9], ['preview', .97], ['completed', .98]];
+    const empty = () => {
+      const t = { started: 0, completed: 0, paywall: 0, purchase: 0, trial: 0, joined_pro: 0, median_complete: null };
+      for (const s of PATH.create.concat('join_code')) t[s] = 0;
+      return t;
+    };
+    function simulate(dayList, boost) {
+      const totals = { all: empty(), create: empty(), join: empty(), none: empty() };
+      const durations = { all: [], create: [], join: [] };
+      const trend = [], people = [];
+      for (const day of dayList) {
+        const n = Math.round((34 + rnd() * 26) * boost * (new Date(`${day}T12:00:00`).getDay() % 6 === 0 ? 1.35 : 1));
+        const t = { day, started: 0, completed: 0, purchased: 0 };
+        for (let k = 0; k < n; k++) {
+          const roll = rnd();
+          let flow = roll < .66 ? 'create' : roll < .93 ? 'join' : 'none';
+          const reached = ['welcome'];
+          const plan = flow === 'join' ? JOIN : CREATE;
+          let alive = true;
+          if (flow === 'none') { if (rnd() < .5) reached.push('create_or_join'); }
+          else {
+            for (const [step, p] of plan) {
+              if (!alive || rnd() > p) { alive = false; break; }
+              reached.push(step);
+            }
+            // Like the server: the branch is known from its first own step on.
+            if (!reached.includes(flow === 'join' ? 'auth' : 'your_name')) flow = 'none';
+          }
+          const joinedPro = flow === 'join' && reached.includes('completed') && rnd() < .58;
+          if (flow === 'join' && reached.includes('completed') && !joinedPro) {
+            reached.push('shared_plan');
+            if (rnd() < .96) { reached.push('paywall'); if (rnd() < .14) reached.push('purchase'); }
+          }
+          const trial = reached.includes('purchase') && rnd() < .7;
+          const startedAt = new Date(`${day}T${String(8 + Math.floor(rnd() * 14)).padStart(2, '0')}:${String(Math.floor(rnd() * 60)).padStart(2, '0')}:00`);
+          const secs = 140 + rnd() * 380;
+          for (const f of ['all', flow]) {
+            const tt = totals[f];
+            tt.started++;
+            for (const s of reached) if (s !== 'welcome' && s in tt) tt[s]++;
+            if (trial) tt.trial++;
+            if (joinedPro) tt.joined_pro++;
+            if (reached.includes('completed') && durations[f]) durations[f].push(secs);
+          }
+          t.started++;
+          if (reached.includes('completed')) t.completed++;
+          if (reached.includes('purchase')) t.purchased++;
+          people.push({ flow, reached, startedAt, secs, trial, joinedPro });
+        }
+        trend.push(t);
+      }
+      for (const f of Object.keys(durations)) {
+        const d = durations[f].sort((a, b) => a - b);
+        totals[f].median_complete = d.length ? d[Math.floor(d.length / 2)] : null;
+      }
+      return { totals, trend, people };
+    }
+    const prev = simulate(prevDays, .9);
+    const cur = simulate(days, 1);
+    const recent = cur.people.slice(-25).reverse().map((p, i) => {
+      const steps = {};
+      let t = p.startedAt.getTime();
+      for (const s of PATH.create.concat('join_code')) {
+        if (p.reached.includes(s)) { steps[s] = new Date(t).toISOString(); t += 15000 + (i * 7919 % 20000); } else steps[s] = null;
+      }
+      const startedAt = new Date(Date.now() - (i === 0 ? 6 : 25 + i * 47) * 60000);
+      return {
+        id: Math.abs(Math.sin(i + 1) * 1e9).toString(16).slice(0, 8), flow: p.flow, version: i % 4 ? '2.0.3' : '2.0.2',
+        startedAt: startedAt.toISOString(), steps,
+        completedAt: p.reached.includes('completed') ? new Date(startedAt.getTime() + p.secs * 1000).toISOString() : null,
+        paywallAt: p.reached.includes('paywall') ? new Date(startedAt.getTime() + p.secs * 1000 + 4000).toISOString() : null,
+        purchaseAt: p.reached.includes('purchase') ? new Date(startedAt.getTime() + p.secs * 1000 + 60000).toISOString() : null,
+        trial: p.trial, joinedPro: p.joinedPro,
+      };
+    });
+    const prevFrom = prevDays[0], prevTo = prevDays[prevDays.length - 1];
+    return {
+      generatedAt: new Date().toISOString(), cached: false,
+      range: { from: r.from, to: r.to, days: count }, previousRange: { from: prevFrom, to: prevTo },
+      current: cur.totals, previous: prev.totals, trend: cur.trend, recent,
+      versions: [{ version: '2.0.3', people: 812 }, { version: '2.0.2', people: 1904 }],
+    };
+  }
+
+  // ---------------------------------------------------------------- start
+
+  const savedTheme = store.get('tt-admin-theme');
+  if (savedTheme === 'light' || savedTheme === 'dark') document.documentElement.dataset.theme = savedTheme;
+  if (DEMO || (session && session.expiresAt > Date.now() + 60000)) showApp();
+  else logout();
+})();
+</script>
+</body>
+</html>
