@@ -364,7 +364,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       <label class="field">Version
         <select id="version"><option value="v2">Alle 2.x</option></select>
       </label>
-      <label class="field"><input type="checkbox" id="hide-sim" checked> Simulatoren ausblenden</label>
+      <label class="field" title="Simulator, TestFlight und App Review sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
       <span class="compare" id="compare"></span>
     </div>
 
@@ -441,10 +441,21 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <div class="card-body"><div class="table-wrap" id="recent"></div></div>
       </section>
 
+      <section class="card" style="margin-top:16px" id="purchases-card" hidden>
+        <div class="card-head">
+          <div>
+            <div class="card-title">Käufe geprüft</div>
+            <div class="card-sub">Jeder Kauf auf der Onboarding-Paywall, abgeglichen mit RevenueCat</div>
+          </div>
+        </div>
+        <div class="card-body"><div class="table-wrap" id="purchases"></div></div>
+      </section>
+
       <footer>
         Quelle: PostHog (Events der App ab Version 2.0). Eine Person zählt in dem Zeitraum, in dem sie zum ersten Mal den Willkommens-Screen gesehen hat; spätere Schritte zählen auch nach dem Zeitraum.
         Schritte vor dem Konto sind anonym und werden nach der Registrierung der Person zugeordnet. Wiederholte Onboardings aus dem Profil sind ausgeschlossen.
         Der Weg (anlegen / beitreten) steht ab Build 36 direkt im Event, bei älteren Builds wird er aus den Schritten abgeleitet.
+        „Tests ausblenden“ lässt Simulatoren, TestFlight, App Review und Käufe ohne Umsatz weg: Jeder Kauf wird zeitgenau mit RevenueCat abgeglichen (Sandbox oder echt; kein passender Kauf heißt, die Apple-ID hatte das Abo schon). Wer so gekauft hat, fehlt dann in allen Zahlen.
       </footer>
     </div>
   </main>
@@ -619,7 +630,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     try {
       const next = DEMO
         ? demoData(r)
-        : await call({ action: 'funnel', ...r, version: prefs.version, simulators: !prefs.hideSim, refresh });
+        : await call({ action: 'funnel', ...r, version: prefs.version, simulators: !prefs.hideSim, tests: !prefs.hideSim, refresh });
       if (ticket !== loadToken) return;
       data = next;
       showState(null);
@@ -682,6 +693,34 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     renderAfter();
     renderTrend();
     renderRecent();
+    renderPurchases();
+  }
+
+  const KIND = {
+    real: ['Echt', 'bought'],
+    test: ['Testkauf', ''],
+    none: ['Ohne Umsatz', ''],
+    unknown: ['Unbestätigt', 'live'],
+  };
+
+  function renderPurchases() {
+    const list = ((data.tests && data.tests.purchasers) || [])
+      .filter((p) => p.at && p.at.slice(0, 10) >= data.range.from)
+      .sort((a, b) => (a.at < b.at ? 1 : -1));
+    $('purchases-card').hidden = !list.length;
+    if (!list.length) return;
+    $('purchases').replaceChildren(el('table', {}, [
+      el('thead', {}, [el('tr', {}, ['Zeit', 'Ergebnis', 'Grund', 'Person'].map((h) => el('th', { text: h })))]),
+      el('tbody', {}, list.map((p) => {
+        const [label, cls] = KIND[p.kind] || KIND.unknown;
+        return el('tr', {}, [
+          el('td', { text: when(p.at) }),
+          el('td', {}, [el('span', { class: `pill ${cls}` }, [el('i'), label])]),
+          el('td', { class: 'muted', style: 'white-space:normal', text: p.why }),
+          el('td', {}, [el('code', { text: p.id })]),
+        ]);
+      })),
+    ]));
   }
 
   function renderVersions() {
@@ -709,7 +748,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         delta: ptDelta(pct(c.purchase, c.paywall), pct(p.purchase, p.paywall)),
         info: 'Anteil derer, die nach dem Onboarding die Paywall gesehen und ein Abo abgeschlossen haben' },
       { label: 'Abos', value: fmt(c.purchase), delta: relDelta(c.purchase, p.purchase), spark: series('purchased'),
-        note: c.purchase ? `${fmt(c.trial)} mit Testphase` : null, info: 'Abos, die direkt auf der Paywall nach dem Onboarding abgeschlossen wurden' },
+        note: [c.purchase ? `${fmt(c.trial)} mit Testphase` : null, hiddenTests() ? `${fmt(hiddenTests())} Käufe ohne Umsatz ausgeblendet` : null].filter(Boolean).join(' · ') || null,
+        info: 'Abos, die direkt auf der Paywall nach dem Onboarding abgeschlossen wurden. Jeder Kauf wird mit RevenueCat abgeglichen.' },
       { label: 'Dauer (Median)', value: fmtDuration(c.median_complete),
         delta: relDelta(c.median_complete, p.median_complete, true), info: 'Median vom Willkommens-Screen bis zum Abschluss' },
     ];
@@ -720,6 +760,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       el('div', { class: 'kpi-foot' }, [deltaNode(t.delta), t.spark ? sparkline(t.spark) : null]),
     ])));
   }
+
+  const hiddenTests = () => (data.tests && data.tests.hiddenPurchases) || 0;
 
   /** Relative change; `lowerIsBetter` flips the colour. */
   function relDelta(cur, prev, lowerIsBetter = false) {
@@ -1041,7 +1083,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       const lastAt = [p.purchaseAt, p.paywallAt, p.completedAt, ...Object.values(p.steps || {})].filter(Boolean).sort().pop();
       const idleHours = lastAt ? (Date.now() - Date.parse(lastAt)) / 3600000 : 0;
       let status;
-      if (p.purchaseAt) status = el('span', { class: 'pill bought' }, [el('i'), p.trial ? 'Abo (Testphase)' : 'Abo']);
+      if (p.purchaseAt && p.purchaseKind === 'test') status = el('span', { class: 'pill' }, [el('i'), 'Testkauf']);
+      else if (p.purchaseAt && p.purchaseKind === 'none') status = el('span', { class: 'pill' }, [el('i'), 'Kauf ohne Umsatz']);
+      else if (p.purchaseAt) status = el('span', { class: 'pill bought' }, [el('i'), (p.trial ? 'Abo (Testphase)' : 'Abo') + (p.purchaseKind === 'unknown' ? ' · unbestätigt' : '')]);
       else if (p.completedAt) status = el('span', { class: 'pill done' }, [el('i'), p.joinedPro ? 'Fertig, Paar mit Abo' : p.paywallAt ? 'Fertig, Paywall gesehen' : 'Fertig']);
       else if (idleHours < 1) status = el('span', { class: 'pill live' }, [el('i'), 'Gerade dabei']);
       else status = el('span', { class: 'pill lost' }, [el('i'), `Ausgestiegen: ${LABELS[furthest]}`]);
@@ -1259,6 +1303,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         paywallAt: p.reached.includes('paywall') ? new Date(startedAt.getTime() + p.secs * 1000 + 4000).toISOString() : null,
         purchaseAt: p.reached.includes('purchase') ? new Date(startedAt.getTime() + p.secs * 1000 + 60000).toISOString() : null,
         trial: p.trial, joinedPro: p.joinedPro,
+        purchaseKind: p.reached.includes('purchase') ? 'real' : null,
       };
     });
     const prevFrom = prevDays[0], prevTo = prevDays[prevDays.length - 1];
