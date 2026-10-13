@@ -1,6 +1,9 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    { "source": "/datenschutz", "destination": "/privacy", "permanent": true }
+  ],
   "headers": [
     {
       "source": "/(.*)",

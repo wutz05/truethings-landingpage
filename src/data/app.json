@@ -1,0 +1,1011 @@
+{
+ "games": [
+  {
+   "id": "uno",
+   "title": {
+    "en": "Uno",
+    "de": "Uno"
+   },
+   "tagline": {
+    "en": "The classic, made for two",
+    "de": "Der Klassiker, für zwei gemacht"
+   },
+   "description": {
+    "en": "Match colours and numbers, hit back with skips and draw cards, and remember to shout UNO before your last card. Rounds take a few minutes and the score keeps counting.",
+    "de": "Leg Farben und Zahlen passend, kontere mit Aussetzen- und Ziehkarten und vergiss nicht, vor deiner letzten Karte UNO zu rufen. Runden dauern ein paar Minuten und der Spielstand zählt weiter."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "5 minutes",
+    "de": "5 Minuten"
+   },
+   "tint": "rose",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Play a card that matches the colour or number on the pile.",
+     "de": "Spiel eine Karte, die zur Farbe oder Zahl auf dem Stapel passt."
+    },
+    {
+     "en": "No match? Draw one. If it fits, play it straight away.",
+     "de": "Nichts passt? Zieh eine Karte. Wenn sie passt, spiel sie direkt."
+    },
+    {
+     "en": "A +2 or +4 can be countered with another draw card. The whole stack lands on whoever can't.",
+     "de": "Auf +2 oder +4 darf eine weitere Ziehkarte gelegt werden. Der ganze Stapel landet bei dem, der nicht kontern kann."
+    },
+    {
+     "en": "One card left? Tap UNO! First to zero cards wins the round.",
+     "de": "Eine Karte übrig? Tipp auf UNO! Wer zuerst keine Karten mehr hat, gewinnt die Runde."
+    }
+   ]
+  },
+  {
+   "id": "battleship",
+   "title": {
+    "en": "Battleship",
+    "de": "Schiffe versenken"
+   },
+   "tagline": {
+    "en": "Sink their fleet, win their heart",
+    "de": "Versenk die Flotte, gewinn das Herz"
+   },
+   "description": {
+    "en": "Hide five ships on your sea, then take turns calling shots. Every hit lands as a little heart on the board, and the first fleet to go under loses the match.",
+    "de": "Versteck fünf Schiffe auf deinem Meer, dann schießt ihr abwechselnd. Jeder Treffer landet als kleines Herz auf dem Brett, und die erste Flotte, die untergeht, verliert die Partie."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "10 minutes",
+    "de": "10 Minuten"
+   },
+   "tint": "sky",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Drag your five ships into place, or shuffle until you like the layout.",
+     "de": "Zieh deine fünf Schiffe an ihren Platz oder misch, bis dir die Aufstellung gefällt."
+    },
+    {
+     "en": "Tap a cell. A hit shows as a heart and you shoot again; a miss ripples and hands over the turn.",
+     "de": "Tipp auf ein Feld. Ein Treffer zeigt ein Herz und du schießt nochmal, ein Fehlschuss kräuselt das Wasser und der andere ist dran."
+    },
+    {
+     "en": "Sink all five ships first to win the match.",
+     "de": "Versenk zuerst alle fünf Schiffe, um die Partie zu gewinnen."
+    }
+   ]
+  },
+  {
+   "id": "memory",
+   "title": {
+    "en": "Memory",
+    "de": "Memory"
+   },
+   "tagline": {
+    "en": "Remember where the hearts hide",
+    "de": "Merk dir, wo die Herzen sind"
+   },
+   "description": {
+    "en": "Sixteen cards, eight pairs. Turn two at a time, keep what matches and go again. Your partner's flips are shown to you too, so pay attention. Shared photos will fill the deck later.",
+    "de": "Sechzehn Karten, acht Paare. Dreh zwei auf einmal um, behalte, was passt, und mach weiter. Was dein Partner umdreht, siehst du auch – also aufpassen. Später füllen gemeinsame Fotos das Deck."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "3 minutes",
+    "de": "3 Minuten"
+   },
+   "tint": "lilac",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Turn over two cards on your turn.",
+     "de": "Dreh in deinem Zug zwei Karten um."
+    },
+    {
+     "en": "A match is yours and earns another go.",
+     "de": "Ein Paar gehört dir und bringt einen weiteren Zug."
+    },
+    {
+     "en": "Most pairs when the table is empty wins.",
+     "de": "Die meisten Paare bei leerem Tisch gewinnen."
+    }
+   ]
+  },
+  {
+   "id": "connectfour",
+   "title": {
+    "en": "Connect Four",
+    "de": "Vier gewinnt"
+   },
+   "tagline": {
+    "en": "Drop, stack, four in a row",
+    "de": "Einwerfen, stapeln, vier in einer Reihe"
+   },
+   "description": {
+    "en": "Seven columns, six rows. Drop a disc, watch it fall, and be the first to line up four across, down or diagonally. Simple rules, surprisingly sneaky.",
+    "de": "Sieben Spalten, sechs Reihen. Wirf eine Scheibe ein, schau ihr beim Fallen zu und bring als Erster vier in eine Reihe – waagerecht, senkrecht oder diagonal. Einfache Regeln, überraschend fies."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "3 minutes",
+    "de": "3 Minuten"
+   },
+   "tint": "butter",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Tap a column to drop a disc; it falls to the lowest free slot.",
+     "de": "Tipp auf eine Spalte, um eine Scheibe einzuwerfen; sie fällt auf den untersten freien Platz."
+    },
+    {
+     "en": "Line up four in any direction to win the round.",
+     "de": "Bring vier in eine Reihe, egal in welche Richtung, und gewinn die Runde."
+    },
+    {
+     "en": "A full grid is a draw. The loser opens the next round.",
+     "de": "Ein volles Raster ist unentschieden. Wer verliert, eröffnet die nächste Runde."
+    }
+   ]
+  },
+  {
+   "id": "knowme",
+   "title": {
+    "en": "Do You Know Me?",
+    "de": "Kennst du mich?"
+   },
+   "tagline": {
+    "en": "Answer, guess, then compare",
+    "de": "Antworten, raten, vergleichen"
+   },
+   "description": {
+    "en": "Six questions out of a hundred, both of you. Type your own answer, guess what your partner wrote, then reveal together. Whoever the question was about decides if the guess counts.",
+    "de": "Sechs Fragen aus hundert, für euch beide. Tipp deine eigene Antwort, rate, was dein Partner geschrieben hat, und löst dann zusammen auf. Wen die Frage betrifft, entscheidet, ob der Tipp zählt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "5 minutes",
+    "de": "5 Minuten"
+   },
+   "tint": "peach",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Type your answer to six questions and guess what your partner wrote.",
+     "de": "Beantworte sechs Fragen und rate, was dein Partner geschrieben hat."
+    },
+    {
+     "en": "Your partner does the same on their own phone.",
+     "de": "Dein Partner macht dasselbe auf dem eigenen Handy."
+    },
+    {
+     "en": "Reveal together. Most right guesses wins the round.",
+     "de": "Löst gemeinsam auf. Die meisten richtigen Tipps gewinnen die Runde."
+    }
+   ]
+  },
+  {
+   "id": "wordle",
+   "title": {
+    "en": "Couple Wordle",
+    "de": "Wordle zu zweit"
+   },
+   "tagline": {
+    "en": "Guess the word only you two know",
+    "de": "Rate das Wort, das nur ihr zwei kennt"
+   },
+   "description": {
+    "en": "Both of you pick a word that means something to the two of you, then race to guess each other's on the classic board. Six tries each, first to find it wins.",
+    "de": "Ihr wählt beide ein Wort, das euch etwas bedeutet, und ratet dann um die Wette auf dem klassischen Brett. Sechs Versuche pro Person, wer zuerst trifft, gewinnt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "5 minutes",
+    "de": "5 Minuten"
+   },
+   "tint": "mint",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Both type a secret word of 3 to 8 letters and an optional hint.",
+     "de": "Beide tippen ein geheimes Wort mit 3 bis 8 Buchstaben und einen optionalen Hinweis."
+    },
+    {
+     "en": "Guess at the same time. First to find the word wins.",
+     "de": "Ratet gleichzeitig. Wer das Wort zuerst findet, gewinnt."
+    }
+   ]
+  },
+  {
+   "id": "emojiquiz",
+   "title": {
+    "en": "Emoji Quiz",
+    "de": "Emoji-Quiz"
+   },
+   "tagline": {
+    "en": "🦁👑 says what?",
+    "de": "🦁👑 heißt was?"
+   },
+   "description": {
+    "en": "Pick movies, songs or celebrities. Five puzzles per round, each a title or name spelled in emoji. You both see the same one; whoever names it first takes the point.",
+    "de": "Wähl Filme, Songs oder Promis. Fünf Rätsel pro Runde, jedes ein Titel oder Name in Emojis. Ihr seht beide dasselbe; wer es zuerst nennt, bekommt den Punkt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "3 minutes",
+    "de": "3 Minuten"
+   },
+   "tint": "brand",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Choose a category before you start.",
+     "de": "Wähl eine Kategorie, bevor du startest."
+    },
+    {
+     "en": "Type what the emojis spell. After two misses you get the first letters.",
+     "de": "Tipp, was die Emojis bedeuten. Nach zwei Fehlversuchen bekommst du die Anfangsbuchstaben."
+    },
+    {
+     "en": "First to name it wins the point. Most points after five wins.",
+     "de": "Wer es zuerst nennt, bekommt den Punkt. Die meisten Punkte nach fünf Rätseln gewinnen."
+    }
+   ]
+  }
+ ],
+ "decks": [
+  {
+   "key": "getToKnow",
+   "id": "get-to-know",
+   "title": {
+    "en": "Get to Know Each Other",
+    "de": "Lernt euch kennen"
+   },
+   "tagline": {
+    "en": "Questions you've never asked",
+    "de": "Fragen, die ihr euch nie gestellt habt"
+   },
+   "instruction": {
+    "en": "Both answer. No skipping the honest bit.",
+    "de": "Beide antworten. Der ehrliche Teil wird nicht übersprungen."
+   },
+   "symbol": "sparkles",
+   "tint": "rose",
+   "cards_en": [
+    "What's a small thing I do that makes you feel loved, that I probably don't even notice?",
+    "What did you think about me the first week we talked that you never said out loud?",
+    "Which version of yourself do you like best: the one at work, with friends, or with me?",
+    "What's something you were scared to tell me early on that turned out fine?",
+    "When was the last time you felt really proud of me?",
+    "What's a habit of mine you secretly find adorable?",
+    "If we could relive one day together, which one would you pick?",
+    "What's the most 'you' thing you've done this month?",
+    "What does a perfect lazy Sunday with me look like, minute by minute?",
+    "Which of your friends' relationships do you look at and think 'that's us'? Which one 'never'?",
+    "What's a compliment you got once that you still think about?",
+    "What's something you want to get better at, and how could I help without being annoying?",
+    "What song would play in the movie scene where we meet?",
+    "What's the pettiest thing you've ever been mad at me about?",
+    "Which of my texts would you screenshot to show your friends?",
+    "What's a 'red flag' about me you decided to ignore, and were you right?",
+    "What are you most looking forward to with me this year?",
+    "If money didn't matter, where would we live and what would we do all day?",
+    "What's a fear you have about us that you've never said?",
+    "How do you know when I'm actually okay versus saying I'm okay?",
+    "What's one thing from your childhood you want to recreate with me?",
+    "What's the last thing that made you laugh so hard you couldn't breathe?",
+    "Which of my outfits should I never get rid of?",
+    "What do you need from me on a bad day: space, a hug, or a distraction?",
+    "What's something you've changed your mind about since we got together?",
+    "What's the most romantic thing that has happened to us that wasn't planned?",
+    "When do you feel most like yourself around me?",
+    "What's a boundary you wish you'd set earlier in your life?",
+    "If you could send one message to me five years from now, what would it say?",
+    "What's the thing you'd defend about me to anyone, no matter what?",
+    "What's a tiny tradition we have that you'd be sad to lose?",
+    "What's the best advice anyone ever gave you about love?",
+    "What's something you find hard to ask for, from anyone?",
+    "How do you want to be remembered by the people who love you?",
+    "What was the moment you knew this was more than a situationship?",
+    "What's something you pretend to be over but aren't?",
+    "Which of my family members were you most nervous to meet, and how did it actually go?",
+    "What would a day off from being an adult look like for you?",
+    "What's a thing you do only when you're alone that I'd love to see?",
+    "What are we better at together than either of us is alone?",
+    "What's a compliment you wish I'd give you more often?",
+    "What's something you'd love to learn together, even if we'd be terrible at it?",
+    "Which part of our story would you tell our future kids, or our future dog?",
+    "When did you last feel jealous, and what was it actually about?",
+    "What does 'home' mean to you, and does it have anything to do with me?",
+    "What's a rule you have for yourself that nobody else knows?",
+    "What's the most grown-up thing you've done lately, and the least?",
+    "Which of my dreams do you believe in more than I do?",
+    "What's one thing you'd want me to do differently the next time we fight?",
+    "What's something about us you'd never post, because it's only ours?"
+   ],
+   "cards_de": [
+    "Welche Kleinigkeit mache ich, die dir das Gefühl gibt, geliebt zu werden – und die ich wahrscheinlich gar nicht merke?",
+    "Was hast du in der ersten Woche über mich gedacht und nie laut gesagt?",
+    "Welche Version von dir magst du am liebsten: die bei der Arbeit, die mit Freunden oder die mit mir?",
+    "Was hattest du am Anfang Angst mir zu sagen – und es war dann völlig okay?",
+    "Wann warst du das letzte Mal richtig stolz auf mich?",
+    "Welche Angewohnheit von mir findest du heimlich süß?",
+    "Wenn wir einen Tag zusammen noch mal erleben könnten, welchen würdest du wählen?",
+    "Was war das Typischste, das du diesen Monat gemacht hast – so richtig „du“?",
+    "Wie sieht ein perfekter fauler Sonntag mit mir aus, Minute für Minute?",
+    "Bei welcher Beziehung in deinem Freundeskreis denkst du „das sind wir“? Und bei welcher „niemals“?",
+    "Welches Kompliment hast du mal bekommen, an das du heute noch denkst?",
+    "Worin willst du besser werden – und wie könnte ich helfen, ohne zu nerven?",
+    "Welcher Song läuft in der Filmszene, in der wir uns kennenlernen?",
+    "Was war das Kleinlichste, worüber du je sauer auf mich warst?",
+    "Welche Nachricht von mir würdest du screenshotten und deinen Freunden zeigen?",
+    "Welche „Red Flag“ an mir hast du bewusst ignoriert – und hattest du recht?",
+    "Worauf freust du dich dieses Jahr mit mir am meisten?",
+    "Wenn Geld keine Rolle spielen würde: Wo würden wir leben und was würden wir den ganzen Tag tun?",
+    "Welche Angst hast du wegen uns, die du noch nie ausgesprochen hast?",
+    "Woran erkennst du, ob es mir wirklich gut geht oder ob ich es nur sage?",
+    "Was aus deiner Kindheit willst du mit mir noch mal erleben?",
+    "Worüber hast du zuletzt so gelacht, dass du keine Luft mehr bekommen hast?",
+    "Welches meiner Outfits darf ich niemals wegwerfen?",
+    "Was brauchst du an einem schlechten Tag von mir: Ruhe, eine Umarmung oder Ablenkung?",
+    "Worüber hast du deine Meinung geändert, seit wir zusammen sind?",
+    "Was war das Romantischste, das uns passiert ist, ohne dass es geplant war?",
+    "Wann fühlst du dich in meiner Nähe am meisten wie du selbst?",
+    "Welche Grenze hättest du in deinem Leben gern früher gesetzt?",
+    "Wenn du mir eine Nachricht in fünf Jahren schicken könntest, was würde drinstehen?",
+    "Was würdest du an mir vor jedem verteidigen, egal was passiert?",
+    "Welche kleine Tradition von uns würde dir fehlen, wenn sie weg wäre?",
+    "Was war der beste Rat, den dir jemand über Liebe gegeben hat?",
+    "Worum fällt es dir schwer zu bitten – egal wen?",
+    "Wie willst du den Menschen, die dich lieben, in Erinnerung bleiben?",
+    "In welchem Moment wusstest du, dass das hier mehr ist als eine Situationship?",
+    "Worüber tust du so, als wärst du drüber hinweg – bist es aber nicht?",
+    "Wen aus meiner Familie wolltest du am wenigsten kennenlernen – und wie war es dann wirklich?",
+    "Wie sähe ein freier Tag vom Erwachsensein für dich aus?",
+    "Was machst du nur, wenn du allein bist, und ich würde es gern mal sehen?",
+    "Worin sind wir zusammen besser als jeder von uns allein?",
+    "Welches Kompliment wünschst du dir öfter von mir?",
+    "Was würdest du gern mit mir lernen, auch wenn wir grottenschlecht wären?",
+    "Welchen Teil unserer Geschichte würdest du unseren Kindern erzählen – oder unserem Hund?",
+    "Wann warst du zuletzt eifersüchtig, und worum ging es dabei wirklich?",
+    "Was bedeutet „Zuhause“ für dich – und hat es etwas mit mir zu tun?",
+    "Welche Regel hast du für dich selbst, von der niemand weiß?",
+    "Was war das Erwachsenste, das du zuletzt getan hast – und das Kindischste?",
+    "An welchen meiner Träume glaubst du mehr als ich selbst?",
+    "Was soll ich beim nächsten Streit anders machen?",
+    "Was an uns würdest du niemals posten, weil es nur uns gehört?"
+   ]
+  },
+  {
+   "key": "neverHaveIEver",
+   "id": "never-have-i-ever",
+   "title": {
+    "en": "Never Have I Ever",
+    "de": "Ich hab noch nie"
+   },
+   "tagline": {
+    "en": "Confessions, couple edition",
+    "de": "Geständnisse, Paar-Edition"
+   },
+   "instruction": {
+    "en": "Read it out. Whoever has, owns up.",
+    "de": "Lies es vor. Wer es getan hat, gibt's zu."
+   },
+   "symbol": "hand.raised.fill",
+   "tint": "peach",
+   "cards_en": [
+    "Never have I ever pretended to like a gift from you.",
+    "Never have I ever fallen asleep during a movie you picked.",
+    "Never have I ever scrolled way back through your old photos.",
+    "Never have I ever planned a surprise for you and then forgotten about it.",
+    "Never have I ever re-read our very first messages.",
+    "Never have I ever checked when you were last online.",
+    "Never have I ever said 'I'm five minutes away' from my bed.",
+    "Never have I ever secretly finished your snacks and blamed nobody.",
+    "Never have I ever practised what I'd say to you in the mirror.",
+    "Never have I ever stalked your ex on social media.",
+    "Never have I ever told my friends something you told me in confidence.",
+    "Never have I ever faked being asleep to avoid a conversation.",
+    "Never have I ever cried at something you said and hidden it.",
+    "Never have I ever said 'I don't mind' and minded a lot.",
+    "Never have I ever kept a screenshot of one of your texts.",
+    "Never have I ever pretended to know a song you love.",
+    "Never have I ever googled how to be a better partner.",
+    "Never have I ever agreed to a plan I secretly hated.",
+    "Never have I ever taken a selfie with you and only checked how I looked.",
+    "Never have I ever hidden a purchase from you.",
+    "Never have I ever thought about what our kids would look like.",
+    "Never have I ever muted your notifications for a while.",
+    "Never have I ever imagined our wedding, even a tiny bit.",
+    "Never have I ever lied about how many people I dated before you.",
+    "Never have I ever got jealous of your pet.",
+    "Never have I ever replayed a voice note of yours just to hear you.",
+    "Never have I ever used your photo as my lock screen without telling you.",
+    "Never have I ever pretended to be busy to get a night alone.",
+    "Never have I ever said 'we should go' about a place I had no intention of going to.",
+    "Never have I ever kept something you gave me that I don't even like.",
+    "Never have I ever talked to my mum about our fight before talking to you.",
+    "Never have I ever counted the days until I'd see you again.",
+    "Never have I ever peeked at your phone when it lit up.",
+    "Never have I ever thought 'this is the one' in the first week.",
+    "Never have I ever looked up your zodiac compatibility.",
+    "Never have I ever cried in the shower over something small you said.",
+    "Never have I ever secretly tracked how long it took you to text back.",
+    "Never have I ever pretended not to see a message so I could reply 'cooler' later.",
+    "Never have I ever bragged about you to a stranger.",
+    "Never have I ever told you I liked your cooking when I didn't.",
+    "Never have I ever hidden how much I spent on a gift for you.",
+    "Never have I ever wished you'd put your phone down and not said it.",
+    "Never have I ever practised your family's names before meeting them.",
+    "Never have I ever felt weirdly proud when someone hit on you.",
+    "Never have I ever made a playlist about you.",
+    "Never have I ever saved a message draft to you that I never sent.",
+    "Never have I ever secretly loved a nickname I complained about.",
+    "Never have I ever faked a laugh at one of your jokes.",
+    "Never have I ever thought about what I'd say in a speech about you.",
+    "Never have I ever wanted to say 'I love you' before I actually did."
+   ],
+   "cards_de": [
+    "Ich hab noch nie so getan, als würde mir ein Geschenk von dir gefallen.",
+    "Ich bin noch nie bei einem Film eingeschlafen, den du ausgesucht hast.",
+    "Ich hab noch nie ewig weit zurück durch deine alten Fotos gescrollt.",
+    "Ich hab noch nie eine Überraschung für dich geplant und dann vergessen.",
+    "Ich hab noch nie unsere allerersten Nachrichten noch mal gelesen.",
+    "Ich hab noch nie nachgeschaut, wann du zuletzt online warst.",
+    "Ich hab noch nie „bin in fünf Minuten da“ aus dem Bett geschrieben.",
+    "Ich hab noch nie heimlich deine Snacks aufgegessen und niemanden beschuldigt.",
+    "Ich hab noch nie vor dem Spiegel geübt, was ich dir sagen will.",
+    "Ich hab noch nie deinen Ex oder deine Ex auf Social Media gestalkt.",
+    "Ich hab noch nie meinen Freunden etwas erzählt, das du mir im Vertrauen gesagt hast.",
+    "Ich hab noch nie so getan, als würde ich schlafen, um einem Gespräch auszuweichen.",
+    "Ich hab noch nie wegen etwas geweint, das du gesagt hast, und es versteckt.",
+    "Ich hab noch nie „ist mir egal“ gesagt, obwohl es mir überhaupt nicht egal war.",
+    "Ich hab noch nie einen Screenshot von einer Nachricht von dir aufgehoben.",
+    "Ich hab noch nie so getan, als würde ich einen Song kennen, den du liebst.",
+    "Ich hab noch nie gegoogelt, wie man ein besserer Partner wird.",
+    "Ich hab noch nie einem Plan zugestimmt, den ich heimlich gehasst hab.",
+    "Ich hab noch nie bei einem Selfie mit dir nur geschaut, wie ich aussehe.",
+    "Ich hab noch nie einen Kauf vor dir versteckt.",
+    "Ich hab noch nie überlegt, wie unsere Kinder aussehen würden.",
+    "Ich hab noch nie deine Benachrichtigungen für eine Weile stummgeschaltet.",
+    "Ich hab mir noch nie unsere Hochzeit vorgestellt, nicht mal ein bisschen.",
+    "Ich hab noch nie gelogen, mit wie vielen ich vor dir zusammen war.",
+    "Ich war noch nie eifersüchtig auf dein Haustier.",
+    "Ich hab noch nie eine Sprachnachricht von dir nur angehört, um deine Stimme zu hören.",
+    "Ich hab noch nie dein Foto als Sperrbildschirm benutzt, ohne es dir zu sagen.",
+    "Ich hab noch nie so getan, als wäre ich beschäftigt, um einen Abend für mich zu haben.",
+    "Ich hab noch nie „da müssen wir mal hin“ über einen Ort gesagt, an den ich nie wollte.",
+    "Ich hab noch nie etwas von dir aufgehoben, das ich nicht mal mag.",
+    "Ich hab noch nie mit meiner Mama über unseren Streit geredet, bevor ich mit dir geredet hab.",
+    "Ich hab noch nie die Tage gezählt, bis ich dich wiedersehe.",
+    "Ich hab noch nie auf dein Handy geschielt, als es aufgeleuchtet hat.",
+    "Ich hab noch nie in der ersten Woche gedacht: „Das ist die Person.“",
+    "Ich hab noch nie nachgeschaut, ob unsere Sternzeichen zusammenpassen.",
+    "Ich hab noch nie unter der Dusche wegen einer Kleinigkeit geweint, die du gesagt hast.",
+    "Ich hab noch nie heimlich die Zeit gestoppt, bis du zurückschreibst.",
+    "Ich hab noch nie so getan, als hätte ich eine Nachricht nicht gesehen, um später cooler zu antworten.",
+    "Ich hab noch nie vor Fremden mit dir angegeben.",
+    "Ich hab noch nie gesagt, dass mir dein Essen schmeckt, obwohl es nicht so war.",
+    "Ich hab noch nie verschwiegen, wie viel ich für ein Geschenk für dich ausgegeben hab.",
+    "Ich hab mir noch nie gewünscht, dass du das Handy weglegst, ohne es zu sagen.",
+    "Ich hab noch nie die Namen deiner Familie geübt, bevor ich sie kennengelernt hab.",
+    "Ich war noch nie komisch stolz, wenn jemand mit dir geflirtet hat.",
+    "Ich hab noch nie eine Playlist über dich gemacht.",
+    "Ich hab noch nie einen Nachrichtenentwurf an dich gespeichert und nie abgeschickt.",
+    "Ich hab noch nie heimlich einen Spitznamen geliebt, über den ich mich beschwert hab.",
+    "Ich hab noch nie bei einem deiner Witze ein Lachen vorgetäuscht.",
+    "Ich hab noch nie überlegt, was ich in einer Rede über dich sagen würde.",
+    "Ich wollte noch nie „Ich liebe dich“ sagen, bevor ich es wirklich gesagt hab."
+   ]
+  },
+  {
+   "key": "partnerChoice",
+   "id": "partner-choice",
+   "title": {
+    "en": "What Would Your Partner Choose?",
+    "de": "Was würde dein Partner wählen?"
+   },
+   "tagline": {
+    "en": "Guess their pick, then compare",
+    "de": "Rate die Wahl, dann vergleicht"
+   },
+   "instruction": {
+    "en": "Say what the other would pick. Then they reveal.",
+    "de": "Sag, was die andere Person wählen würde. Dann löst sie auf."
+   },
+   "symbol": "arrow.left.arrow.right",
+   "tint": "sky",
+   "cards_en": [
+    "Beach holiday or city trip?",
+    "Sleep in or sunrise hike?",
+    "Pizza or sushi for date night?",
+    "Big party or quiet dinner for their birthday?",
+    "Cabin in the woods or hotel by the sea?",
+    "A text that says 'thinking of you' or a surprise coffee at the door?",
+    "Concert tickets or a weekend away?",
+    "Cooking together or ordering in?",
+    "Being early and waiting or being late and rushing?",
+    "Karaoke night or board game night?",
+    "One long holiday a year or lots of short trips?",
+    "Window seat or aisle seat?",
+    "Dog person or cat person, honestly?",
+    "Rewatch a comfort show or start something new?",
+    "Handwritten letter or a two-minute voice note?",
+    "Hot summer or cosy winter?",
+    "Save for a house or spend on experiences?",
+    "Camping under stars or a spa weekend?",
+    "Plan every detail or figure it out on the way?",
+    "A night out dancing or a night in with snacks?",
+    "Breakfast in bed or dinner at a fancy place?",
+    "Texting all day or one proper call?",
+    "Fixing it right now or sleeping on it?",
+    "A pet name in public or only at home?",
+    "Roller coaster or lazy river?",
+    "Spontaneous road trip or a booked itinerary?",
+    "Matching outfits or 'absolutely not'?",
+    "Sunset walk or sunrise coffee?",
+    "Being the one who drives or the one who picks the music?",
+    "Learning a language together or an instrument?",
+    "Small wedding or big wedding, if ever?",
+    "Living in the city or in the countryside?",
+    "Sharing one dessert or ordering two?",
+    "Movie theatre or couch and a blanket?",
+    "Their phone wallpaper: us, or a landscape?",
+    "A surprise party or a heads-up party?",
+    "Gym together or 'we each do our thing'?",
+    "Saying sorry first or waiting it out?",
+    "A tattoo for each other or a matching bracelet?",
+    "Going out on New Year's or staying in?",
+    "Book on the beach or paddleboard on the sea?",
+    "Cold pizza for breakfast or actual breakfast?",
+    "A cabin with no signal or a city with everything?",
+    "The chaotic friend group dinner or the quiet one-on-one?",
+    "Getting a compliment on looks or on brains?",
+    "Being sung to or being cooked for?",
+    "A rainy day in bed or a rainy day at a museum?",
+    "Their dream car: fast or cute?",
+    "Late-night deep talk or early-morning cuddle?",
+    "Being surprised at the airport or picked up at home?"
+   ],
+   "cards_de": [
+    "Strandurlaub oder Städtetrip?",
+    "Ausschlafen oder Wanderung zum Sonnenaufgang?",
+    "Pizza oder Sushi beim Date?",
+    "Große Party oder ruhiges Abendessen zum Geburtstag?",
+    "Hütte im Wald oder Hotel am Meer?",
+    "Eine Nachricht mit „denk an dich“ oder ein Überraschungskaffee vor der Tür?",
+    "Konzerttickets oder ein Wochenende weg?",
+    "Zusammen kochen oder bestellen?",
+    "Zu früh sein und warten oder zu spät sein und hetzen?",
+    "Karaoke-Abend oder Spieleabend?",
+    "Ein langer Urlaub im Jahr oder viele kurze Trips?",
+    "Fensterplatz oder Gangplatz?",
+    "Hunde- oder Katzenmensch, ganz ehrlich?",
+    "Lieblingsserie zum zehnten Mal oder etwas Neues anfangen?",
+    "Handgeschriebener Brief oder zweiminütige Sprachnachricht?",
+    "Heißer Sommer oder gemütlicher Winter?",
+    "Fürs Haus sparen oder für Erlebnisse ausgeben?",
+    "Campen unter Sternen oder Wellness-Wochenende?",
+    "Jedes Detail planen oder unterwegs entscheiden?",
+    "Nacht zum Tanzen oder Abend auf der Couch mit Snacks?",
+    "Frühstück im Bett oder Abendessen im schicken Restaurant?",
+    "Den ganzen Tag schreiben oder ein richtiges Telefonat?",
+    "Sofort klären oder eine Nacht drüber schlafen?",
+    "Kosename in der Öffentlichkeit oder nur zu Hause?",
+    "Achterbahn oder Lazy River?",
+    "Spontaner Roadtrip oder durchgeplante Reise?",
+    "Partnerlook oder „auf gar keinen Fall“?",
+    "Spaziergang im Sonnenuntergang oder Kaffee beim Sonnenaufgang?",
+    "Lieber fahren oder lieber die Musik aussuchen?",
+    "Zusammen eine Sprache lernen oder ein Instrument?",
+    "Kleine Hochzeit oder große Hochzeit – falls überhaupt?",
+    "In der Stadt leben oder auf dem Land?",
+    "Ein Dessert teilen oder zwei bestellen?",
+    "Kino oder Couch und Decke?",
+    "Der Handy-Hintergrund: wir beide oder eine Landschaft?",
+    "Überraschungsparty oder angekündigte Party?",
+    "Zusammen ins Gym oder „jeder macht sein Ding“?",
+    "Zuerst Entschuldigung sagen oder abwarten?",
+    "Ein Tattoo füreinander oder ein Partnerarmband?",
+    "An Silvester rausgehen oder drinbleiben?",
+    "Buch am Strand oder Stand-up-Paddling auf dem Meer?",
+    "Kalte Pizza zum Frühstück oder richtiges Frühstück?",
+    "Hütte ohne Empfang oder Stadt mit allem?",
+    "Das chaotische Abendessen mit der ganzen Clique oder das ruhige Date zu zweit?",
+    "Ein Kompliment fürs Aussehen oder für den Kopf?",
+    "Angesungen werden oder bekocht werden?",
+    "Regentag im Bett oder Regentag im Museum?",
+    "Das Traumauto: schnell oder süß?",
+    "Tiefes Gespräch spät nachts oder Kuscheln früh morgens?",
+    "Am Flughafen überrascht werden oder zu Hause abgeholt werden?"
+   ]
+  },
+  {
+   "key": "isItCheating",
+   "id": "is-it-cheating",
+   "title": {
+    "en": "Is It Cheating If…",
+    "de": "Ist es Fremdgehen, wenn…"
+   },
+   "tagline": {
+    "en": "Where do you draw the line?",
+    "de": "Wo zieht ihr die Grenze?"
+   },
+   "instruction": {
+    "en": "Cheating, fine, or 'it depends'. Explain yourselves.",
+    "de": "Fremdgehen, okay oder „kommt drauf an“. Erklärt euch."
+   },
+   "symbol": "questionmark.diamond.fill",
+   "tint": "lilac",
+   "cards_en": [
+    "…they keep texting an ex 'just as friends'?",
+    "…they have a harmless crush on a colleague?",
+    "…they don't mention they're taken on a night out?",
+    "…they like every single photo of one specific person?",
+    "…they flirt with the bartender for a free drink?",
+    "…they have a dating app still installed but 'never open it'?",
+    "…they send a heart emoji to someone they used to date?",
+    "…they follow a lot of thirst-trap accounts?",
+    "…they tell a friend about your fight before you've made up?",
+    "…they go for dinner alone with someone who once confessed feelings for them?",
+    "…they keep a photo of an ex in a folder somewhere?",
+    "…they have an emotional connection with someone online they've never met?",
+    "…they reply to a DM slide with a laughing emoji?",
+    "…they dance with a stranger at a club and never mention it?",
+    "…they say 'I'm single' as a joke to get out of a conversation?",
+    "…they watch someone's stories first every single day?",
+    "…they hide their phone screen when you walk in?",
+    "…they hug a friend a second too long?",
+    "…they have a 'work spouse'?",
+    "…they book a trip with friends and don't tell you a certain person is going?",
+    "…they use their ex's playlist every day?",
+    "…they compliment a stranger's looks in front of you?",
+    "…they delete messages so you 'don't get the wrong idea'?",
+    "…they still wear something an ex gave them?",
+    "…they have a celebrity 'free pass' and mean it?",
+    "…they message someone at 2 a.m. about nothing?",
+    "…they fake a work call to leave your family dinner early?",
+    "…they keep in touch with their ex's family?",
+    "…they lie about who they were with, even if nothing happened?",
+    "…they read your messages while you're asleep?",
+    "…they say your friend is hot when you ask?",
+    "…they share an inside joke with someone that you're not part of?",
+    "…they take a call from an ex on your anniversary?",
+    "…they have a secret savings account?",
+    "…they go to a strip club on a stag night?",
+    "…they wouldn't want you to see their search history?",
+    "…they tell someone else about your body insecurities?",
+    "…they refuse to say who they're texting?",
+    "…they kiss someone in a game of truth or dare?",
+    "…they keep their relationship status hidden online?",
+    "…they hold hands with a friend 'for warmth'?",
+    "…they plan an entire birthday for a friend and forget yours?",
+    "…they have a nickname for a colleague that only they use?",
+    "…they say 'I love you' to a friend of the gender they're attracted to?",
+    "…they secretly pay for someone else's things regularly?",
+    "…they message a stranger they think is hot 'just to see'?",
+    "…they keep old love letters in a box?",
+    "…they'd rather tell a friend big news before telling you?",
+    "…they flirt back 'to be polite'?",
+    "…they say 'what happens on holiday stays on holiday'?"
+   ],
+   "cards_de": [
+    "…man weiter mit dem Ex oder der Ex schreibt, „nur als Freunde“?",
+    "…man harmlos für jemanden aus der Arbeit schwärmt?",
+    "…man beim Ausgehen nicht erwähnt, dass man vergeben ist?",
+    "…man jedes einzelne Foto einer bestimmten Person liked?",
+    "…man mit der Barkeeperin oder dem Barkeeper flirtet, um einen Drink umsonst zu bekommen?",
+    "…man eine Dating-App noch installiert hat, sie aber „nie öffnet“?",
+    "…man jemandem ein Herz-Emoji schickt, mit dem man mal was hatte?",
+    "…man vielen Thirst-Trap-Accounts folgt?",
+    "…man einem Freund vom Streit erzählt, bevor ihr euch vertragen habt?",
+    "…man allein mit jemandem essen geht, der einem mal Gefühle gestanden hat?",
+    "…man irgendwo in einem Ordner noch ein Foto vom Ex oder der Ex hat?",
+    "…man eine emotionale Verbindung zu jemandem online hat, den man nie getroffen hat?",
+    "…man auf eine anzügliche DM mit einem Lach-Emoji antwortet?",
+    "…man im Club mit einer fremden Person tanzt und es nie erwähnt?",
+    "…man aus Spaß „ich bin Single“ sagt, um aus einem Gespräch rauszukommen?",
+    "…man jeden Tag zuerst die Storys einer bestimmten Person anschaut?",
+    "…man den Handybildschirm versteckt, wenn du reinkommst?",
+    "…man einen Freund eine Sekunde zu lang umarmt?",
+    "…man einen „Büro-Ehepartner“ hat?",
+    "…man mit Freunden verreist und verschweigt, dass eine bestimmte Person mitkommt?",
+    "…man jeden Tag die Playlist vom Ex oder der Ex hört?",
+    "…man vor dir das Aussehen einer fremden Person lobt?",
+    "…man Nachrichten löscht, damit du „nichts Falsches denkst“?",
+    "…man noch etwas trägt, das der Ex oder die Ex geschenkt hat?",
+    "…man einen Promi-Freifahrtschein hat und es ernst meint?",
+    "…man jemandem um 2 Uhr nachts über nichts schreibt?",
+    "…man einen Arbeitsanruf vortäuscht, um früher vom Familienessen zu gehen?",
+    "…man Kontakt zur Familie vom Ex oder der Ex hält?",
+    "…man lügt, mit wem man unterwegs war, auch wenn nichts passiert ist?",
+    "…man deine Nachrichten liest, während du schläfst?",
+    "…man sagt, deine beste Freundin oder dein bester Freund sei heiß, wenn du fragst?",
+    "…man einen Insider mit jemandem teilt, von dem du nichts weißt?",
+    "…man an eurem Jahrestag einen Anruf vom Ex oder der Ex annimmt?",
+    "…man ein geheimes Sparkonto hat?",
+    "…man beim Junggesellenabschied in einen Stripclub geht?",
+    "…man nicht will, dass du den Suchverlauf siehst?",
+    "…man jemand anderem von deinen Unsicherheiten mit deinem Körper erzählt?",
+    "…man sich weigert zu sagen, mit wem man schreibt?",
+    "…man bei Wahrheit oder Pflicht jemanden küsst?",
+    "…man den Beziehungsstatus online versteckt?",
+    "…man mit einem Freund Händchen hält, „weil es kalt ist“?",
+    "…man den kompletten Geburtstag eines Freundes plant und deinen vergisst?",
+    "…man einen Spitznamen für jemanden aus der Arbeit hat, den nur man selbst benutzt?",
+    "…man „ich liebe dich“ zu einer befreundeten Person sagt, die dem eigenen Beuteschema entspricht?",
+    "…man regelmäßig heimlich Sachen für jemand anderen bezahlt?",
+    "…man einer fremden Person schreibt, die man heiß findet, „nur um zu schauen“?",
+    "…man alte Liebesbriefe in einer Kiste aufbewahrt?",
+    "…man große Neuigkeiten lieber zuerst einem Freund erzählt als dir?",
+    "…man zurückflirtet, „um höflich zu sein“?",
+    "…man sagt: „Was im Urlaub passiert, bleibt im Urlaub“?"
+   ]
+  },
+  {
+   "key": "greenFlagRedFlag",
+   "id": "green-red-flag",
+   "title": {
+    "en": "Green Flag or Red Flag?",
+    "de": "Green Flag oder Red Flag?"
+   },
+   "tagline": {
+    "en": "Quick calls, honest answers",
+    "de": "Schnelle Urteile, ehrliche Antworten"
+   },
+   "instruction": {
+    "en": "Green, red, or beige. Say why.",
+    "de": "Grün, rot oder beige. Sagt warum."
+   },
+   "symbol": "flag.2.crossed.fill",
+   "tint": "mint",
+   "cards_en": [
+    "They still text their mum every day.",
+    "They have never kept a plant alive.",
+    "They keep a running list of gift ideas for you.",
+    "They check your location 'just to be safe'.",
+    "They own more shoes than you.",
+    "They've been to therapy and talk about it openly.",
+    "They have their ex's number saved as 'Do not answer'.",
+    "They tip generously even when the service was bad.",
+    "They are best friends with all their exes.",
+    "They have never had a real argument with anyone.",
+    "They post everything about your relationship.",
+    "They post nothing about your relationship.",
+    "They cry at commercials.",
+    "They don't drink at all.",
+    "They still have a childhood stuffed animal on the bed.",
+    "They reply to every message within a minute.",
+    "They take three days to reply, then send a paragraph.",
+    "They have a five-year plan, with a spreadsheet.",
+    "They have no plan and are fine with it.",
+    "They talk to their pet like a person.",
+    "They can't cook a single thing.",
+    "They always order the same thing everywhere.",
+    "They send memes as their main way of saying hi.",
+    "They want to know your passwords.",
+    "They share their passwords without being asked.",
+    "They've lived in five countries by 25.",
+    "They've never left their home town.",
+    "They fall asleep the second their head hits the pillow.",
+    "They know every lyric of every Taylor Swift song.",
+    "They call their mum to settle an argument.",
+    "They have a group chat named after you two.",
+    "They read the terms and conditions.",
+    "They collect something weird and are proud of it.",
+    "They don't remember their friends' birthdays but never miss yours.",
+    "They apologise too quickly, before even understanding what happened.",
+    "They can't say sorry at all.",
+    "They still play video games all weekend.",
+    "They have a skincare routine longer than yours.",
+    "They plan dates a month ahead.",
+    "They drop plans for you last minute, every time.",
+    "They talk about their childhood a lot.",
+    "They never talk about their childhood.",
+    "They keep receipts. All of them.",
+    "They hate surprises.",
+    "They sing in the car with the windows down.",
+    "They want a joint bank account after three months.",
+    "They're on their phone at dinner 'just checking'.",
+    "They've deleted all their social media.",
+    "They know exactly what they want in ten years.",
+    "They've forgiven someone who really hurt them."
+   ],
+   "cards_de": [
+    "Schreibt seiner Mama immer noch jeden Tag.",
+    "Hat noch nie eine Pflanze am Leben gehalten.",
+    "Führt eine Liste mit Geschenkideen für dich.",
+    "Checkt deinen Standort, „nur zur Sicherheit“.",
+    "Besitzt mehr Schuhe als du.",
+    "War in Therapie und redet offen darüber.",
+    "Hat die Nummer vom Ex oder der Ex als „Nicht rangehen“ gespeichert.",
+    "Gibt großzügig Trinkgeld, auch wenn der Service schlecht war.",
+    "Ist mit allen Ex-Partnern beste Freunde.",
+    "Hatte noch nie einen richtigen Streit mit irgendwem.",
+    "Postet alles über eure Beziehung.",
+    "Postet nichts über eure Beziehung.",
+    "Weint bei Werbespots.",
+    "Trinkt gar keinen Alkohol.",
+    "Hat noch ein Kuscheltier aus der Kindheit im Bett.",
+    "Antwortet auf jede Nachricht innerhalb einer Minute.",
+    "Braucht drei Tage für eine Antwort und schickt dann einen Roman.",
+    "Hat einen Fünfjahresplan – mit Excel-Tabelle.",
+    "Hat gar keinen Plan und findet das völlig okay.",
+    "Redet mit dem Haustier wie mit einem Menschen.",
+    "Kann absolut nichts kochen.",
+    "Bestellt überall immer dasselbe.",
+    "Sagt Hallo hauptsächlich mit Memes.",
+    "Will deine Passwörter wissen.",
+    "Teilt die eigenen Passwörter, ohne gefragt zu werden.",
+    "Hat mit 25 schon in fünf Ländern gelebt.",
+    "Hat die Heimatstadt nie verlassen.",
+    "Schläft ein, sobald der Kopf das Kissen berührt.",
+    "Kennt jede Zeile von jedem Taylor-Swift-Song.",
+    "Ruft die Mama an, um einen Streit zu entscheiden.",
+    "Hat einen Gruppenchat, der nach euch beiden benannt ist.",
+    "Liest die AGB.",
+    "Sammelt etwas Komisches und ist stolz drauf.",
+    "Vergisst die Geburtstage der Freunde, aber nie deinen.",
+    "Entschuldigt sich zu schnell, bevor überhaupt klar ist, was passiert ist.",
+    "Kann sich überhaupt nicht entschuldigen.",
+    "Zockt immer noch das ganze Wochenende.",
+    "Hat eine längere Skincare-Routine als du.",
+    "Plant Dates einen Monat im Voraus.",
+    "Lässt Pläne für dich in letzter Minute sausen, jedes Mal.",
+    "Redet viel über die eigene Kindheit.",
+    "Redet nie über die eigene Kindheit.",
+    "Hebt Kassenzettel auf. Alle.",
+    "Hasst Überraschungen.",
+    "Singt im Auto mit offenen Fenstern.",
+    "Will nach drei Monaten ein gemeinsames Konto.",
+    "Ist beim Essen am Handy, „nur kurz schauen“.",
+    "Hat alle Social-Media-Accounts gelöscht.",
+    "Weiß genau, was in zehn Jahren sein soll.",
+    "Hat jemandem vergeben, der wirklich wehgetan hat."
+   ]
+  },
+  {
+   "key": "whoIsMoreLikely",
+   "id": "who-is-more-likely",
+   "title": {
+    "en": "Who Is More Likely To?",
+    "de": "Wer von euch…?"
+   },
+   "tagline": {
+    "en": "Point at each other, then argue",
+    "de": "Zeigt aufeinander, dann streitet"
+   },
+   "instruction": {
+    "en": "Three, two, one, point.",
+    "de": "Drei, zwei, eins, zeigen."
+   },
+   "symbol": "person.2.fill",
+   "tint": "butter",
+   "cards_en": [
+    "…cry at a wedding?",
+    "…forget an anniversary?",
+    "…win an argument with a stranger?",
+    "…adopt a stray animal on the spot?",
+    "…get lost with the GPS on?",
+    "…fall asleep first on movie night?",
+    "…spend the whole paycheck in one weekend?",
+    "…talk their way out of a parking ticket?",
+    "…text an ex after two drinks?",
+    "…become famous by accident?",
+    "…move abroad on a whim?",
+    "…start a fight about how to load the dishwasher?",
+    "…survive longest in a horror movie?",
+    "…cry over a TikTok?",
+    "…plan the whole holiday, down to the restaurants?",
+    "…lose their keys, phone and wallet in one day?",
+    "…say 'I told you so'?",
+    "…secretly love a cheesy pop song?",
+    "…get us kicked out of a bar?",
+    "…take the blame for something the other did?",
+    "…propose in public?",
+    "…forget to eat all day?",
+    "…make friends with the taxi driver?",
+    "…become a morning person?",
+    "…buy something because of an ad?",
+    "…run a marathon, seriously?",
+    "…keep a secret for years?",
+    "…dance on a table?",
+    "…google their own name?",
+    "…apologise first after a fight?",
+    "…be the embarrassing parent one day?",
+    "…cancel plans to stay in bed?",
+    "…get a tattoo without telling anyone?",
+    "…cry laughing at their own joke?",
+    "…end up on a reality show?",
+    "…overshare with a stranger on a plane?",
+    "…forget where they parked?",
+    "…start a business from the kitchen table?",
+    "…binge a whole series in one night?",
+    "…give a stranger the last of their money?",
+    "…lock themselves out?",
+    "…become obsessed with a new hobby for exactly two weeks?",
+    "…take the aux and never give it back?",
+    "…get into an argument with a self-checkout machine?",
+    "…remember every little detail of our first date?",
+    "…talk to the dog more than to the other?",
+    "…say yes to a spontaneous flight tomorrow?",
+    "…fake being sick to skip an event?",
+    "…get emotional about the future?",
+    "…still be exactly the same in forty years?"
+   ],
+   "cards_de": [
+    "…weint auf einer Hochzeit?",
+    "…vergisst einen Jahrestag?",
+    "…gewinnt einen Streit mit einer fremden Person?",
+    "…nimmt auf der Stelle ein Streunertier auf?",
+    "…verläuft sich mit eingeschaltetem Navi?",
+    "…schläft beim Filmabend zuerst ein?",
+    "…gibt das ganze Gehalt an einem Wochenende aus?",
+    "…redet sich aus einem Strafzettel raus?",
+    "…schreibt nach zwei Drinks dem Ex oder der Ex?",
+    "…wird aus Versehen berühmt?",
+    "…zieht aus einer Laune heraus ins Ausland?",
+    "…fängt einen Streit darüber an, wie man den Geschirrspüler einräumt?",
+    "…überlebt in einem Horrorfilm am längsten?",
+    "…weint wegen eines TikToks?",
+    "…plant den ganzen Urlaub durch, bis zu den Restaurants?",
+    "…verliert Schlüssel, Handy und Geldbeutel an einem Tag?",
+    "…sagt „hab ich doch gesagt“?",
+    "…liebt heimlich einen kitschigen Popsong?",
+    "…sorgt dafür, dass wir aus einer Bar fliegen?",
+    "…nimmt die Schuld für etwas auf sich, das die andere Person gemacht hat?",
+    "…macht in der Öffentlichkeit einen Antrag?",
+    "…vergisst den ganzen Tag zu essen?",
+    "…freundet sich mit dem Taxifahrer an?",
+    "…wird zum Morgenmenschen?",
+    "…kauft etwas wegen einer Werbung?",
+    "…läuft ernsthaft einen Marathon?",
+    "…bewahrt ein Geheimnis jahrelang?",
+    "…tanzt auf einem Tisch?",
+    "…googelt den eigenen Namen?",
+    "…entschuldigt sich nach einem Streit zuerst?",
+    "…wird irgendwann das peinliche Elternteil?",
+    "…sagt Pläne ab, um im Bett zu bleiben?",
+    "…lässt sich ein Tattoo stechen, ohne es jemandem zu sagen?",
+    "…lacht über den eigenen Witz, bis Tränen kommen?",
+    "…landet in einer Reality-Show?",
+    "…erzählt einer fremden Person im Flugzeug viel zu viel?",
+    "…vergisst, wo das Auto steht?",
+    "…gründet vom Küchentisch aus ein Unternehmen?",
+    "…schaut eine ganze Serie in einer Nacht?",
+    "…gibt einer fremden Person das letzte Geld?",
+    "…sperrt sich selbst aus?",
+    "…ist von einem neuen Hobby besessen – genau zwei Wochen lang?",
+    "…nimmt das Aux-Kabel und gibt es nie wieder her?",
+    "…streitet sich mit der Selbstbedienungskasse?",
+    "…erinnert sich an jedes kleine Detail unseres ersten Dates?",
+    "…redet mehr mit dem Hund als mit der anderen Person?",
+    "…sagt Ja zu einem spontanen Flug morgen?",
+    "…täuscht Krankheit vor, um ein Event zu schwänzen?",
+    "…wird emotional, wenn es um die Zukunft geht?",
+    "…ist in vierzig Jahren noch genau gleich?"
+   ]
+  }
+ ]
+}

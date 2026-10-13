@@ -1,0 +1,134 @@
+{
+ "home-de": {
+  "lang": "de",
+  "kicker": "Die App für Paare",
+  "title": "Spielt zusammen, auch auf Distanz",
+  "art": "pair-in-love"
+ },
+ "hub-de": {
+  "lang": "de",
+  "kicker": "Kostenlos im Browser",
+  "title": "Fragen-Spiele für Paare",
+  "art": "pair-laughing"
+ },
+ "deck-get-to-know-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Lernt euch kennen",
+  "art": "pair-in-love"
+ },
+ "deck-never-have-i-ever-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Ich hab noch nie",
+  "art": "pair-winking"
+ },
+ "deck-partner-choice-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Dies oder das",
+  "art": "pair-thinking"
+ },
+ "deck-is-it-cheating-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Ist das Fremdgehen?",
+  "art": "pair-surprised"
+ },
+ "deck-green-red-flag-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Green Flag oder Red Flag?",
+  "art": "pair-laughing"
+ },
+ "deck-who-is-more-likely-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 50 Karten",
+  "title": "Wer würde eher?",
+  "art": "pair-celebrating"
+ },
+ "default-de": {
+  "lang": "de",
+  "kicker": "Die App für Paare",
+  "title": "Spielt zusammen, auch auf Distanz",
+  "art": "pair-in-love"
+ },
+ "home-en": {
+  "lang": "en",
+  "kicker": "The app for couples",
+  "title": "Play together, even when apart",
+  "art": "pair-in-love"
+ },
+ "hub-en": {
+  "lang": "en",
+  "kicker": "Free in your browser",
+  "title": "Question games for couples",
+  "art": "pair-laughing"
+ },
+ "deck-get-to-know-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "Get to know each other",
+  "art": "pair-in-love"
+ },
+ "deck-never-have-i-ever-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "Never Have I Ever",
+  "art": "pair-winking"
+ },
+ "deck-partner-choice-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "This or that",
+  "art": "pair-thinking"
+ },
+ "deck-is-it-cheating-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "Is it cheating if…",
+  "art": "pair-surprised"
+ },
+ "deck-green-red-flag-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "Green flag or red flag?",
+  "art": "pair-laughing"
+ },
+ "deck-who-is-more-likely-en": {
+  "lang": "en",
+  "kicker": "Free · 50 cards",
+  "title": "Who is more likely to?",
+  "art": "pair-celebrating"
+ },
+ "default-en": {
+  "lang": "en",
+  "kicker": "The app for couples",
+  "title": "Play together, even when apart",
+  "art": "pair-in-love"
+ },
+ "blog-fernbeziehung-spiele": {
+  "lang": "de",
+  "kicker": "Ratgeber Fernbeziehung",
+  "title": "20 Spiele für die Fernbeziehung",
+  "art": "pair-happy"
+ },
+ "blog-spiele-fuer-paare": {
+  "lang": "de",
+  "kicker": "Spiele zu zweit",
+  "title": "28 Spiele für Paare – für jede Stimmung",
+  "art": "pair-happy"
+ },
+ "blog-fragen-fuer-paare": {
+  "lang": "de",
+  "kicker": "Ratgeber für Paare",
+  "title": "150 Fragen für Paare: von lustig bis tief",
+  "art": "pair-happy"
+ },
+ "blog-de": {
+  "lang": "de",
+  "kicker": "TrueThings Blog",
+  "title": "Ideen für euch zwei",
+  "art": "pair-happy"
+ }
+}
