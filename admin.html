@@ -81,7 +81,10 @@ button { cursor: pointer; background: none; border: 0; }
 .brand img { width: 26px; height: 26px; border-radius: 7px; }
 .brand small { font-weight: 500; color: var(--muted); }
 .crumb { color: var(--border-strong); }
-.nav-item { font-weight: 550; padding: 6px 10px; border-radius: 8px; background: var(--hover); }
+.nav { display: flex; gap: 2px; }
+.nav-item { font-weight: 550; padding: 6px 10px; border-radius: 8px; color: var(--text-2); }
+.nav-item:hover { color: var(--text); background: var(--hover); }
+.nav-item[aria-pressed="true"] { color: var(--text); background: var(--hover); }
 .spacer { flex: 1; }
 .updated { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
 .icon-btn {
@@ -230,6 +233,56 @@ td code { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 .flow-dot { display: inline-flex; align-items: center; gap: 6px; }
 .flow-dot i { width: 8px; height: 8px; border-radius: 2px; }
 
+/* ---------- Screens: the walk-through in pictures ---------- */
+.stages { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px 20px; padding-bottom: 18px; margin-bottom: 20px; border-bottom: 1px solid var(--grid); }
+.stage { display: flex; flex-direction: column; gap: 2px; }
+.stage span { color: var(--text-2); font-size: 12px; }
+.stage b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+.stage small { color: var(--muted); font-size: 12px; }
+.shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 26px 16px; }
+.shot { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.shot-top { display: flex; align-items: center; gap: 7px; min-height: 20px; color: var(--muted); font-size: 11px; font-weight: 650; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; }
+.shot-no {
+  flex: none; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; display: grid; place-items: center;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); font-size: 11px; letter-spacing: 0; font-variant-numeric: tabular-nums;
+}
+.shot-img {
+  display: block; width: 100%; aspect-ratio: 1206 / 2622; border-radius: 18px; overflow: hidden;
+  border: 1px solid var(--border-strong); background: var(--surface-2); cursor: zoom-in;
+}
+.shot-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.shot-img:hover, .shot.hot .shot-img { border-color: var(--text-2); }
+.shot-event { cursor: default; display: grid; place-items: center; text-align: center; padding: 16px; border-style: dashed; color: var(--text-2); font-size: 12.5px; line-height: 1.45; }
+.shot-event b { display: block; color: var(--text); font-size: 13.5px; margin-bottom: 4px; }
+.shot-name { display: flex; flex-direction: column; gap: 1px; }
+.shot-name b { font-weight: 600; font-size: 13.5px; line-height: 1.25; }
+.shot-name code { font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.shot-val { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.shot-val b { font-weight: 650; font-size: 15px; }
+.shot-val span { color: var(--muted); font-size: 12.5px; }
+.shot-bar { position: relative; height: 6px; border-radius: 0 3px 3px 0; background: var(--track); }
+.shot-bar i { position: absolute; left: 0; top: 0; bottom: 0; min-width: 2px; border-radius: 0 3px 3px 0; background: var(--series-1); }
+.shot-bar.all { background: var(--grid); }
+.shot-bar.all i { background: var(--none); }
+.shot-loss { color: var(--muted); font-size: 12px; min-height: 20px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.shot-loss .badge { margin-top: 0; }
+.notice {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 12px 14px; margin-bottom: 20px; border-radius: 10px;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--text-2); font-size: 13px;
+}
+.lightbox { border: 0; padding: 0; margin: 0; inset: 0; width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh; background: transparent; overflow: hidden; }
+.lightbox::backdrop { background: rgba(10, 8, 9, .84); }
+.lb { height: 100%; display: grid; grid-template-columns: 48px minmax(0, auto) 48px; align-items: center; justify-content: center; gap: 14px; padding: 18px 12px; }
+.lb figure { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; }
+.lb img { display: block; width: auto; height: auto; max-height: calc(100vh - 104px); max-width: 100%; border-radius: 26px; box-shadow: 0 30px 80px -20px rgba(0, 0, 0, .6); }
+.lb figcaption { color: #fff; font-size: 13.5px; text-align: center; }
+.lb figcaption span { color: rgba(255, 255, 255, .68); }
+.lb-btn { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: #fff; background: rgba(255, 255, 255, .13); }
+.lb-btn:hover { background: rgba(255, 255, 255, .24); }
+.lb-btn:disabled { opacity: .28; cursor: default; }
+.lb-btn svg { width: 20px; height: 20px; }
+.lb-close { position: absolute; top: 14px; right: 14px; }
+
 /* ---------- Tooltip ---------- */
 .tooltip {
   position: fixed; z-index: 50; pointer-events: none; min-width: 168px; max-width: 260px;
@@ -279,7 +332,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 }
 @media (max-width: 720px) {
   .topbar { padding: 0 16px; }
-  .brand small, .crumb, .nav-item, .updated { display: none; }
+  .brand small, .crumb, .updated { display: none; }
+  .brand { font-size: 0; gap: 0; }
+  .shots { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 22px 12px; }
+  .lb { grid-template-columns: 40px minmax(0, auto) 40px; gap: 6px; padding: 14px 6px; }
+  .lb-btn { width: 38px; height: 38px; }
   main { padding: 20px 16px 48px; }
   .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .compare { margin-left: 0; width: 100%; }
@@ -327,7 +384,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   <header class="topbar">
     <div class="brand"><img src="assets/admin-icon.png" alt="">TrueThings <small>Admin</small></div>
     <span class="crumb">/</span>
-    <span class="nav-item">Onboarding</span>
+    <nav class="nav" id="nav" aria-label="Seiten">
+      <button class="nav-item" data-page="funnel" aria-pressed="true">Funnel</button>
+      <button class="nav-item" data-page="screens" aria-pressed="false">Screens</button>
+    </nav>
     <div class="spacer"></div>
     <span id="updated" class="updated"></span>
     <button id="refresh" class="icon-btn" title="Neu laden (ohne Cache)" aria-label="Neu laden">
@@ -344,8 +404,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   <main id="main">
     <div class="page-head">
       <div>
-        <h1>Onboarding-Funnel</h1>
-        <p class="lede">Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele danach ein Abo abschließen.</p>
+        <h1 id="page-title">Onboarding-Funnel</h1>
+        <p class="lede" id="page-lede">Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele ein Abo abschließen.</p>
         <span id="demo-flag" class="demo-flag" hidden>● Demo-Daten, nicht echt</span>
       </div>
     </div>
@@ -363,6 +423,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       </label>
       <label class="field">Version
         <select id="version"><option value="v2">Alle 2.x</option></select>
+      </label>
+      <label class="field" title="Seit dem Umbau im November 2026 kommt die Paywall vor dem Konto. Die beiden Abläufe haben verschiedene Schritte und werden getrennt gezeigt.">Onboarding
+        <select id="ob"><option value="new">Neu (Paywall vor Konto)</option><option value="old">Alt (bis 2.0.7)</option></select>
       </label>
       <label class="field" title="Simulator, TestFlight und App Review sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
       <span class="compare" id="compare"></span>
@@ -397,7 +460,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
             <div class="card-head">
               <div>
                 <div class="card-title">Anlegen oder beitreten</div>
-                <div class="card-sub">Wahl auf dem zweiten Screen</div>
+                <div class="card-sub" id="split-sub">Wahl auf dem zweiten Screen</div>
               </div>
             </div>
             <div class="card-body" id="split"></div>
@@ -405,8 +468,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
           <section class="card">
             <div class="card-head">
               <div>
-                <div class="card-title">Nach dem Onboarding</div>
-                <div class="card-sub">Paywall und Abo, wer abgeschlossen hat</div>
+                <div class="card-title" id="after-title">Nach dem Onboarding</div>
+                <div class="card-sub" id="after-sub">Paywall und Abo, wer abgeschlossen hat</div>
               </div>
             </div>
             <div class="card-body" id="after"></div>
@@ -458,8 +521,53 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         „Tests ausblenden“ lässt Simulatoren, TestFlight, App Review und Käufe ohne Umsatz weg: Jeder Kauf wird zeitgenau mit RevenueCat abgeglichen (Sandbox oder echt; kein passender Kauf heißt, die Apple-ID hatte das Abo schon). Wer so gekauft hat, fehlt dann in allen Zahlen.
       </footer>
     </div>
+
+    <!-- Page "Screens": every step of the new onboarding as a screenshot -->
+    <div id="page-screens" hidden>
+      <section class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Schritt für Schritt</div>
+            <div class="card-sub" id="shots-sub"></div>
+          </div>
+          <div class="head-tools">
+            <div class="tabs" id="shots-flow" role="group" aria-label="Weg">
+              <button data-flow="create">Paar anlegen</button>
+              <button data-flow="join">Beitreten</button>
+            </div>
+            <div class="tabs" id="shots-lang" role="group" aria-label="Sprache der Screenshots">
+              <button data-lang="de">DE</button>
+              <button data-lang="en">EN</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="shots-notice" class="notice" hidden></div>
+          <div id="stages" class="stages" hidden></div>
+          <div id="shots" class="shots" role="list"></div>
+          <p class="note" id="shots-note"></p>
+        </div>
+      </section>
+      <footer>
+        Screenshots aus dem iPhone-17-Pro-Simulator mit Beispieldaten, Stand 14. November 2026. Ein Klick vergrößert, die Pfeiltasten blättern.
+        Den Link „Anmeldung überspringen“ auf den Konto-Screens gibt es nur im Test-Build.
+        Die Zahlen sind dieselben wie im Funnel und folgen den Filtern oben; eine Tabelle dazu gibt es auf der Seite „Funnel“.
+      </footer>
+    </div>
   </main>
 </div>
+
+<dialog id="lightbox" class="lightbox" aria-label="Screenshot in groß">
+  <div class="lb">
+    <button class="lb-btn" id="lb-prev" type="button" aria-label="Vorheriger Screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <figure>
+      <img id="lb-img" alt="">
+      <figcaption id="lb-cap"></figcaption>
+    </figure>
+    <button class="lb-btn" id="lb-next" type="button" aria-label="Nächster Screen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <button class="lb-btn lb-close" id="lb-close" type="button" aria-label="Schließen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</dialog>
 
 <div id="tooltip" class="tooltip" role="tooltip"></div>
 
@@ -489,6 +597,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     invite_code: 'Einladungscode',
     join_code: 'Code eingeben',
     thing: 'Thing gestalten',
+    thing_ears: 'Thing: Ohren',
+    thing_extra: 'Thing: Extra',
+    showcase_1: 'Vorschau 1',
+    showcase_2: 'Vorschau 2',
+    showcase_3: 'Vorschau 3',
     preview: 'Vorschau',
     done: 'Fertig-Screen',
     shared_plan: 'Paar-Abo-Info',
@@ -496,13 +609,48 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     paywall: 'Paywall gesehen',
     purchase: 'Abo abgeschlossen',
   };
+  // The rewritten onboarding names a few things differently.
+  const LABELS_NEW = { thing: 'Thing: Farbe', goals: 'Ziel', auth: 'Konto (nach dem Kauf)', paywall: 'Paywall gesehen' };
+  const label = (key, flow, fresh = isNew()) => (fresh && (key !== 'auth' || flow === 'create') && LABELS_NEW[key]) || LABELS[key];
   const KEYS = {
     started: 'welcome', chosen: 'flow', completed: 'onboarding_completed',
     paywall: 'paywall_viewed', purchase: 'purchase_completed',
   };
 
   // Rows per funnel. `section` rows start a group; the first row is 100 %.
-  const FUNNELS = {
+  // Two onboardings, told apart by `onboarding: 3` on the step events: until
+  // 2.0.7 the account came before the paywall, since the rewrite after it.
+  const FUNNELS_NEW = {
+    all: {
+      sub: 'Alle neuen Nutzer, gemeinsame Meilensteine beider Wege',
+      rows: [
+        { section: 'App' }, 'welcome', 'chosen',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+        // Joiners finish without buying: no step after "purchase".
+        { section: 'Abschluss' }, { row: 'completed', solo: true },
+      ],
+      note: 'Wer ein Paar anlegt, sieht die Paywall vor dem Konto und schließt erst nach dem Kauf ab. Wer mit Code beitritt, schließt ohne Kauf ab und sieht nur dann eine Paywall, wenn das Paar kein Abo hat. „Abgeschlossen“ kann deshalb über „Abo“ liegen.',
+    },
+    create: {
+      sub: 'Wer „Los geht’s“ gewählt hat und ein Paar anlegt',
+      rows: [
+        { section: 'Fragen' }, 'your_name', 'thing', 'thing_ears', 'thing_extra', 'anniversary_date', 'days_together', 'distance', 'goals',
+        { section: 'Vorschau' }, 'showcase_1', 'showcase_2', 'showcase_3',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+        { section: 'Nach dem Kauf' }, 'auth', 'invite_code', 'completed',
+      ],
+      note: 'Die drei Vorschau-Screens (Spiele, Fragen, Widget) kommen in der Reihenfolge des gewählten Ziels und werden deshalb nach Position gezählt.',
+    },
+    join: {
+      sub: 'Wer „Ich wurde eingeladen“ gewählt hat',
+      rows: [
+        { section: 'App' }, 'auth', 'join_code', 'showcase_1', 'showcase_2', 'showcase_3', 'completed',
+        { section: 'Monetarisierung' }, 'paywall', 'purchase',
+      ],
+      note: 'Eine Paywall sehen Beitretende nur, wenn das Paar noch kein Abo hat (Gate nach dem Onboarding).',
+    },
+  };
+  const FUNNELS_OLD = {
     all: {
       sub: 'Alle neuen Nutzer, gemeinsame Meilensteine beider Wege',
       rows: [
@@ -528,6 +676,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       note: 'Ältere Builds (vor 36) erkennen Beitretende erst ab „Code eingeben“; wer vorher abbricht, zählt dort unter „ohne Wahl“. Den Paar-Abo-Screen sehen nur Beitretende ohne Abo im Paar.',
     },
   };
+
+  // Which onboarding the numbers show. Until someone picks one (`prefs.ob`),
+  // it is the new one, or the old one while the new one has no starts yet.
+  let obAuto = 'new';
+  const isNew = () => (prefs.ob || obAuto) !== 'old';
+  const funnels = () => (isNew() ? FUNNELS_NEW : FUNNELS_OLD);
 
   // ---------------------------------------------------------------- format
 
@@ -594,8 +748,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   // ---------------------------------------------------------------- state
 
-  const prefs = Object.assign({ days: '30', version: 'v2', hideSim: true, flow: 'all', from: null, to: null }, store.get(PREFS_KEY) || {});
+  const prefs = Object.assign({ days: '30', version: 'v2', ob: null, hideSim: true, flow: 'all', from: null, to: null, shotFlow: 'create', shotLang: 'de' }, store.get(PREFS_KEY) || {});
   let data = null;
+  // Two pages share the filters: the funnel and the screens. The hash picks one.
+  let page = location.hash === '#screens' ? 'screens' : 'funnel';
+  let failed = false;
   const views = { funnel: 'chart', trend: 'chart' };
   let session = store.get(SESSION_KEY);
   let loadToken = 0;
@@ -630,8 +787,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     try {
       const next = DEMO
         ? demoData(r)
-        : await call({ action: 'funnel', ...r, version: prefs.version, simulators: !prefs.hideSim, tests: !prefs.hideSim, refresh });
+        : await call({ action: 'funnel', ...r, version: prefs.version, onboarding: isNew() ? 'new' : 'old', simulators: !prefs.hideSim, tests: !prefs.hideSim, refresh });
       if (ticket !== loadToken) return;
+      if (!DEMO && !prefs.ob && obAuto === 'new' && next.current.all.started === 0) {
+        // Nobody has walked the new onboarding in this period: show the old one.
+        obAuto = 'old';
+        $('ob').value = 'old';
+        return load(refresh);
+      }
       data = next;
       showState(null);
       render();
@@ -651,7 +814,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   function showState(err) {
     const box = $('state');
-    if (!err) { box.hidden = true; $('content').hidden = false; return; }
+    if (!err) { failed = false; applyPage(); return; }
     box.replaceChildren();
     const code = err.payload && err.payload.error;
     if (code === 'posthog_not_configured') {
@@ -675,8 +838,24 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         el('div', { class: 'actions' }, [el('button', { class: 'btn', text: 'Erneut versuchen', onclick: () => load(true) })]),
       );
     }
-    box.hidden = false;
-    $('content').hidden = true;
+    failed = true;
+    applyPage();
+    renderScreens();
+  }
+
+  const PAGES = {
+    funnel: ['Onboarding-Funnel', 'Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele ein Abo abschließen.'],
+    screens: ['Onboarding-Screens', 'Jeder Screen des neuen Onboardings in der Reihenfolge der App, mit den Zahlen aus dem gewählten Zeitraum.'],
+  };
+  /** Shows the chosen page. A failed load hides the funnel, never the screenshots. */
+  function applyPage() {
+    for (const b of $('nav').children) b.setAttribute('aria-pressed', String(b.dataset.page === page));
+    $('page-title').textContent = PAGES[page][0];
+    $('page-lede').textContent = PAGES[page][1];
+    document.title = `TrueThings Admin · ${PAGES[page][0]}`;
+    $('state').hidden = !failed;
+    $('content').hidden = failed || page !== 'funnel';
+    $('page-screens').hidden = page !== 'screens';
   }
 
   // ---------------------------------------------------------------- render
@@ -694,6 +873,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     renderTrend();
     renderRecent();
     renderPurchases();
+    renderScreens();
   }
 
   const KIND = {
@@ -741,12 +921,19 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const tiles = [
       { label: 'Gestartet', value: fmt(c.started), delta: relDelta(c.started, p.started), spark: series('started'),
         info: 'Personen, die zum ersten Mal den Willkommens-Screen gesehen haben' },
-      { label: 'Abgeschlossen', value: fmt(c.completed), delta: relDelta(c.completed, p.completed), spark: series('completed') },
-      { label: 'Abschlussquote', value: fmtPct(pct(c.completed, c.started)),
-        delta: ptDelta(pct(c.completed, c.started), pct(p.completed, p.started)) },
+      ...(isNew() ? [
+        { label: 'Paywall erreicht', value: fmt(c.paywall), delta: relDelta(c.paywall, p.paywall),
+          info: 'Personen, die bis zur Paywall gekommen sind: im Onboarding nach der Vorschau oder am Gate dahinter' },
+        { label: 'Start → Paywall', value: fmtPct(pct(c.paywall, c.started)),
+          delta: ptDelta(pct(c.paywall, c.started), pct(p.paywall, p.started)) },
+      ] : [
+        { label: 'Abgeschlossen', value: fmt(c.completed), delta: relDelta(c.completed, p.completed), spark: series('completed') },
+        { label: 'Abschlussquote', value: fmtPct(pct(c.completed, c.started)),
+          delta: ptDelta(pct(c.completed, c.started), pct(p.completed, p.started)) },
+      ]),
       { label: 'Paywall → Abo', value: fmtPct(pct(c.purchase, c.paywall)),
         delta: ptDelta(pct(c.purchase, c.paywall), pct(p.purchase, p.paywall)),
-        info: 'Anteil derer, die nach dem Onboarding die Paywall gesehen und ein Abo abgeschlossen haben' },
+        info: 'Anteil derer, die die Paywall gesehen und ein Abo abgeschlossen haben' },
       { label: 'Abos', value: fmt(c.purchase), delta: relDelta(c.purchase, p.purchase), spark: series('purchased'),
         note: [c.purchase ? `${fmt(c.trial)} mit Testphase` : null, hiddenTests() ? `${fmt(hiddenTests())} Käufe ohne Umsatz ausgeblendet` : null].filter(Boolean).join(' · ') || null,
         info: 'Abos, die direkt auf der Paywall nach dem Onboarding abgeschlossen wurden. Jeder Kauf wird mit RevenueCat abgeglichen.' },
@@ -801,17 +988,19 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   function funnelRows(flow) {
     const t = data.current[flow];
     const chosen = data.current.create.started + data.current.join.started;
-    return FUNNELS[flow].rows.map((r) => {
-      if (typeof r !== 'string') return r;
+    return funnels()[flow].rows.map((row) => {
+      if (row.section) return row;
+      const r = typeof row === 'string' ? row : row.row;
       const n = r === 'chosen' ? chosen : (r === 'welcome' && flow === 'all' ? t.started : t[r] ?? 0);
-      return { key: r, n };
+      // `solo`: counted against the start only, not against the row above.
+      return { key: r, n, solo: Boolean(row.solo) };
     });
   }
 
   function renderFunnel() {
     const flow = prefs.flow;
     for (const b of $('funnel-tabs').children) b.setAttribute('aria-pressed', String(b.dataset.flow === flow));
-    const def = FUNNELS[flow];
+    const def = funnels()[flow];
     const rows = funnelRows(flow);
     const steps = rows.filter((r) => r.key);
     const first = steps.length ? steps[0].n : 0;
@@ -822,7 +1011,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     let worst = -1, worstLoss = 0;
     const lastApp = steps.findIndex((s) => s.key === 'completed');
     steps.forEach((s, i) => {
-      if (i && i <= lastApp && steps[i - 1].n - s.n > worstLoss) { worstLoss = steps[i - 1].n - s.n; worst = i; }
+      if (i && i <= lastApp && s.key !== 'purchase' && !s.solo && steps[i - 1].n - s.n > worstLoss) { worstLoss = steps[i - 1].n - s.n; worst = i; }
     });
 
     const body = $('funnel');
@@ -841,23 +1030,23 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     for (const r of rows) {
       if (!r.key) { grid.append(el('div', { class: 'f-section', text: r.section })); continue; }
       const idx = i++;
-      const prev = idx ? steps[idx - 1].n : null;
+      const prev = idx && !r.solo ? steps[idx - 1].n : null;
       const share = pct(r.n, first);
       const conv = prev !== null ? pct(r.n, prev) : null;
       const isWorst = idx === worst;
       const row = el('div', { class: 'f-row', role: 'listitem' }, [
-        el('div', { class: 'f-label' }, [el('b', { text: LABELS[r.key] }), el('code', { text: KEYS[r.key] || r.key })]),
-        el('div', { class: 'f-bar', tabindex: '0', 'aria-label': `${LABELS[r.key]}: ${fmt(r.n)} Personen, ${fmtPct(share)} der Startenden` }, [
+        el('div', { class: 'f-label' }, [el('b', { text: label(r.key, prefs.flow) }), el('code', { text: KEYS[r.key] || r.key })]),
+        el('div', { class: 'f-bar', tabindex: '0', 'aria-label': `${label(r.key, prefs.flow)}: ${fmt(r.n)} Personen, ${fmtPct(share)} der Startenden` }, [
           el('div', { class: 'f-track' }, [el('div', { class: 'f-fill', style: `width:${Math.min(100, (share || 0) * 100)}%` })]),
         ]),
         el('div', { class: 'f-val num' }, [el('b', { text: fmt(r.n) }), el('span', { text: fmtPct(share, 0) })]),
         el('div', { class: 'f-conv num' }, prev === null
-          ? [el('span', { text: 'Start' })]
+          ? [el('span', { text: idx ? '–' : 'Start' })]
           : [el('b', { class: isWorst ? 'worst' : '', text: fmtPct(conv, 0) }),
             isWorst ? el('span', { class: 'badge', title: 'Größter Abbruch in der App' }, [icon(ICON_DOWN), `−${fmt(prev - r.n)}`]) : el('span', { text: prev - r.n > 0 ? `−${fmt(prev - r.n)}` : '±0' })]),
       ]);
       const tip = () => [
-        LABELS[r.key],
+        label(r.key, prefs.flow),
         ['Personen', fmt(r.n)],
         ['Anteil der Startenden', fmtPct(share)],
         prev !== null ? ['Vom Vorschritt', fmtPct(conv)] : null,
@@ -873,9 +1062,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   function funnelTable(steps, first, def) {
     const rows = steps.map((s, i) => {
-      const prev = i ? steps[i - 1].n : null;
+      const prev = i && !s.solo ? steps[i - 1].n : null;
       return el('tr', {}, [
-        el('td', {}, [LABELS[s.key], ' ', el('code', { text: KEYS[s.key] || s.key })]),
+        el('td', {}, [label(s.key, prefs.flow), ' ', el('code', { text: KEYS[s.key] || s.key })]),
         el('td', { class: 'r', text: fmt(s.n) }),
         el('td', { class: 'r', text: fmtPct(pct(s.n, first)) }),
         el('td', { class: 'r', text: prev === null ? '–' : fmtPct(pct(s.n, prev)) }),
@@ -902,6 +1091,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     ];
     const total = parts.reduce((a, p) => a + p.n, 0);
     const box = $('split');
+    $('split-sub').textContent = isNew() ? 'Wahl auf dem ersten Screen' : 'Wahl auf dem zweiten Screen';
     if (!total) { box.replaceChildren(el('div', { class: 'empty', text: 'Keine Starts im Zeitraum.' })); return; }
     const bar = el('div', { class: 'split-bar', role: 'img', 'aria-label': parts.map((p) => `${p.label} ${fmtPct(pct(p.n, total), 0)}`).join(', ') });
     for (const p of parts.filter((p) => p.n > 0)) {
@@ -918,7 +1108,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         el('span', { class: 'p num', text: fmtPct(pct(p.n, total), 0) }),
       ]))),
       el('div', { class: 'mini-stats' }, [
-        el('div', {}, [el('span', { text: 'Anlegen → abgeschlossen' }), el('b', { text: fmtPct(pct(c.create.completed, c.create.started), 0) })]),
+        isNew()
+          ? el('div', {}, [el('span', { text: 'Anlegen → Paywall' }), el('b', { text: fmtPct(pct(c.create.paywall, c.create.started), 0) })])
+          : el('div', {}, [el('span', { text: 'Anlegen → abgeschlossen' }), el('b', { text: fmtPct(pct(c.create.completed, c.create.started), 0) })]),
         el('div', {}, [el('span', { text: 'Beitreten → abgeschlossen' }), el('b', { text: fmtPct(pct(c.join.completed, c.join.started), 0) })]),
       ]),
     );
@@ -933,8 +1125,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       ['Abo abgeschlossen', fmt(c.purchase)],
       ['davon mit Testphase', fmt(c.trial)],
       ['In Paar mit Abo beigetreten', fmt(j.joined_pro)],
-      ['Abschluss → Abo', fmtPct(pct(c.purchase, c.completed), 0)],
+      ...(isNew() ? [
+        ['Start → Abo', fmtPct(pct(c.purchase, c.started))],
+        // Bought first, account second: how many buyers also finished.
+        ['Abo → Konto und fertig', fmtPct(pct(data.current.create.completed, data.current.create.purchase), 0)],
+      ] : [
+        ['Abschluss → Abo', fmtPct(pct(c.purchase, c.completed), 0)],
+      ]),
     ];
+    $('after-title').textContent = isNew() ? 'Paywall und Abo' : 'Nach dem Onboarding';
+    $('after-sub').textContent = isNew() ? 'Beide Wege zusammen' : 'Paywall und Abo, wer abgeschlossen hat';
     $('after').replaceChildren(el('div', { class: 'mini-stats', style: 'margin:0;padding:0;border:0' },
       items.map(([k, v]) => el('div', {}, [el('span', { text: k }), el('b', { class: 'num', text: v })]))));
   }
@@ -1066,20 +1266,29 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   // ---------------------------------------------------------------- recent
 
   const FLOW_LABEL = { create: ['Anlegen', 'var(--series-1)'], join: ['Beitreten', 'var(--series-2)'], none: ['–', 'var(--none)'] };
-  const PATH = {
+  const PATH_OLD = {
     create: ['welcome', 'create_or_join', 'your_name', 'anniversary_date', 'days_together', 'distance', 'distance_message', 'goals', 'auth', 'invite_code', 'thing', 'preview', 'done', 'shared_plan'],
     join: ['welcome', 'create_or_join', 'auth', 'join_code', 'preview', 'shared_plan'],
     none: ['welcome', 'create_or_join'],
   };
+  // `paywall` and `purchase` are milestones, not steps: read from their own fields.
+  const PATH_NEW = {
+    create: ['welcome', 'your_name', 'thing', 'thing_ears', 'thing_extra', 'anniversary_date', 'days_together', 'distance', 'goals', 'showcase_1', 'showcase_2', 'showcase_3', 'paywall', 'purchase', 'auth', 'invite_code'],
+    join: ['welcome', 'auth', 'join_code', 'showcase_1', 'showcase_2', 'showcase_3'],
+    none: ['welcome'],
+  };
+  const paths = () => (isNew() ? PATH_NEW : PATH_OLD);
+  const STEP_KEYS = [...new Set([...PATH_OLD.create, ...PATH_OLD.join, ...PATH_NEW.create, ...PATH_NEW.join])].filter((s) => s !== 'paywall' && s !== 'purchase');
 
   function renderRecent() {
     const list = data.recent || [];
     const box = $('recent');
     if (!list.length) { box.replaceChildren(el('div', { class: 'empty', text: 'Noch keine Onboardings im Zeitraum.' })); return; }
     const rows = list.map((p) => {
-      const path = PATH[p.flow] || PATH.none;
+      const path = paths()[p.flow] || paths().none;
+      const reachedAt = (s) => (s === 'paywall' ? p.paywallAt : s === 'purchase' ? p.purchaseAt : p.steps && p.steps[s]);
       let furthest = 'welcome';
-      for (const s of path) if (p.steps && p.steps[s]) furthest = s;
+      for (const s of path) if (reachedAt(s)) furthest = s;
       const lastAt = [p.purchaseAt, p.paywallAt, p.completedAt, ...Object.values(p.steps || {})].filter(Boolean).sort().pop();
       const idleHours = lastAt ? (Date.now() - Date.parse(lastAt)) / 3600000 : 0;
       let status;
@@ -1088,14 +1297,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       else if (p.purchaseAt) status = el('span', { class: 'pill bought' }, [el('i'), (p.trial ? 'Abo (Testphase)' : 'Abo') + (p.purchaseKind === 'unknown' ? ' · unbestätigt' : '')]);
       else if (p.completedAt) status = el('span', { class: 'pill done' }, [el('i'), p.joinedPro ? 'Fertig, Paar mit Abo' : p.paywallAt ? 'Fertig, Paywall gesehen' : 'Fertig']);
       else if (idleHours < 1) status = el('span', { class: 'pill live' }, [el('i'), 'Gerade dabei']);
-      else status = el('span', { class: 'pill lost' }, [el('i'), `Ausgestiegen: ${LABELS[furthest]}`]);
+      else status = el('span', { class: 'pill lost' }, [el('i'), `Ausgestiegen: ${label(furthest, p.flow)}`]);
       const duration = p.completedAt && p.startedAt ? fmtDuration((Date.parse(p.completedAt) - Date.parse(p.startedAt)) / 1000) : '–';
       const [flowLabel, flowColor] = FLOW_LABEL[p.flow] || FLOW_LABEL.none;
       return el('tr', {}, [
         el('td', { text: p.startedAt ? when(p.startedAt) : '–' }),
         el('td', {}, [el('span', { class: 'flow-dot' }, [el('i', { style: `background:${flowColor}` }), flowLabel])]),
         el('td', {}, [status]),
-        el('td', { class: 'muted', text: p.completedAt ? 'Abgeschlossen' : LABELS[furthest] }),
+        el('td', { class: 'muted', text: p.completedAt ? 'Abgeschlossen' : label(furthest, p.flow) }),
         el('td', { class: 'r', text: duration }),
         el('td', { class: 'muted', text: p.version || '–' }),
         el('td', {}, [el('code', { text: p.id })]),
@@ -1105,6 +1314,183 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       el('thead', {}, [el('tr', {}, ['Start', 'Weg', 'Status', 'Weitester Schritt', 'Dauer', 'Version', 'Person'].map((h) => el('th', { class: h === 'Dauer' ? 'r' : '', text: h })))]),
       el('tbody', {}, rows),
     ]));
+  }
+
+  // ---------------------------------------------------------------- screens
+
+  // The new onboarding in pictures, in the order of the app. `img` is a WebP
+  // in assets/admin/onboarding/<de|en>/ (made with the app's `-tt.step` launch
+  // arguments; bump SHOT_VERSION with new files, /assets is cached for a year).
+  // `all`: before the path is known, so everyone counts. `event`: no screen
+  // of its own. `cond`: only some people ever get there, so the step is not
+  // measured against the one before.
+  const SHOT_VERSION = '20261114';
+  const SHOTS = {
+    create: {
+      sub: 'Wer „Los geht’s“ wählt und ein Paar anlegt',
+      steps: [
+        { section: 'Einstieg' }, { key: 'welcome', img: 'welcome', all: true },
+        { section: 'Fragen' },
+        { key: 'your_name', img: 'names' }, { key: 'thing', img: 'thing-colour' }, { key: 'thing_ears', img: 'thing-ears' },
+        { key: 'thing_extra', img: 'thing-extra' }, { key: 'anniversary_date', img: 'anniversary' }, { key: 'days_together', img: 'days' },
+        { key: 'distance', img: 'distance' }, { key: 'goals', img: 'goal' },
+        { section: 'Vorschau' },
+        { key: 'showcase_1', img: 'games', name: 'Vorschau 1: Spiele' }, { key: 'showcase_2', img: 'questions', name: 'Vorschau 2: Fragen' },
+        { key: 'showcase_3', img: 'widget', name: 'Vorschau 3: Widget' },
+        { section: 'Paywall' }, { key: 'paywall', img: 'paywall', name: 'Paywall' }, { key: 'purchase', event: true },
+        { section: 'Nach dem Kauf' },
+        { key: 'auth', img: 'account' }, { key: 'invite_code', img: 'invite' }, { key: 'completed', img: 'app', name: 'In der App' },
+      ],
+      stages: [
+        ['Fragen beantwortet', 'your_name', 'showcase_1'],
+        ['Vorschau durchgesehen', 'showcase_1', 'paywall'],
+        ['Auf der Paywall gekauft', 'paywall', 'purchase'],
+        ['Nach dem Kauf fertig', 'purchase', 'completed'],
+      ],
+      note: 'Die drei Vorschau-Screens kommen in der Reihenfolge des gewählten Ziels; die Bilder zeigen die Reihenfolge für „Mehr Spaß zusammen“. Gezählt wird nach Position.',
+    },
+    join: {
+      sub: 'Wer „Mein Partner hat mich eingeladen“ wählt',
+      steps: [
+        { section: 'Einstieg' }, { key: 'welcome', img: 'welcome', all: true },
+        { section: 'Verbinden' }, { key: 'auth', img: 'account-join' }, { key: 'join_code', img: 'join' },
+        { section: 'Vorschau' },
+        { key: 'showcase_1', img: 'games', name: 'Vorschau 1: Spiele' }, { key: 'showcase_2', img: 'questions', name: 'Vorschau 2: Fragen' },
+        { key: 'showcase_3', img: 'widget', name: 'Vorschau 3: Widget' },
+        { section: 'In der App' }, { key: 'completed', img: 'app', name: 'In der App' },
+        { section: 'Ohne Abo' }, { key: 'paywall', img: 'gate', name: 'Paywall am Gate', cond: 'nur wenn das Paar kein Abo hat' }, { key: 'purchase', event: true },
+      ],
+      stages: [
+        ['Konto und Code geschafft', 'auth', 'showcase_1'],
+        ['Vorschau durchgesehen', 'showcase_1', 'completed'],
+        ['Am Gate gekauft', 'paywall', 'purchase'],
+      ],
+      note: 'Beitretende sehen keine Paywall im Onboarding. Hat das Paar noch kein Abo, steht sie danach vor der App (Gate).',
+    },
+  };
+  const shotSrc = (s, lang) => `assets/admin/onboarding/${lang}/${s.img}.webp?v=${SHOT_VERSION}`;
+  const shotFlow = () => (prefs.shotFlow === 'join' ? 'join' : 'create');
+  const shotLang = () => (prefs.shotLang === 'en' ? 'en' : 'de');
+  let lbList = [], lbIndex = 0;
+
+  function renderScreens() {
+    const flow = shotFlow(), lang = shotLang(), def = SHOTS[flow];
+    for (const b of $('shots-flow').children) b.setAttribute('aria-pressed', String(b.dataset.flow === flow));
+    for (const b of $('shots-lang').children) b.setAttribute('aria-pressed', String(b.dataset.lang === lang));
+
+    // Numbers only when they belong to these screens.
+    const t = data && !failed && isNew() ? data.current[flow] : null;
+    const has = Boolean(t) && t.showcase_1 !== undefined;
+    const notice = $('shots-notice');
+    notice.hidden = has || !(failed || data);
+    if (!notice.hidden) {
+      if (failed) notice.replaceChildren('Die Zahlen konnten nicht geladen werden. Die Screens stehen trotzdem hier.');
+      else if (!isNew() && !prefs.ob) notice.replaceChildren('Zum neuen Onboarding gibt es in diesem Zeitraum noch keine Daten. Die Zahlen erscheinen hier, sobald die neue App-Version genutzt wird.');
+      else if (!isNew()) {
+        notice.replaceChildren('Oben ist das alte Onboarding gewählt. Seine Zahlen passen nicht zu diesen Screens.',
+          el('button', { class: 'btn secondary', type: 'button', text: 'Neues Onboarding wählen', onclick: () => { prefs.ob = 'new'; $('ob').value = 'new'; savePrefs(); load(); } }));
+      } else notice.replaceChildren('Der Server liefert die neuen Schritte noch nicht (Funktion admin-onboarding nicht aktualisiert). Die Screens stehen trotzdem hier.');
+    }
+
+    let section = '';
+    const steps = [];
+    for (const s of def.steps) {
+      if (s.section) { section = s.section; continue; }
+      const n = !has ? null : s.all ? data.current.all.started : t[s.key] ?? 0;
+      steps.push({ ...s, section, n, no: steps.length + 1, name: s.name || label(s.key, flow, true) });
+    }
+    const own = steps.find((s) => !s.all);
+    const first = has ? own.n : 0;
+    steps.forEach((s, i) => {
+      const before = i ? steps[i - 1] : null;
+      s.prev = !has || !before || before.all || s.cond ? null : before.n;
+      s.ofAll = has && before && before.all ? pct(s.n, before.n) : null;
+    });
+    // The biggest loss between two screens gets the badge; buying never competes.
+    let worst = null;
+    for (const s of steps) {
+      if (s.prev === null || s.key === 'purchase') continue;
+      if (s.prev - s.n > (worst ? worst.prev - worst.n : 0)) worst = s;
+    }
+
+    $('shots-sub').textContent = has ? `${def.sub} · ${fmt(first)} Personen` : def.sub;
+    $('shots-note').textContent = def.note;
+
+    const stages = $('stages');
+    stages.hidden = !has;
+    if (has) {
+      stages.replaceChildren(...def.stages.map(([name, from, to]) => el('div', { class: 'stage' }, [
+        el('span', { text: name }),
+        el('b', { class: 'num', text: fmtPct(pct(t[to] ?? 0, t[from] ?? 0), 0) }),
+        el('small', { class: 'num', text: `${fmt(t[from] ?? 0)} → ${fmt(t[to] ?? 0)} Personen` }),
+      ])));
+    }
+
+    lbList = steps.filter((s) => s.img);
+    $('shots').replaceChildren(...steps.map((s) => {
+      const share = has && !s.all ? pct(s.n, first) : null;
+      const conv = s.prev !== null ? pct(s.n, s.prev) : null;
+      const lost = s.prev !== null ? Math.max(0, s.prev - s.n) : null;
+      s.caption = !has ? '' : s.all ? `${fmt(s.n)} Starts` : `${fmt(s.n)} Personen, ${fmtPct(share, 0)}`;
+      const media = s.event
+        ? el('div', { class: 'shot-img shot-event' }, [el('div', {}, [el('b', { text: 'Kein eigener Screen' }), 'Der Kauf läuft im Kauffenster von Apple.'])])
+        : el('button', { class: 'shot-img', type: 'button', 'aria-label': `${s.name} vergrößern`, onclick: () => openShot(s) }, [
+          el('img', { src: shotSrc(s, lang), alt: `Screenshot: ${s.name}`, loading: 'lazy', decoding: 'async', width: '720', height: '1565' }),
+        ]);
+      const tile = el('div', { class: 'shot', role: 'listitem' }, [
+        el('div', { class: 'shot-top' }, [el('span', { class: 'shot-no', text: String(s.no) }), s.section]),
+        media,
+        el('div', { class: 'shot-name' }, [el('b', { text: s.name }), el('code', { text: KEYS[s.key] || s.key })]),
+      ]);
+      if (!has) {
+        if (s.cond) tile.append(el('div', { class: 'shot-loss', text: s.cond }));
+        return tile;
+      }
+      let foot;
+      if (s.all) foot = ['Start, für alle gleich'];
+      else if (s.cond) foot = [s.cond];
+      else if (s.prev === null) foot = [s.ofAll === null ? 'Start' : `${fmtPct(s.ofAll, 0)} aller Starts`];
+      else if (s === worst) foot = [el('span', { class: 'badge', title: 'Größter Abbruch zwischen zwei Screens' }, [icon(ICON_DOWN), `−${fmt(lost)}`]), `${fmtPct(conv, 0)} bleiben`];
+      else if (s.key === 'purchase') foot = [`${fmtPct(conv, 0)} kaufen`];
+      else foot = [lost > 0 ? `−${fmt(lost)} · ${fmtPct(conv, 0)} bleiben` : 'niemand verloren'];
+      tile.append(
+        el('div', { class: 'shot-val num' }, [el('b', { text: fmt(s.n) }), el('span', { text: s.all ? 'alle Starts' : fmtPct(share, 0) })]),
+        el('div', { class: `shot-bar${s.all ? ' all' : ''}` }, [el('i', { style: `width:${s.all ? 100 : Math.min(100, (share || 0) * 100)}%` })]),
+        el('div', { class: 'shot-loss num' }, foot),
+      );
+      bindTip(tile, () => [
+        `${s.no}. ${s.name}`,
+        [s.all ? 'Starts' : 'Personen', fmt(s.n)],
+        share !== null ? ['Anteil dieses Wegs', fmtPct(share)] : null,
+        s.ofAll !== null ? ['Anteil aller Starts', fmtPct(s.ofAll)] : null,
+        conv !== null ? ['Vom Vorschritt', fmtPct(conv)] : null,
+        lost !== null ? ['Abgesprungen', fmt(lost)] : null,
+        s === worst ? ['', 'Größter Abbruch'] : null,
+      ]);
+      return tile;
+    }));
+  }
+
+  function showShot() {
+    const s = lbList[lbIndex];
+    if (!s) return;
+    $('lb-img').src = shotSrc(s, shotLang());
+    $('lb-img').alt = `Screenshot: ${s.name}`;
+    $('lb-cap').replaceChildren(el('b', { text: `${s.no}. ${s.name}` }), s.caption ? el('span', { text: ` · ${s.caption}` }) : '');
+    $('lb-prev').disabled = lbIndex === 0;
+    $('lb-next').disabled = lbIndex === lbList.length - 1;
+  }
+  function openShot(step) {
+    lbIndex = Math.max(0, lbList.indexOf(step));
+    showShot();
+    hideTip();
+    $('lightbox').showModal();
+  }
+  function turnShot(by) {
+    const next = lbIndex + by;
+    if (next < 0 || next >= lbList.length) return;
+    lbIndex = next;
+    showShot();
   }
 
   // ---------------------------------------------------------------- tooltip
@@ -1160,6 +1546,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     });
   }
   $('version').addEventListener('change', (e) => { prefs.version = e.target.value; savePrefs(); load(); });
+  $('ob').value = isNew() ? 'new' : 'old';
+  $('ob').addEventListener('change', (e) => { prefs.ob = e.target.value; savePrefs(); load(); });
   $('hide-sim').addEventListener('change', (e) => { prefs.hideSim = e.target.checked; savePrefs(); load(); });
   $('funnel-tabs').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
@@ -1171,6 +1559,34 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     b.textContent = views[k] === 'chart' ? 'Tabelle' : 'Diagramm';
     k === 'funnel' ? renderFunnel() : renderTrend();
   }));
+  function goTo(next) {
+    page = next === 'screens' ? 'screens' : 'funnel';
+    applyPage();
+    // The trend chart measures its box: drawn while hidden it has no width.
+    if (page === 'funnel' && data && !failed && views.trend === 'chart') renderTrend();
+  }
+  $('nav').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    history.replaceState(null, '', b.dataset.page === 'screens' ? '#screens' : location.pathname + location.search);
+    goTo(b.dataset.page);
+  });
+  addEventListener('hashchange', () => goTo(location.hash === '#screens' ? 'screens' : 'funnel'));
+  $('shots-flow').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    prefs.shotFlow = b.dataset.flow; savePrefs(); renderScreens();
+  });
+  $('shots-lang').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    prefs.shotLang = b.dataset.lang; savePrefs(); renderScreens();
+  });
+  $('lb-prev').addEventListener('click', () => turnShot(-1));
+  $('lb-next').addEventListener('click', () => turnShot(1));
+  $('lb-close').addEventListener('click', () => $('lightbox').close());
+  $('lightbox').addEventListener('click', (e) => { if (!e.target.closest('figure, button')) $('lightbox').close(); });
+  $('lightbox').addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') turnShot(-1);
+    if (e.key === 'ArrowRight') turnShot(1);
+  });
   $('refresh').addEventListener('click', () => load(true));
   $('logout').addEventListener('click', () => logout());
   $('theme').addEventListener('click', () => {
@@ -1181,7 +1597,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     store.set('tt-admin-theme', document.documentElement.dataset.theme);
   });
   let resizeTimer;
-  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => data && views.trend === 'chart' && renderTrend(), 120); });
+  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => data && page === 'funnel' && views.trend === 'chart' && renderTrend(), 120); });
 
   // ---------------------------------------------------------------- auth
 
@@ -1189,6 +1605,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     $('login-view').hidden = true;
     $('app-view').hidden = false;
     syncControls();
+    applyPage();
+    renderScreens();
     load();
   }
   function logout(message) {
@@ -1229,11 +1647,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const count = days.length;
     const prevDays = [];
     for (let i = count; i >= 1; i--) { const d = new Date(`${r.from}T12:00:00`); d.setDate(d.getDate() - i); prevDays.push(isoDay(d)); }
-    const CREATE = [['create_or_join', .93], ['your_name', .97], ['anniversary_date', .96], ['days_together', .98], ['distance', .97], ['distance_message', .99], ['goals', .95], ['auth', .74], ['invite_code', .95], ['thing', .96], ['preview', .97], ['done', .99], ['shared_plan', .98], ['completed', .99], ['paywall', .97], ['purchase', .11]];
-    const JOIN = [['create_or_join', 1], ['auth', .86], ['join_code', .9], ['preview', .97], ['completed', .98]];
+    // New: whoever does not buy never reaches the account, so the list is the order of the app.
+    const CREATE = isNew()
+      ? [['your_name', .9], ['thing', .97], ['thing_ears', .98], ['thing_extra', .98], ['anniversary_date', .96], ['days_together', .98], ['distance', .97], ['goals', .96], ['showcase_1', .97], ['showcase_2', .97], ['showcase_3', .98], ['paywall', .98], ['purchase', .13], ['auth', .93], ['invite_code', .97], ['completed', .97]]
+      : [['create_or_join', .93], ['your_name', .97], ['anniversary_date', .96], ['days_together', .98], ['distance', .97], ['distance_message', .99], ['goals', .95], ['auth', .74], ['invite_code', .95], ['thing', .96], ['preview', .97], ['done', .99], ['shared_plan', .98], ['completed', .99], ['paywall', .97], ['purchase', .11]];
+    const JOIN = isNew()
+      ? [['auth', .86], ['join_code', .9], ['showcase_1', .97], ['showcase_2', .98], ['showcase_3', .98], ['completed', .98]]
+      : [['create_or_join', 1], ['auth', .86], ['join_code', .9], ['preview', .97], ['completed', .98]];
     const empty = () => {
       const t = { started: 0, completed: 0, paywall: 0, purchase: 0, trial: 0, joined_pro: 0, median_complete: null };
-      for (const s of PATH.create.concat('join_code')) t[s] = 0;
+      for (const s of STEP_KEYS) t[s] = 0;
       return t;
     };
     function simulate(dayList, boost) {
@@ -1249,7 +1672,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
           const reached = ['welcome'];
           const plan = flow === 'join' ? JOIN : CREATE;
           let alive = true;
-          if (flow === 'none') { if (rnd() < .5) reached.push('create_or_join'); }
+          if (flow === 'none') { if (!isNew() && rnd() < .5) reached.push('create_or_join'); }
           else {
             for (const [step, p] of plan) {
               if (!alive || rnd() > p) { alive = false; break; }
@@ -1260,7 +1683,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
           }
           const joinedPro = flow === 'join' && reached.includes('completed') && rnd() < .58;
           if (flow === 'join' && reached.includes('completed') && !joinedPro) {
-            reached.push('shared_plan');
+            if (!isNew()) reached.push('shared_plan');
             if (rnd() < .96) { reached.push('paywall'); if (rnd() < .14) reached.push('purchase'); }
           }
           const trial = reached.includes('purchase') && rnd() < .7;
@@ -1292,12 +1715,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const recent = cur.people.slice(-25).reverse().map((p, i) => {
       const steps = {};
       let t = p.startedAt.getTime();
-      for (const s of PATH.create.concat('join_code')) {
+      for (const s of STEP_KEYS) {
         if (p.reached.includes(s)) { steps[s] = new Date(t).toISOString(); t += 15000 + (i * 7919 % 20000); } else steps[s] = null;
       }
       const startedAt = new Date(Date.now() - (i === 0 ? 6 : 25 + i * 47) * 60000);
       return {
-        id: Math.abs(Math.sin(i + 1) * 1e9).toString(16).slice(0, 8), flow: p.flow, version: i % 4 ? '2.0.3' : '2.0.2',
+        id: Math.abs(Math.sin(i + 1) * 1e9).toString(16).slice(0, 8), flow: p.flow, version: isNew() ? '2.1.0' : i % 4 ? '2.0.3' : '2.0.2',
         startedAt: startedAt.toISOString(), steps,
         completedAt: p.reached.includes('completed') ? new Date(startedAt.getTime() + p.secs * 1000).toISOString() : null,
         paywallAt: p.reached.includes('paywall') ? new Date(startedAt.getTime() + p.secs * 1000 + 4000).toISOString() : null,
