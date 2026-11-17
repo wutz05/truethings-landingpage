@@ -283,6 +283,24 @@ td code { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
 .lb-btn svg { width: 20px; height: 20px; }
 .lb-close { position: absolute; top: 14px; right: 14px; }
 
+/* ---------- Videos: what the posting queue put out, and its views ---------- */
+.kpis.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.vid-name { white-space: normal; min-width: 190px; }
+.vid-name b { display: block; font-weight: 600; font-size: 13.5px; line-height: 1.3; }
+.vid-name span { color: var(--muted); font-size: 12px; }
+.vid-total { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+.vid-total b { font-weight: 650; }
+.vid-bar { position: relative; flex: none; width: 84px; height: 6px; border-radius: 0 3px 3px 0; background: var(--track); }
+.vid-bar i { position: absolute; left: 0; top: 0; bottom: 0; min-width: 2px; border-radius: 0 3px 3px 0; background: var(--series-1); }
+th.sort { cursor: pointer; user-select: none; }
+th.sort:hover { color: var(--text); }
+th.sort[aria-sort] { color: var(--text); }
+td a.num-link { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--border-strong); }
+td a.num-link:hover { border-bottom-style: solid; }
+.pill.sm { font-size: 11px; padding: 1px 7px; }
+.chart .bar { fill: var(--series-1); }
+.chart .bar.dim { opacity: .45; }
+
 /* ---------- Tooltip ---------- */
 .tooltip {
   position: fixed; z-index: 50; pointer-events: none; min-width: 168px; max-width: 260px;
@@ -327,7 +345,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 :focus-visible { outline: 2px solid var(--series-2); outline-offset: 2px; }
 
 @media (max-width: 1100px) {
-  .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kpis, .kpis.five { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .two-col { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
@@ -338,7 +356,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   .lb { grid-template-columns: 40px minmax(0, auto) 40px; gap: 6px; padding: 14px 6px; }
   .lb-btn { width: 38px; height: 38px; }
   main { padding: 20px 16px 48px; }
-  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpis, .kpis.five { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .vid-bar { display: none; }
   .compare { margin-left: 0; width: 100%; }
   .delta small { display: none; }
   .card-head { flex-wrap: wrap; }
@@ -387,6 +406,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     <nav class="nav" id="nav" aria-label="Seiten">
       <button class="nav-item" data-page="funnel" aria-pressed="true">Funnel</button>
       <button class="nav-item" data-page="screens" aria-pressed="false">Screens</button>
+      <button class="nav-item" data-page="videos" aria-pressed="false">Videos</button>
     </nav>
     <div class="spacer"></div>
     <span id="updated" class="updated"></span>
@@ -421,13 +441,13 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       <label class="field" id="custom-range" hidden>
         <input type="date" id="from" aria-label="Von"> – <input type="date" id="to" aria-label="Bis">
       </label>
-      <label class="field">Version
+      <label class="field funnel-only">Version
         <select id="version"><option value="v2">Alle 2.x</option></select>
       </label>
-      <label class="field" title="Seit dem Umbau im November 2026 kommt die Paywall vor dem Konto. Die beiden Abläufe haben verschiedene Schritte und werden getrennt gezeigt.">Onboarding
+      <label class="field funnel-only" title="Seit dem Umbau im November 2026 kommt die Paywall vor dem Konto. Die beiden Abläufe haben verschiedene Schritte und werden getrennt gezeigt.">Onboarding
         <select id="ob"><option value="new">Neu (Paywall vor Konto)</option><option value="old">Alt (bis 2.0.7)</option></select>
       </label>
-      <label class="field" title="Simulator, TestFlight und App Review sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
+      <label class="field funnel-only" title="Simulator, TestFlight und App Review sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
       <span class="compare" id="compare"></span>
     </div>
 
@@ -553,6 +573,52 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         Den Link „Anmeldung überspringen“ auf den Konto-Screens gibt es nur im Test-Build.
         Die Zahlen sind dieselben wie im Funnel und folgen den Filtern oben; eine Tabelle dazu gibt es auf der Seite „Funnel“.
       </footer>
+    </div>
+
+    <!-- Page "Videos": what the posting queue planned and how it performs. Read-only. -->
+    <div id="page-videos" hidden>
+      <div id="videos-state" class="card state" hidden></div>
+      <div id="videos-content">
+        <div id="videos-notice" class="notice" hidden></div>
+        <section class="kpis five" id="vid-kpis" aria-label="Kennzahlen"></section>
+
+        <section class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Neue Aufrufe pro Tag</div>
+              <div class="card-sub" id="vid-trend-sub">Alle Videos aus dem Zeitraum zusammen</div>
+            </div>
+            <div class="head-tools"><button class="view-toggle" id="vid-trend-toggle">Tabelle</button></div>
+          </div>
+          <div class="card-body"><div class="chart" id="vid-trend"></div></div>
+        </section>
+
+        <section class="card" style="margin-top:16px">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Videos</div>
+              <div class="card-sub" id="vid-sub"></div>
+            </div>
+          </div>
+          <div class="card-body"><div class="table-wrap" id="vid-table"></div></div>
+        </section>
+
+        <section class="card" style="margin-top:16px">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Als Nächstes</div>
+              <div class="card-sub" id="vid-next-sub">Bei Post Bridge eingeplant, erscheint von selbst</div>
+            </div>
+          </div>
+          <div class="card-body"><div class="table-wrap" id="vid-next"></div></div>
+        </section>
+
+        <footer>
+          Quelle: Post Bridge. Die Zahlen kommen von TikTok und Instagram und sind so frisch wie der letzte Abgleich dort; ein neues Video zeigt oft erst nach Stunden Werte.
+          Der Knopf „Neu laden“ oben stößt einen Abgleich an (höchstens alle 30 Minuten). Der Zeitraum filtert nach dem Tag der Veröffentlichung, die Aufrufe zählen bis heute.
+          Von dieser Seite aus wird nichts gepostet: Geplant wird über die Warteschlange (<code>videos/queue</code>).
+        </footer>
+      </div>
     </div>
   </main>
 </div>
@@ -751,8 +817,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   const prefs = Object.assign({ days: '30', version: 'v2', ob: null, hideSim: true, flow: 'all', from: null, to: null, shotFlow: 'create', shotLang: 'de' }, store.get(PREFS_KEY) || {});
   let data = null;
   // Two pages share the filters: the funnel and the screens. The hash picks one.
-  let page = location.hash === '#screens' ? 'screens' : 'funnel';
+  const pageOf = (hash) => (hash === '#screens' ? 'screens' : hash === '#videos' ? 'videos' : 'funnel');
+  let page = pageOf(location.hash);
   let failed = false;
+  // Which range the loaded data belongs to, so a page shown again knows if it is stale.
+  let dataKey = '';
+  const rangeKey = () => { const r = range(); return `${r.from}:${r.to}`; };
   const views = { funnel: 'chart', trend: 'chart' };
   let session = store.get(SESSION_KEY);
   let loadToken = 0;
@@ -768,8 +838,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   // ---------------------------------------------------------------- api
 
-  async function call(body) {
-    const res = await fetch(API, {
+  async function call(body, api = API) {
+    const res = await fetch(api, {
       method: 'POST',
       headers: { 'content-type': 'application/json', ...(session ? { 'x-admin-session': session.token } : {}) },
       body: JSON.stringify(body),
@@ -796,6 +866,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         return load(refresh);
       }
       data = next;
+      dataKey = `${r.from}:${r.to}`;
       showState(null);
       render();
     } catch (err) {
@@ -846,6 +917,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   const PAGES = {
     funnel: ['Onboarding-Funnel', 'Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele ein Abo abschließen.'],
     screens: ['Onboarding-Screens', 'Jeder Screen des neuen Onboardings in der Reihenfolge der App, mit den Zahlen aus dem gewählten Zeitraum.'],
+    videos: ['Videos', 'Welche Videos aus der Warteschlange draußen sind, wie viele Aufrufe sie haben und was als Nächstes kommt.'],
   };
   /** Shows the chosen page. A failed load hides the funnel, never the screenshots. */
   function applyPage() {
@@ -853,18 +925,34 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     $('page-title').textContent = PAGES[page][0];
     $('page-lede').textContent = PAGES[page][1];
     document.title = `TrueThings Admin · ${PAGES[page][0]}`;
-    $('state').hidden = !failed;
+    const onboarding = page !== 'videos';
+    $('state').hidden = !failed || !onboarding;
     $('content').hidden = failed || page !== 'funnel';
     $('page-screens').hidden = page !== 'screens';
+    $('page-videos').hidden = page !== 'videos';
+    for (const f of document.querySelectorAll('.funnel-only')) f.hidden = !onboarding;
+    $('demo-flag').hidden = !DEMO;
+    stamp();
+  }
+
+  /** "Stand …" in the top bar and the line under the filters, for the page that is open. */
+  function stamp() {
+    const at = (d) => `Stand ${new Date(d.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}${d.cached ? ' · aus Cache' : ''}`;
+    if (page === 'videos') {
+      const r = range();
+      $('updated').textContent = videoData ? at(videoData) : '';
+      $('compare').textContent = `Veröffentlicht ${longDay(r.from)} – ${longDay(r.to)}`;
+    } else {
+      $('updated').textContent = data ? at(data) : '';
+      $('compare').textContent = data ? `${longDay(data.range.from)} – ${longDay(data.range.to)} · verglichen mit ${longDay(data.previousRange.from)} – ${longDay(data.previousRange.to)}` : '';
+    }
   }
 
   // ---------------------------------------------------------------- render
 
   function render() {
     if (!data) return;
-    $('demo-flag').hidden = !DEMO;
-    $('updated').textContent = `Stand ${new Date(data.generatedAt).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}${data.cached ? ' · aus Cache' : ''}`;
-    $('compare').textContent = `${longDay(data.range.from)} – ${longDay(data.range.to)} · verglichen mit ${longDay(data.previousRange.from)} – ${longDay(data.previousRange.to)}`;
+    stamp();
     renderVersions();
     renderKpis();
     renderFunnel();
@@ -1493,6 +1581,340 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     showShot();
   }
 
+  // ---------------------------------------------------------------- videos
+
+  // The posting queue (videos/queue on Hannes's Mac) plans videos at Post
+  // Bridge; the function admin-content remembers those posts and reads their
+  // results and numbers there. This page only shows them.
+  const CONTENT_API = API.replace(/admin-onboarding$/, 'admin-content');
+  const PLATFORM = { tiktok: 'TikTok', instagram: 'Instagram', youtube: 'YouTube', facebook: 'Facebook' };
+  const platformName = (p) => PLATFORM[p] || p;
+  let videoData = null, videoDaily = null, videoKey = '', videoError = null, videoToken = 0;
+  const vidView = { trend: 'chart', sort: 'date' };
+
+  async function loadVideos(refresh = false) {
+    const ticket = ++videoToken;
+    const r = range();
+    $('main').classList.add('loading');
+    $('refresh').classList.add('spin');
+    try {
+      const next = DEMO ? demoVideos(r) : await call({ action: 'videos', from: r.from, refresh }, CONTENT_API);
+      if (ticket !== videoToken) return;
+      videoData = next; videoError = null; videoDaily = null; videoKey = `${r.from}:${r.to}`;
+      renderVideos();
+      loadVideoDaily(ticket, refresh);
+    } catch (err) {
+      if (ticket !== videoToken) return;
+      if (err.status === 401) return logout('Sitzung abgelaufen, bitte neu anmelden.');
+      videoError = err;
+      renderVideos();
+    } finally {
+      if (ticket === videoToken) {
+        $('main').classList.remove('loading');
+        $('refresh').classList.remove('spin');
+      }
+    }
+  }
+
+  /** The day-by-day numbers come second: one request per video at Post Bridge. */
+  async function loadVideoDaily(ticket, refresh) {
+    const ids = [...new Set(outVideos().flatMap((v) => v.channels.map((c) => c.analyticsId).filter(Boolean)))].slice(0, 200);
+    let next;
+    try {
+      next = !ids.length ? { days: [] } : DEMO ? { days: videoData.demoDays } : await call({ action: 'daily', analytics_ids: ids, refresh }, CONTENT_API);
+    } catch (err) {
+      next = { days: [], failed: true };
+    }
+    if (ticket !== videoToken) return;
+    videoDaily = next;
+    renderVideoTrend();
+  }
+
+  const localDay = (iso) => isoDay(new Date(iso));
+  /** Videos with at least one channel whose time has come, inside the chosen range. */
+  function outVideos() {
+    if (!videoData) return [];
+    const to = range().to;
+    return videoData.videos
+      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) <= to) }))
+      .filter((v) => v.out.length)
+      .map((v) => ({
+        ...v,
+        outAt: v.out.reduce((a, c) => (c.scheduledAt < a ? c.scheduledAt : a), v.out[0].scheduledAt),
+        outViews: v.out.reduce((a, c) => a + (c.views || 0), 0),
+        outLikes: v.out.reduce((a, c) => a + (c.likes || 0), 0),
+        outComments: v.out.reduce((a, c) => a + (c.comments || 0), 0),
+        outShares: v.out.reduce((a, c) => a + (c.shares || 0), 0),
+      }));
+  }
+  /** What is still ahead: one line per post (a post can go to several accounts). */
+  function nextPosts() {
+    if (!videoData) return [];
+    const posts = new Map();
+    for (const v of videoData.videos) {
+      for (const c of v.channels) {
+        if (c.state !== 'scheduled') continue;
+        const p = posts.get(c.postId) || { at: c.scheduledAt, title: v.title, video: v.video, lang: c.lang, accounts: [] };
+        p.accounts.push(c);
+        posts.set(c.postId, p);
+      }
+    }
+    return [...posts.values()].sort((a, b) => (a.at < b.at ? -1 : 1));
+  }
+
+  function renderVideosState() {
+    const box = $('videos-state');
+    const err = videoError;
+    box.hidden = !err;
+    $('videos-content').hidden = Boolean(err);
+    if (!err) return;
+    const code = err.payload && err.payload.error;
+    const detail = (err.payload && (err.payload.detail || err.payload.error)) || err.message;
+    const retry = el('div', { class: 'actions' }, [el('button', { class: 'btn', text: 'Erneut laden', onclick: () => loadVideos(true) })]);
+    if (code === 'postbridge_not_configured') {
+      box.replaceChildren(
+        el('h2', { text: 'Noch ein Schritt: Post Bridge verbinden' }),
+        el('p', { text: 'Die Seite liest geplante Videos und ihre Aufrufe direkt bei Post Bridge. Dafür braucht der Server den API-Key.' }),
+        el('ol', {}, [
+          el('li', {}, ['In Post Bridge einen ', el('b', { text: 'API-Key' }), ' erzeugen.']),
+          el('li', {}, ['Im Terminal im Ordner ', el('code', { text: 'truethings' }), ' ausführen:']),
+        ]),
+        el('pre', { text: 'supabase secrets set POST_BRIDGE_API_KEY=… --project-ref bpmuuvqlorfwzygmaonw' }),
+        retry,
+      );
+    } else if (err.status === 404 || code === 'bad_response' || !err.status) {
+      // No status at all: the browser got no answer it may read, which is what a missing function looks like.
+      box.replaceChildren(
+        el('h2', { text: 'Die Server-Funktion fehlt noch' }),
+        el('p', { text: 'Die Funktion admin-content, die diese Seite mit Daten versorgt, ist noch nicht deployt.' }),
+        el('pre', { text: 'supabase functions deploy admin-content --no-verify-jwt --project-ref bpmuuvqlorfwzygmaonw' }),
+        retry,
+      );
+    } else {
+      box.replaceChildren(
+        el('h2', { text: err.status === 429 ? 'Post Bridge bremst gerade' : 'Daten konnten nicht geladen werden' }),
+        el('p', { text: err.status === 429 ? 'Zu viele Abfragen in kurzer Zeit. In ein paar Minuten noch einmal versuchen.' : 'Die Abfrage ist fehlgeschlagen.' }),
+        el('pre', { text: String(detail) }),
+        retry,
+      );
+    }
+  }
+
+  function renderVideos() {
+    stamp();
+    renderVideosState();
+    if (videoError || !videoData) return;
+    const list = outVideos();
+    const ahead = nextPosts();
+
+    // What needs a hand: accounts Post Bridge lost, posts a platform refused.
+    const refused = list.flatMap((v) => v.out.filter((c) => c.state === 'failed').map((c) => `${v.title} auf ${platformName(c.platform)} (@${c.username})`));
+    const lost = (videoData.reconnect || []).map((a) => `@${a.username} (${platformName(a.platform)})`);
+    const notice = $('videos-notice');
+    notice.hidden = !refused.length && !lost.length;
+    notice.replaceChildren(...[
+      lost.length ? el('div', {}, [el('b', { text: 'Neu verbinden: ' }), `Post Bridge erreicht ${lost.join(', ')} nicht mehr. Geplante Videos gehen dort nicht raus.`]) : null,
+      refused.length ? el('div', {}, [el('b', { text: 'Nicht veröffentlicht: ' }), refused.slice(0, 4).join(' · ') + (refused.length > 4 ? ` und ${refused.length - 4} weitere` : '')]) : null,
+    ].filter(Boolean));
+
+    // KPI tiles
+    const live = list.filter((v) => v.out.some((c) => c.state === 'posted'));
+    const sum = (key) => list.reduce((a, v) => a + v[key], 0);
+    const posts = list.reduce((a, v) => a + v.out.filter((c) => c.state === 'posted').length, 0);
+    const synced = list.flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
+    const best = live.slice().sort((a, b) => b.outViews - a.outViews)[0];
+    const aheadVideos = new Set(ahead.map((p) => `${p.video}:${p.lang}`)).size;
+    const tiles = [
+      { label: 'Aufrufe', value: fmt(sum('outViews')), note: synced ? `abgeglichen ${when(synced)}` : 'noch keine Zahlen',
+        info: 'Alle Aufrufe der Videos, die im Zeitraum veröffentlicht wurden, über alle Konten' },
+      { label: 'Videos veröffentlicht', value: fmt(live.length), note: posts ? `${fmt(posts)} Posts auf den Konten` : null },
+      { label: 'Ø Aufrufe pro Video', value: live.length ? fmt(sum('outViews') / live.length) : '–',
+        note: best && best.outViews ? `Bestes: ${best.title} (${fmt(best.outViews)})` : null },
+      { label: 'Likes', value: fmt(sum('outLikes')), note: `${fmt(sum('outComments'))} Kommentare · ${fmt(sum('outShares'))} Shares` },
+      { label: 'Geplant', value: fmt(aheadVideos), note: ahead.length ? `reicht bis ${longDay(localDay(ahead[ahead.length - 1].at))}` : 'Warteschlange ist leer',
+        info: 'Videos, die bei Post Bridge eingeplant sind und noch erscheinen' },
+    ];
+    $('vid-kpis').replaceChildren(...tiles.map((t) => el('div', { class: 'card kpi' }, [
+      el('div', { class: 'kpi-label' }, [t.label, t.info ? el('span', { class: 'info', title: t.info }, [icon(ICON_INFO)]) : null]),
+      el('div', { class: 'kpi-value num', text: t.value }),
+      t.note ? el('div', { class: 'kpi-note', text: t.note }) : null,
+    ])));
+
+    renderVideoTable(list);
+    renderVideoNext(ahead);
+    renderVideoTrend();
+  }
+
+  function renderVideoTable(list) {
+    const box = $('vid-table');
+    $('vid-sub').textContent = list.length ? `${fmt(list.length)} Videos im Zeitraum, ein Wert je Kanal` : '';
+    if (!list.length) {
+      box.replaceChildren(el('div', { class: 'empty', text: 'Im gewählten Zeitraum ist noch kein Video aus der Warteschlange erschienen.' }));
+      return;
+    }
+    // One column per platform and language that occurs, English first.
+    const groupKey = (c) => `${c.lang}:${c.platform}`;
+    const groups = [...new Set(list.flatMap((v) => v.out.map(groupKey)))]
+      .sort((a, b) => (a.startsWith('en') === b.startsWith('en') ? a.localeCompare(b) * -1 : a.startsWith('en') ? -1 : 1));
+    const groupLabel = (g) => { const [lang, platform] = g.split(':'); return `${platformName(platform)} ${lang.toUpperCase()}`; };
+    const rows = list.slice().sort((a, b) => (vidView.sort === 'views' ? b.outViews - a.outViews : a.outAt < b.outAt ? 1 : -1));
+    const max = Math.max(1, ...rows.map((v) => v.outViews));
+
+    const cell = (v, g) => {
+      const cs = v.out.filter((c) => groupKey(c) === g);
+      if (!cs.length) return el('td', { class: 'r muted', text: '' });
+      const posted = cs.filter((c) => c.state === 'posted');
+      if (posted.length) {
+        const known = posted.filter((c) => c.views !== null);
+        const text = known.length ? fmt(known.reduce((a, c) => a + c.views, 0)) : '…';
+        const url = posted.length === 1 ? posted[0].url : null;
+        return el('td', { class: 'r' }, [url && /^https:\/\//.test(url)
+          ? el('a', { class: 'num-link', href: url, target: '_blank', rel: 'noopener', text, title: `@${posted[0].username} öffnen` })
+          : el('span', { text, title: known.length ? '' : 'Veröffentlicht, die Plattform hat noch keine Zahlen geliefert' })]);
+      }
+      const bad = cs.find((c) => c.state === 'failed');
+      return el('td', { class: 'r' }, [bad
+        ? el('span', { class: 'pill sm lost', title: bad.error || '' }, [el('i'), 'Fehler'])
+        : el('span', { class: 'pill sm live', title: 'Der Termin ist vorbei, Post Bridge hat noch kein Ergebnis gemeldet' }, [el('i'), 'läuft'])]);
+    };
+    const sortHead = (label, key, cls) => el('th', {
+      class: `sort ${cls}`, text: label + (vidView.sort === key ? ' ↓' : ''), tabindex: '0', role: 'button',
+      'aria-sort': vidView.sort === key ? 'descending' : null,
+      onclick: () => { vidView.sort = key; renderVideoTable(list); },
+      onkeydown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); vidView.sort = key; renderVideoTable(list); } },
+    });
+    const table = el('table', {}, [
+      el('thead', {}, [el('tr', {}, [
+        el('th', { text: 'Video' }), sortHead('Veröffentlicht', 'date', ''),
+        ...groups.map((g) => el('th', { class: 'r', text: groupLabel(g) })),
+        sortHead('Gesamt', 'views', 'r'),
+        el('th', { class: 'r', text: 'Likes' }), el('th', { class: 'r', text: 'Kommentare' }), el('th', { class: 'r', text: 'Shares' }),
+      ])]),
+      el('tbody', {}, rows.map((v) => {
+        const tr = el('tr', {}, [
+          el('td', { class: 'vid-name' }, [el('b', { text: v.title }), el('span', { text: v.video })]),
+          el('td', { text: when(v.outAt) }),
+          ...groups.map((g) => cell(v, g)),
+          el('td', { class: 'r' }, [el('div', { class: 'vid-total' }, [
+            el('b', { text: fmt(v.outViews) }),
+            el('div', { class: 'vid-bar' }, [el('i', { style: `width:${(v.outViews / max) * 100}%` })]),
+          ])]),
+          el('td', { class: 'r', text: fmt(v.outLikes) }), el('td', { class: 'r', text: fmt(v.outComments) }), el('td', { class: 'r', text: fmt(v.outShares) }),
+        ]);
+        bindTip(tr, () => [
+          v.title,
+          ...v.out.map((c) => [`@${c.username} · ${platformName(c.platform)} ${c.lang.toUpperCase()}`,
+            c.state === 'posted' ? (c.views === null ? 'noch keine Zahl' : fmt(c.views)) : c.state === 'failed' ? 'Fehler' : 'läuft']),
+          ['Gesamt', fmt(v.outViews)],
+        ]);
+        return tr;
+      })),
+    ]);
+    box.replaceChildren(table);
+  }
+
+  function renderVideoNext(ahead) {
+    const box = $('vid-next');
+    if (!ahead.length) {
+      box.replaceChildren(el('div', { class: 'empty', text: 'Nichts eingeplant. Neue Videos in die Warteschlange legen und einplanen lassen.' }));
+      return;
+    }
+    box.replaceChildren(el('table', {}, [
+      el('thead', {}, [el('tr', {}, ['Termin', 'Video', 'Sprache', 'Konten'].map((h) => el('th', { text: h })))]),
+      el('tbody', {}, ahead.map((p) => el('tr', {}, [
+        el('td', { text: new Date(p.at).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) }),
+        el('td', { class: 'vid-name' }, [el('b', { text: p.title }), el('span', { text: p.video })]),
+        el('td', { text: p.lang === 'de' ? 'Deutsch' : 'Englisch' }),
+        el('td', { class: 'muted', text: p.accounts.map((c) => `@${c.username} (${platformName(c.platform)})`).join(', ') }),
+      ]))),
+    ]));
+  }
+
+  function renderVideoTrend() {
+    const box = $('vid-trend');
+    if (!videoData || videoError) return;
+    if (!videoDaily) { box.replaceChildren(el('div', { class: 'empty', text: 'Lade Tageswerte …' })); return; }
+    if (!videoDaily.days.length) {
+      box.replaceChildren(el('div', { class: 'empty', text: videoDaily.failed
+        ? 'Die Tageswerte konnten nicht geladen werden.'
+        : 'Noch keine Tageswerte. Sie erscheinen, sobald Post Bridge für ein Video Zahlen von der Plattform hat.' }));
+      return;
+    }
+    // Every day of the range up to today; days without a number are zeros.
+    const r = range();
+    const today = isoDay(new Date());
+    const gain = new Map(videoDaily.days.map((d) => [d.date, d]));
+    const days = [];
+    for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= r.to && isoDay(d) <= today; d.setDate(d.getDate() + 1)) {
+      const g = gain.get(isoDay(d));
+      days.push({ day: isoDay(d), views: g ? g.views : 0, likes: g ? g.likes : 0 });
+    }
+    if (vidView.trend === 'table') {
+      box.replaceChildren(el('div', { class: 'table-wrap' }, [el('table', {}, [
+        el('thead', {}, [el('tr', {}, ['Tag', 'Neue Aufrufe', 'Neue Likes'].map((h, i) => el('th', { class: i ? 'r' : '', text: h })))]),
+        el('tbody', {}, days.slice().reverse().map((d) => el('tr', {}, [
+          el('td', { text: longDay(d.day) }), el('td', { class: 'r', text: fmt(d.views) }), el('td', { class: 'r', text: fmt(d.likes) }),
+        ]))),
+      ])]));
+      return;
+    }
+    const W = Math.max(320, box.clientWidth || 800);
+    const H = 220, padL = 44, padR = 12, padT = 10, padB = 26;
+    const plotW = W - padL - padR, plotH = H - padT - padB;
+    const max = niceMax(Math.max(1, ...days.map((d) => d.views)));
+    const band = plotW / days.length;
+    const barW = Math.max(2, Math.min(18, band - 2));
+    const x = (i) => padL + band * i + band / 2;
+    const y = (v) => padT + plotH - (v / max) * plotH;
+    const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Neue Aufrufe pro Tag' });
+    for (let k = 0; k <= 4; k++) {
+      const v = (max / 4) * k;
+      s.append(svg('line', { x1: padL, x2: padL + plotW, y1: y(v), y2: y(v), stroke: k ? 'var(--grid)' : 'var(--axis)', 'stroke-width': 1 }));
+      const t = svg('text', { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end' });
+      t.textContent = nf.format(v);
+      s.append(t);
+    }
+    const every = Math.max(1, Math.ceil(days.length / Math.max(2, Math.floor(plotW / 64))));
+    for (let i = days.length - 1; i >= 0; i -= every) {
+      const t = svg('text', { x: x(i), y: H - 6, 'text-anchor': 'middle' });
+      t.textContent = dayLabel(days[i].day);
+      s.append(t);
+    }
+    // Columns stand on the baseline; only the top end is rounded.
+    const bars = days.map((d, i) => {
+      const top = y(d.views), h = y(0) - top, rad = Math.min(4, barW / 2, h);
+      const left = x(i) - barW / 2, right = x(i) + barW / 2;
+      const bar = svg('path', { class: 'bar', d: h <= 0 ? '' : `M${left},${y(0)}V${top + rad}Q${left},${top} ${left + rad},${top}H${right - rad}Q${right},${top} ${right},${top + rad}V${y(0)}Z` });
+      s.append(bar);
+      return bar;
+    });
+    const hit = svg('rect', { x: padL, y: padT, width: plotW, height: plotH, fill: 'transparent', tabindex: '0', style: 'outline:none' });
+    let focusIndex = days.length - 1;
+    const show = (i, clientX, clientY) => {
+      bars.forEach((b, k) => b.classList.toggle('dim', k !== i));
+      showTip([longDay(days[i].day), ['Neue Aufrufe', fmt(days[i].views), 'var(--series-1)'], ['Neue Likes', fmt(days[i].likes)]], clientX, clientY);
+    };
+    const hide = () => { bars.forEach((b) => b.classList.remove('dim')); hideTip(); };
+    hit.addEventListener('pointermove', (e) => {
+      const rect = s.getBoundingClientRect();
+      const px = ((e.clientX - rect.left) / rect.width) * W;
+      focusIndex = Math.max(0, Math.min(days.length - 1, Math.floor((px - padL) / band)));
+      show(focusIndex, e.clientX, e.clientY);
+    });
+    hit.addEventListener('pointerleave', hide);
+    hit.addEventListener('focus', () => { const b = hit.getBoundingClientRect(); show(focusIndex, b.left + ((x(focusIndex) - padL) / plotW) * b.width, b.top + 20); });
+    hit.addEventListener('blur', hide);
+    hit.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      e.preventDefault();
+      focusIndex = Math.max(0, Math.min(days.length - 1, focusIndex + (e.key === 'ArrowRight' ? 1 : -1)));
+      const b = hit.getBoundingClientRect();
+      show(focusIndex, b.left + ((x(focusIndex) - padL) / plotW) * b.width, b.top + 20);
+    });
+    s.append(hit);
+    box.replaceChildren(s);
+  }
+
   // ---------------------------------------------------------------- tooltip
 
   const tipBox = $('tooltip');
@@ -1537,12 +1959,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   $('range-presets').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
     if (b.dataset.days === 'custom') { const r = range(); prefs.from = r.from; prefs.to = r.to; }
-    prefs.days = b.dataset.days; savePrefs(); syncControls(); load();
+    prefs.days = b.dataset.days; savePrefs(); syncControls(); loadPage();
   });
   for (const id of ['from', 'to']) {
     $(id).addEventListener('change', () => {
       if (!$('from').value || !$('to').value || $('from').value > $('to').value) return;
-      prefs.from = $('from').value; prefs.to = $('to').value; savePrefs(); load();
+      prefs.from = $('from').value; prefs.to = $('to').value; savePrefs(); loadPage();
     });
   }
   $('version').addEventListener('change', (e) => { prefs.version = e.target.value; savePrefs(); load(); });
@@ -1559,18 +1981,30 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     b.textContent = views[k] === 'chart' ? 'Tabelle' : 'Diagramm';
     k === 'funnel' ? renderFunnel() : renderTrend();
   }));
+  /** Loads what the open page shows. */
+  function loadPage(refresh = false) { return page === 'videos' ? loadVideos(refresh) : load(refresh); }
   function goTo(next) {
-    page = next === 'screens' ? 'screens' : 'funnel';
+    page = pageOf(`#${next}`);
     applyPage();
-    // The trend chart measures its box: drawn while hidden it has no width.
-    if (page === 'funnel' && data && !failed && views.trend === 'chart') renderTrend();
+    // A page that was not open when the range changed still holds the old one.
+    if (page === 'videos') {
+      if (!videoData && !videoError || videoKey !== rangeKey()) loadVideos();
+      else renderVideos();
+    } else if (dataKey !== rangeKey() && !failed) load();
+    // The charts measure their box: drawn while hidden they have no width.
+    else if (page === 'funnel' && data && !failed && views.trend === 'chart') renderTrend();
   }
   $('nav').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
-    history.replaceState(null, '', b.dataset.page === 'screens' ? '#screens' : location.pathname + location.search);
+    history.replaceState(null, '', b.dataset.page === 'funnel' ? location.pathname + location.search : `#${b.dataset.page}`);
     goTo(b.dataset.page);
   });
-  addEventListener('hashchange', () => goTo(location.hash === '#screens' ? 'screens' : 'funnel'));
+  addEventListener('hashchange', () => goTo(pageOf(location.hash)));
+  $('vid-trend-toggle').addEventListener('click', (e) => {
+    vidView.trend = vidView.trend === 'chart' ? 'table' : 'chart';
+    e.currentTarget.textContent = vidView.trend === 'chart' ? 'Tabelle' : 'Diagramm';
+    renderVideoTrend();
+  });
   $('shots-flow').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
     prefs.shotFlow = b.dataset.flow; savePrefs(); renderScreens();
@@ -1587,7 +2021,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     if (e.key === 'ArrowLeft') turnShot(-1);
     if (e.key === 'ArrowRight') turnShot(1);
   });
-  $('refresh').addEventListener('click', () => load(true));
+  $('refresh').addEventListener('click', () => loadPage(true));
   $('logout').addEventListener('click', () => logout());
   $('theme').addEventListener('click', () => {
     const dark = document.documentElement.dataset.theme
@@ -1597,7 +2031,13 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     store.set('tt-admin-theme', document.documentElement.dataset.theme);
   });
   let resizeTimer;
-  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => data && page === 'funnel' && views.trend === 'chart' && renderTrend(), 120); });
+  addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (page === 'funnel' && data && views.trend === 'chart') renderTrend();
+      if (page === 'videos' && vidView.trend === 'chart') renderVideoTrend();
+    }, 120);
+  });
 
   // ---------------------------------------------------------------- auth
 
@@ -1607,12 +2047,13 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     syncControls();
     applyPage();
     renderScreens();
-    load();
+    loadPage();
   }
   function logout(message) {
     session = null;
     store.drop(SESSION_KEY);
-    data = null;
+    data = null; dataKey = '';
+    videoData = null; videoKey = '';
     $('app-view').hidden = true;
     $('login-view').hidden = false;
     $('login-error').textContent = message || '';
@@ -1735,6 +2176,54 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       range: { from: r.from, to: r.to, days: count }, previousRange: { from: prevFrom, to: prevTo },
       current: cur.totals, previous: prev.totals, trend: cur.trend, recent,
       versions: [{ version: '2.0.3', people: 812 }, { version: '2.0.2', people: 1904 }],
+    };
+  }
+
+  /** ?demo#videos: made-up videos with the same shape the server sends. */
+  function demoVideos(r) {
+    let seed = 11;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const titles = ['Eight Days', 'One Percent', 'Inside Jokes', 'The Scroll', 'A Thousand Evenings', 'Low Power Mode', 'Houseplant', 'Velcro', 'Elevator', '48 Days', 'Final Bosses', 'Day 47'];
+    const accounts = [['en', 'tiktok', 'truethings.en'], ['en', 'instagram', 'truethings.app'], ['de', 'tiktok', 'truethings.de'], ['de', 'instagram', 'truethings.de']];
+    const today = new Date();
+    const videos = [], gains = new Map();
+    let n = 0;
+    for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= isoDay(new Date(today.getTime() + 5 * 864e5)); d.setDate(d.getDate() + 1), n++) {
+      const future = isoDay(d) > isoDay(today);
+      const title = titles[n % titles.length];
+      const video = `${String(63 + n).padStart(3, '0')}-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      const age = Math.max(0, (today - d) / 864e5);
+      const pull = Math.pow(rnd(), 3) * 9 + 0.4;
+      const channels = accounts.filter(([lang]) => lang === 'en' || n > 6).map(([lang, platform, username], k) => {
+        const at = new Date(d); at.setHours(lang === 'en' ? 19 : 18, 30 + k, 0, 0);
+        const state = future ? 'scheduled' : (n === 9 && k === 1) ? 'failed' : age < 0.1 ? 'pending' : 'posted';
+        const views = state === 'posted' ? Math.round((platform === 'tiktok' ? 900 : 350) * pull * (1 - Math.exp(-(age + 0.3) / 2)) * (lang === 'de' ? 0.6 : 1)) : null;
+        if (views) {
+          // Most of a video's views come in its first days.
+          let left = views;
+          for (let k2 = 0; k2 < 6 && left > 0; k2++) {
+            const day = new Date(d); day.setDate(day.getDate() + k2);
+            if (isoDay(day) > isoDay(today)) break;
+            const part = k2 === 5 ? left : Math.round(left * 0.55);
+            const g = gains.get(isoDay(day)) || { views: 0, likes: 0 };
+            g.views += part; g.likes += Math.round(part * 0.06); gains.set(isoDay(day), g);
+            left -= part;
+          }
+        }
+        return {
+          lang, platform, username, accountId: k + 1, postId: `demo-${n}-${lang}`, scheduledAt: at.toISOString(), state,
+          error: state === 'failed' ? 'Instagram: media could not be processed' : null,
+          url: state === 'posted' ? `https://www.${platform}.com/` : null, analyticsId: views === null ? null : `a-${n}-${k}`,
+          views, likes: views === null ? null : Math.round(views * 0.06), comments: views === null ? null : Math.round(views * 0.004),
+          shares: views === null ? null : Math.round(views * 0.009), syncedAt: views === null ? null : new Date(today.getTime() - 40 * 60000).toISOString(),
+        };
+      });
+      videos.push({ video, title, firstAt: channels[0].scheduledAt, cover: null, channels });
+    }
+    return {
+      generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(),
+      reconnect: [{ platform: 'instagram', username: 'truethings.de' }],
+      demoDays: [...gains.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([date, g]) => ({ date, ...g })),
     };
   }
 
