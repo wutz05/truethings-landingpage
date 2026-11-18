@@ -447,7 +447,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       <label class="field funnel-only" title="Seit dem Umbau im November 2026 kommt die Paywall vor dem Konto. Die beiden Abläufe haben verschiedene Schritte und werden getrennt gezeigt.">Onboarding
         <select id="ob"><option value="new">Neu (Paywall vor Konto)</option><option value="old">Alt (bis 2.0.7)</option></select>
       </label>
-      <label class="field funnel-only" title="Simulator, TestFlight und App Review sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
+      <label class="field funnel-only" title="Simulator, TestFlight und App Review, Starts vor dem App-Store-Release einer Version sowie Käufe ohne Umsatz (die Apple-ID hatte das Abo schon) zählen nicht mit."><input type="checkbox" id="hide-sim" checked> Tests ausblenden</label>
       <span class="compare" id="compare"></span>
     </div>
 
@@ -674,6 +674,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     completed: 'Onboarding abgeschlossen',
     paywall: 'Paywall gesehen',
     purchase: 'Abo abgeschlossen',
+    switched: '„Ich habe einen Code“ getippt',
+    switched_auth: 'Konto (ohne Kauf)',
+    switched_code: 'Code eingeben',
+    switched_done: 'Per Code in der App',
   };
   // The rewritten onboarding names a few things differently.
   const LABELS_NEW = { thing: 'Thing: Farbe', goals: 'Ziel', auth: 'Konto (nach dem Kauf)', paywall: 'Paywall gesehen' };
@@ -681,9 +685,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   const KEYS = {
     started: 'welcome', chosen: 'flow', completed: 'onboarding_completed',
     paywall: 'paywall_viewed', purchase: 'purchase_completed',
+    switched: 'paywall_pair_tapped', switched_auth: 'auth · join', switched_code: 'join_code', switched_done: 'onboarding_completed',
   };
 
   // Rows per funnel. `section` rows start a group; the first row is 100 %.
+  // `solo`: measured against the start only. `of`: measured against that row
+  // instead of the one above (a branch, not the next step).
   // Two onboardings, told apart by `onboarding: 3` on the step events: until
   // 2.0.7 the account came before the paywall, since the rewrite after it.
   const FUNNELS_NEW = {
@@ -695,7 +702,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         // Joiners finish without buying: no step after "purchase".
         { section: 'Abschluss' }, { row: 'completed', solo: true },
       ],
-      note: 'Wer ein Paar anlegt, sieht die Paywall vor dem Konto und schließt erst nach dem Kauf ab. Wer mit Code beitritt, schließt ohne Kauf ab und sieht nur dann eine Paywall, wenn das Paar kein Abo hat. „Abgeschlossen“ kann deshalb über „Abo“ liegen.',
+      note: 'Wer ein Paar anlegt, sieht die Paywall vor dem Konto und schließt erst nach dem Kauf ab. Wer mit Code beitritt, schließt ohne Kauf ab und sieht nur dann eine Paywall, wenn das Paar kein Abo hat. „Abgeschlossen“ kann deshalb über „Abo“ liegen. Wie viele die Paywall über „Ich habe einen Code“ verlassen, steht unter „Paar anlegen“.',
     },
     create: {
       sub: 'Wer „Los geht’s“ gewählt hat und ein Paar anlegt',
@@ -704,8 +711,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         { section: 'Vorschau' }, 'showcase_1', 'showcase_2', 'showcase_3',
         { section: 'Monetarisierung' }, 'paywall', 'purchase',
         { section: 'Nach dem Kauf' }, 'auth', 'invite_code', 'completed',
+        // The other way off the paywall: the button top right, no purchase.
+        { section: 'Ohne Kauf weiter: „Ich habe einen Code“' }, { row: 'switched', of: 'paywall' }, 'switched_auth', 'switched_code', 'switched_done',
       ],
-      note: 'Die drei Vorschau-Screens (Spiele, Fragen, Widget) kommen in der Reihenfolge des gewählten Ziels und werden deshalb nach Position gezählt.',
+      note: 'Die drei Vorschau-Screens (Spiele, Fragen, Widget) kommen in der Reihenfolge des gewählten Ziels und werden deshalb nach Position gezählt. Wer auf der Paywall oben rechts „Ich habe einen Code“ tippt, kommt ohne Kauf zum Konto-Screen der Beitretenden. Diese Personen bleiben in diesem Weg und stehen im letzten Abschnitt; „Konto (nach dem Kauf)“ und „Abgeschlossen“ zählen sie nicht mit.',
     },
     join: {
       sub: 'Wer „Ich wurde eingeladen“ gewählt hat',
@@ -713,7 +722,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         { section: 'App' }, 'auth', 'join_code', 'showcase_1', 'showcase_2', 'showcase_3', 'completed',
         { section: 'Monetarisierung' }, 'paywall', 'purchase',
       ],
-      note: 'Eine Paywall sehen Beitretende nur, wenn das Paar noch kein Abo hat (Gate nach dem Onboarding).',
+      note: 'Eine Paywall sehen Beitretende nur, wenn das Paar noch kein Abo hat (Gate nach dem Onboarding). Wer erst ein Paar anlegen wollte und auf der Paywall zu „Ich habe einen Code“ gewechselt ist, steht unter „Paar anlegen“.',
     },
   };
   const FUNNELS_OLD = {
@@ -1081,8 +1090,15 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       const r = typeof row === 'string' ? row : row.row;
       const n = r === 'chosen' ? chosen : (r === 'welcome' && flow === 'all' ? t.started : t[r] ?? 0);
       // `solo`: counted against the start only, not against the row above.
-      return { key: r, n, solo: Boolean(row.solo) };
+      return { key: r, n, solo: Boolean(row.solo), of: row.of || null };
     });
+  }
+  /** What a row is measured against: the row above, the one it names, or nothing. */
+  function before(steps, i) {
+    const s = steps[i];
+    if (!i || s.solo) return null;
+    if (s.of) { const ref = steps.find((x) => x.key === s.of); return ref ? ref.n : null; }
+    return steps[i - 1].n;
   }
 
   function renderFunnel() {
@@ -1099,7 +1115,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     let worst = -1, worstLoss = 0;
     const lastApp = steps.findIndex((s) => s.key === 'completed');
     steps.forEach((s, i) => {
-      if (i && i <= lastApp && s.key !== 'purchase' && !s.solo && steps[i - 1].n - s.n > worstLoss) { worstLoss = steps[i - 1].n - s.n; worst = i; }
+      if (i && i <= lastApp && s.key !== 'purchase' && !s.solo && !s.of && steps[i - 1].n - s.n > worstLoss) { worstLoss = steps[i - 1].n - s.n; worst = i; }
     });
 
     const body = $('funnel');
@@ -1118,7 +1134,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     for (const r of rows) {
       if (!r.key) { grid.append(el('div', { class: 'f-section', text: r.section })); continue; }
       const idx = i++;
-      const prev = idx && !r.solo ? steps[idx - 1].n : null;
+      const prev = before(steps, idx);
       const share = pct(r.n, first);
       const conv = prev !== null ? pct(r.n, prev) : null;
       const isWorst = idx === worst;
@@ -1131,14 +1147,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         el('div', { class: 'f-conv num' }, prev === null
           ? [el('span', { text: idx ? '–' : 'Start' })]
           : [el('b', { class: isWorst ? 'worst' : '', text: fmtPct(conv, 0) }),
-            isWorst ? el('span', { class: 'badge', title: 'Größter Abbruch in der App' }, [icon(ICON_DOWN), `−${fmt(prev - r.n)}`]) : el('span', { text: prev - r.n > 0 ? `−${fmt(prev - r.n)}` : '±0' })]),
+            isWorst ? el('span', { class: 'badge', title: 'Größter Abbruch in der App' }, [icon(ICON_DOWN), `−${fmt(prev - r.n)}`])
+              : r.of ? el('span', { text: 'der Paywall' })
+              : el('span', { text: prev - r.n > 0 ? `−${fmt(prev - r.n)}` : '±0' })]),
       ]);
       const tip = () => [
         label(r.key, prefs.flow),
         ['Personen', fmt(r.n)],
         ['Anteil der Startenden', fmtPct(share)],
-        prev !== null ? ['Vom Vorschritt', fmtPct(conv)] : null,
-        prev !== null ? ['Abgesprungen', fmt(Math.max(0, prev - r.n))] : null,
+        prev !== null ? [r.of ? `Von „${label(r.of, prefs.flow)}“` : 'Vom Vorschritt', fmtPct(conv)] : null,
+        prev !== null && !r.of ? ['Abgesprungen', fmt(Math.max(0, prev - r.n))] : null,
         isWorst ? ['', 'Größter Abbruch in der App'] : null,
       ];
       bindTip(row, tip);
@@ -1150,13 +1168,13 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   function funnelTable(steps, first, def) {
     const rows = steps.map((s, i) => {
-      const prev = i && !s.solo ? steps[i - 1].n : null;
+      const prev = before(steps, i);
       return el('tr', {}, [
         el('td', {}, [label(s.key, prefs.flow), ' ', el('code', { text: KEYS[s.key] || s.key })]),
         el('td', { class: 'r', text: fmt(s.n) }),
         el('td', { class: 'r', text: fmtPct(pct(s.n, first)) }),
         el('td', { class: 'r', text: prev === null ? '–' : fmtPct(pct(s.n, prev)) }),
-        el('td', { class: 'r', text: prev === null ? '–' : fmt(Math.max(0, prev - s.n)) }),
+        el('td', { class: 'r', text: prev === null || s.of ? '–' : fmt(Math.max(0, prev - s.n)) }),
       ]);
     });
     return el('div', {}, [
@@ -1198,6 +1216,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       el('div', { class: 'mini-stats' }, [
         isNew()
           ? el('div', {}, [el('span', { text: 'Anlegen → Paywall' }), el('b', { text: fmtPct(pct(c.create.paywall, c.create.started), 0) })])
+          : null,
+        isNew()
+          ? el('div', {}, [el('span', { text: 'Paywall → „Ich habe einen Code“' }), el('b', { text: fmtPct(pct(c.create.switched ?? 0, c.create.paywall), 0) })])
           : el('div', {}, [el('span', { text: 'Anlegen → abgeschlossen' }), el('b', { text: fmtPct(pct(c.create.completed, c.create.started), 0) })]),
         el('div', {}, [el('span', { text: 'Beitreten → abgeschlossen' }), el('b', { text: fmtPct(pct(c.join.completed, c.join.started), 0) })]),
       ]),
@@ -1212,8 +1233,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       ['Paywall gesehen', fmt(c.paywall)],
       ['Abo abgeschlossen', fmt(c.purchase)],
       ['davon mit Testphase', fmt(c.trial)],
-      ['In Paar mit Abo beigetreten', fmt(j.joined_pro)],
+      ['In Paar mit Abo beigetreten', fmt(isNew() ? c.joined_pro : j.joined_pro)],
       ...(isNew() ? [
+        // The button top right on the paywall: on without buying.
+        ['Paywall über „Ich habe einen Code“ verlassen', fmt(data.current.create.switched ?? 0)],
         ['Start → Abo', fmtPct(pct(c.purchase, c.started))],
         // Bought first, account second: how many buyers also finished.
         ['Abo → Konto und fertig', fmtPct(pct(data.current.create.completed, data.current.create.purchase), 0)],
@@ -1377,6 +1400,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       const reachedAt = (s) => (s === 'paywall' ? p.paywallAt : s === 'purchase' ? p.purchaseAt : p.steps && p.steps[s]);
       let furthest = 'welcome';
       for (const s of path) if (reachedAt(s)) furthest = s;
+      // Left the paywall through "I have a code": the joiner's steps follow.
+      if (p.switchedAt && !p.purchaseAt) furthest = p.steps && p.steps.join_code ? 'switched_code' : 'switched';
       const lastAt = [p.purchaseAt, p.paywallAt, p.completedAt, ...Object.values(p.steps || {})].filter(Boolean).sort().pop();
       const idleHours = lastAt ? (Date.now() - Date.parse(lastAt)) / 3600000 : 0;
       let status;
@@ -1428,11 +1453,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         { section: 'Paywall' }, { key: 'paywall', img: 'paywall', name: 'Paywall' }, { key: 'purchase', event: true },
         { section: 'Nach dem Kauf' },
         { key: 'auth', img: 'account' }, { key: 'invite_code', img: 'invite' }, { key: 'completed', img: 'app', name: 'In der App' },
+        { section: 'Ohne Kauf weiter' },
+        { key: 'switched', img: 'account-join', name: '„Ich habe einen Code“', cond: 'Knopf oben rechts auf der Paywall, führt ohne Kauf hierher' },
       ],
       stages: [
         ['Fragen beantwortet', 'your_name', 'showcase_1'],
         ['Vorschau durchgesehen', 'showcase_1', 'paywall'],
         ['Auf der Paywall gekauft', 'paywall', 'purchase'],
+        ['Paywall über den Code verlassen', 'paywall', 'switched'],
         ['Nach dem Kauf fertig', 'purchase', 'completed'],
       ],
       note: 'Die drei Vorschau-Screens kommen in der Reihenfolge des gewählten Ziels; die Bilder zeigen die Reihenfolge für „Mehr Spaß zusammen“. Gezählt wird nach Position.',
@@ -2096,7 +2124,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       ? [['auth', .86], ['join_code', .9], ['showcase_1', .97], ['showcase_2', .98], ['showcase_3', .98], ['completed', .98]]
       : [['create_or_join', 1], ['auth', .86], ['join_code', .9], ['preview', .97], ['completed', .98]];
     const empty = () => {
-      const t = { started: 0, completed: 0, paywall: 0, purchase: 0, trial: 0, joined_pro: 0, median_complete: null };
+      const t = { started: 0, completed: 0, paywall: 0, purchase: 0, switched: 0, switched_auth: 0, switched_code: 0, switched_done: 0, trial: 0, joined_pro: 0, median_complete: null };
       for (const s of STEP_KEYS) t[s] = 0;
       return t;
     };
@@ -2118,6 +2146,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
             for (const [step, p] of plan) {
               if (!alive || rnd() > p) { alive = false; break; }
               reached.push(step);
+            }
+            // The paywall's other way on: "I have a code", then the joiner's steps.
+            if (isNew() && flow === 'create' && reached.includes('paywall') && !reached.includes('purchase') && rnd() < .2) {
+              reached.push('switched');
+              for (const [step, p] of [['switched_auth', .85], ['switched_code', .8], ['switched_done', .9]]) {
+                if (rnd() > p) break;
+                reached.push(step);
+              }
             }
             // Like the server: the branch is known from its first own step on.
             if (!reached.includes(flow === 'join' ? 'auth' : 'your_name')) flow = 'none';
@@ -2166,6 +2202,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         completedAt: p.reached.includes('completed') ? new Date(startedAt.getTime() + p.secs * 1000).toISOString() : null,
         paywallAt: p.reached.includes('paywall') ? new Date(startedAt.getTime() + p.secs * 1000 + 4000).toISOString() : null,
         purchaseAt: p.reached.includes('purchase') ? new Date(startedAt.getTime() + p.secs * 1000 + 60000).toISOString() : null,
+        switchedAt: p.reached.includes('switched') ? new Date(startedAt.getTime() + p.secs * 1000 + 30000).toISOString() : null,
         trial: p.trial, joinedPro: p.joinedPro,
         purchaseKind: p.reached.includes('purchase') ? 'real' : null,
       };
