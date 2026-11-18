@@ -32,6 +32,7 @@
   --sky-fill: #DFEDFB;    --sky-ink: #2B6FCF;
   --lilac-fill: #ECE5FA;  --lilac-ink: #744BD1;
   --sand-fill: #F1EBE2;   --sand-ink: #86663F;
+  --aqua-fill: #DDF2F1;   --aqua-ink: #15807A;
   --brand-fill: rgba(244, 51, 154, .12); --brand-ink: #F4339A;
 
   --plum-0: #380935;
@@ -83,6 +84,7 @@
     --sky-fill: #222F48;    --sky-ink: #79B1F7;
     --lilac-fill: #332749;  --lilac-ink: #B79AF5;
     --sand-fill: #382D26;   --sand-ink: #D2B48C;
+    --aqua-fill: #1B3634;   --aqua-ink: #63D2C9;
     --brand-fill: rgba(255, 90, 179, .20); --brand-ink: #FF5AB3;
   }
 }
@@ -425,6 +427,7 @@ button { font: inherit; color: inherit; }
 .t-sky { --fill: var(--sky-fill); --ink: var(--sky-ink); }
 .t-lilac { --fill: var(--lilac-fill); --ink: var(--lilac-ink); }
 .t-sand { --fill: var(--sand-fill); --ink: var(--sand-ink); }
+.t-aqua { --fill: var(--aqua-fill); --ink: var(--aqua-ink); }
 .t-brand { --fill: var(--brand-fill); --ink: var(--brand-ink); }
 
 /* ------------------------------------------------------------------ steps */
@@ -445,6 +448,8 @@ button { font: inherit; color: inherit; }
 /* ------------------------------------------------------------------ cards: games and decks */
 
 .card-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); padding: 0; margin: 0; list-style: none; }
+/* Nine games: three even rows on a wide screen instead of 4 + 4 + 1. */
+.card-grid.games { grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
 .game-card {
   position: relative; display: flex; flex-direction: column; gap: 8px; padding: 22px; border-radius: var(--r-xl);
   background: var(--fill); color: var(--text); min-height: 196px; overflow: hidden;
@@ -598,6 +603,10 @@ button { font: inherit; color: inherit; }
 .qlist { columns: 2 320px; column-gap: 40px; padding-left: 1.6em; margin: 0; }
 .qlist li { break-inside: avoid; padding: 6px 0 6px 4px; line-height: 1.5; }
 .qlist li::marker { color: var(--text-3); font-family: var(--font-rounded); font-weight: 700; font-size: .9em; }
+.qgroup { font-size: 21px; font-weight: 750; letter-spacing: -.014em; margin: 34px 0 10px; }
+.qgroup:first-of-type { margin-top: 0; }
+.list-note { margin: 26px 0 0; color: var(--text-2); font-size: 16px; }
+.more-link { margin: 26px 0 0; }
 
 /* ------------------------------------------------------------------ blog */
 

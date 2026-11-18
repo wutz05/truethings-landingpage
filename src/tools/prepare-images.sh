@@ -36,6 +36,15 @@ for lang in de en; do
   magick $CAP/$lang/note-paper.png -resize 600x -strip PNG24:/tmp/tt-shot.png
   cwebp -quiet -q 86 -m 6 /tmp/tt-shot.png -o $OUT/shots/$lang-note-paper.webp
 done
+# Captures made for the website only win over the (older) App Store set, e.g. the
+# home screen with nine games from November 2026.
+WEB=$APP/Website/captures
+for lang in de en; do
+  for f in $WEB/$lang/*.png(N); do
+    magick $f -resize 720x -strip PNG24:/tmp/tt-shot.png
+    cwebp -quiet -q 82 -m 6 /tmp/tt-shot.png -o $OUT/shots/$lang-${f:t:r}.webp
+  done
+done
 rm -f /tmp/tt-shot.png
 
 ICON=$APP/AppStore/Quellcode/assets/icon.png

@@ -1,6 +1,197 @@
 {
  "games": [
   {
+   "id": "colorhunt",
+   "title": {
+    "en": "Color Hunt",
+    "de": "Color Hunt"
+   },
+   "tagline": {
+    "en": "30 seconds to find this colour",
+    "de": "30 Sekunden für diese Farbe"
+   },
+   "description": {
+    "en": "The same random colour appears on both phones. You each have 30 seconds to find something in exactly that shade and take a photo of it. The camera measures the colour, and whoever comes closer takes the point. Three colours per round.",
+    "de": "Auf beiden Handys erscheint dieselbe zufällige Farbe. Jeder hat 30 Sekunden, um etwas in genau diesem Farbton zu finden und zu fotografieren. Die Kamera misst die Farbe, und wer näher dran ist, holt den Punkt. Drei Farben pro Runde."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "3 minutes",
+    "de": "3 Minuten"
+   },
+   "tint": "aqua",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "A random colour appears. When you're both ready, the countdown starts.",
+     "de": "Eine zufällige Farbe erscheint. Sobald ihr beide bereit seid, läuft der Countdown."
+    },
+    {
+     "en": "You have 30 seconds: find something in that colour, fill the circle with it, take the photo.",
+     "de": "Du hast 30 Sekunden: Finde etwas in dieser Farbe, füll den Kreis damit und mach das Foto."
+    },
+    {
+     "en": "The closer colour wins the point. Three colours, then the photos side by side.",
+     "de": "Die genauere Farbe holt den Punkt. Drei Farben, dann liegen eure Fotos nebeneinander."
+    }
+   ]
+  },
+  {
+   "id": "photoguess",
+   "title": {
+    "en": "Photo Guesser",
+    "de": "Foto Guesser"
+   },
+   "tagline": {
+    "en": "When and where was this?",
+    "de": "Wann und wo war das?"
+   },
+   "description": {
+    "en": "Each of you gets four random photos from your own camera roll, all taken since you got together. Swap the ones you'd rather keep to yourself, then guess your partner's four: first the day, then the spot on the map. The closer you are, the more points.",
+    "de": "Jeder von euch bekommt vier zufällige Fotos aus der eigenen Galerie, alle seit ihr zusammen seid. Tauscht aus, was ihr lieber für euch behaltet, dann ratet ihr die vier des anderen: erst den Tag, dann den Ort auf der Karte. Je näher dran, desto mehr Punkte."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "10 minutes",
+    "de": "10 Minuten"
+   },
+   "tint": "sand",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "The game picks four random photos from your camera roll, all since your anniversary. Roll the dice on any you'd rather not share.",
+     "de": "Das Spiel wählt vier zufällige Fotos aus deiner Galerie, alle seit eurem Jahrestag. Würfel neu, was du lieber nicht teilen willst."
+    },
+    {
+     "en": "Guess your partner's photos: swipe to the day, then tap the spot on the map.",
+     "de": "Rate die Fotos deines Partners: Wisch zum Tag, dann tipp auf den Ort auf der Karte."
+    },
+    {
+     "en": "Up to 500 points for the date and 500 for the place. After four photos the higher score wins.",
+     "de": "Bis zu 500 Punkte fürs Datum und 500 für den Ort. Nach vier Fotos gewinnt, wer mehr Punkte hat."
+    }
+   ]
+  },
+  {
+   "id": "wordle",
+   "title": {
+    "en": "Couple Wordle",
+    "de": "Wordle zu zweit"
+   },
+   "tagline": {
+    "en": "Guess the word only you two know",
+    "de": "Rate das Wort, das nur ihr zwei kennt"
+   },
+   "description": {
+    "en": "Both of you pick a word that means something to the two of you, then race to guess each other's on the classic board. Six tries each, first to find it wins.",
+    "de": "Ihr wählt beide ein Wort, das euch etwas bedeutet, und ratet dann um die Wette auf dem klassischen Brett. Sechs Versuche pro Person, wer zuerst trifft, gewinnt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "5 minutes",
+    "de": "5 Minuten"
+   },
+   "tint": "mint",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Both type a secret word of 3 to 8 letters and an optional hint.",
+     "de": "Beide tippen ein geheimes Wort mit 3 bis 8 Buchstaben und einen optionalen Hinweis."
+    },
+    {
+     "en": "Guess at the same time. First to find the word wins.",
+     "de": "Ratet gleichzeitig. Wer das Wort zuerst findet, gewinnt."
+    }
+   ]
+  },
+  {
+   "id": "emojiquiz",
+   "title": {
+    "en": "Emoji Quiz",
+    "de": "Emoji-Quiz"
+   },
+   "tagline": {
+    "en": "🦁👑 says what?",
+    "de": "🦁👑 heißt was?"
+   },
+   "description": {
+    "en": "Pick movies, songs or celebrities. Five puzzles per round, each a title or name spelled in emoji. You both see the same one; whoever names it first takes the point.",
+    "de": "Wähl Filme, Songs oder Promis. Fünf Rätsel pro Runde, jedes ein Titel oder Name in Emojis. Ihr seht beide dasselbe; wer es zuerst nennt, bekommt den Punkt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "3 minutes",
+    "de": "3 Minuten"
+   },
+   "tint": "brand",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Choose a category before you start.",
+     "de": "Wähl eine Kategorie, bevor du startest."
+    },
+    {
+     "en": "Type what the emojis spell. After two misses you get the first letters.",
+     "de": "Tipp, was die Emojis bedeuten. Nach zwei Fehlversuchen bekommst du die Anfangsbuchstaben."
+    },
+    {
+     "en": "First to name it wins the point. Most points after five wins.",
+     "de": "Wer es zuerst nennt, bekommt den Punkt. Die meisten Punkte nach fünf Rätseln gewinnen."
+    }
+   ]
+  },
+  {
+   "id": "knowme",
+   "title": {
+    "en": "Do You Know Me?",
+    "de": "Kennst du mich?"
+   },
+   "tagline": {
+    "en": "Answer, guess, then compare",
+    "de": "Antworten, raten, vergleichen"
+   },
+   "description": {
+    "en": "Six questions out of a hundred, both of you. Type your own answer, guess what your partner wrote, then reveal together. Whoever the question was about decides if the guess counts.",
+    "de": "Sechs Fragen aus hundert, für euch beide. Tipp deine eigene Antwort, rate, was dein Partner geschrieben hat, und löst dann zusammen auf. Wen die Frage betrifft, entscheidet, ob der Tipp zählt."
+   },
+   "players": {
+    "en": "2 players",
+    "de": "2 Spieler"
+   },
+   "pace": {
+    "en": "5 minutes",
+    "de": "5 Minuten"
+   },
+   "tint": "peach",
+   "status": "playable",
+   "howItWorks": [
+    {
+     "en": "Type your answer to six questions and guess what your partner wrote.",
+     "de": "Beantworte sechs Fragen und rate, was dein Partner geschrieben hat."
+    },
+    {
+     "en": "Your partner does the same on their own phone.",
+     "de": "Dein Partner macht dasselbe auf dem eigenen Handy."
+    },
+    {
+     "en": "Reveal together. Most right guesses wins the round.",
+     "de": "Löst gemeinsam auf. Die meisten richtigen Tipps gewinnen die Runde."
+    }
+   ]
+  },
+  {
    "id": "uno",
    "title": {
     "en": "Uno",
@@ -159,119 +350,6 @@
      "de": "Ein volles Raster ist unentschieden. Wer verliert, eröffnet die nächste Runde."
     }
    ]
-  },
-  {
-   "id": "knowme",
-   "title": {
-    "en": "Do You Know Me?",
-    "de": "Kennst du mich?"
-   },
-   "tagline": {
-    "en": "Answer, guess, then compare",
-    "de": "Antworten, raten, vergleichen"
-   },
-   "description": {
-    "en": "Six questions out of a hundred, both of you. Type your own answer, guess what your partner wrote, then reveal together. Whoever the question was about decides if the guess counts.",
-    "de": "Sechs Fragen aus hundert, für euch beide. Tipp deine eigene Antwort, rate, was dein Partner geschrieben hat, und löst dann zusammen auf. Wen die Frage betrifft, entscheidet, ob der Tipp zählt."
-   },
-   "players": {
-    "en": "2 players",
-    "de": "2 Spieler"
-   },
-   "pace": {
-    "en": "5 minutes",
-    "de": "5 Minuten"
-   },
-   "tint": "peach",
-   "status": "playable",
-   "howItWorks": [
-    {
-     "en": "Type your answer to six questions and guess what your partner wrote.",
-     "de": "Beantworte sechs Fragen und rate, was dein Partner geschrieben hat."
-    },
-    {
-     "en": "Your partner does the same on their own phone.",
-     "de": "Dein Partner macht dasselbe auf dem eigenen Handy."
-    },
-    {
-     "en": "Reveal together. Most right guesses wins the round.",
-     "de": "Löst gemeinsam auf. Die meisten richtigen Tipps gewinnen die Runde."
-    }
-   ]
-  },
-  {
-   "id": "wordle",
-   "title": {
-    "en": "Couple Wordle",
-    "de": "Wordle zu zweit"
-   },
-   "tagline": {
-    "en": "Guess the word only you two know",
-    "de": "Rate das Wort, das nur ihr zwei kennt"
-   },
-   "description": {
-    "en": "Both of you pick a word that means something to the two of you, then race to guess each other's on the classic board. Six tries each, first to find it wins.",
-    "de": "Ihr wählt beide ein Wort, das euch etwas bedeutet, und ratet dann um die Wette auf dem klassischen Brett. Sechs Versuche pro Person, wer zuerst trifft, gewinnt."
-   },
-   "players": {
-    "en": "2 players",
-    "de": "2 Spieler"
-   },
-   "pace": {
-    "en": "5 minutes",
-    "de": "5 Minuten"
-   },
-   "tint": "mint",
-   "status": "playable",
-   "howItWorks": [
-    {
-     "en": "Both type a secret word of 3 to 8 letters and an optional hint.",
-     "de": "Beide tippen ein geheimes Wort mit 3 bis 8 Buchstaben und einen optionalen Hinweis."
-    },
-    {
-     "en": "Guess at the same time. First to find the word wins.",
-     "de": "Ratet gleichzeitig. Wer das Wort zuerst findet, gewinnt."
-    }
-   ]
-  },
-  {
-   "id": "emojiquiz",
-   "title": {
-    "en": "Emoji Quiz",
-    "de": "Emoji-Quiz"
-   },
-   "tagline": {
-    "en": "🦁👑 says what?",
-    "de": "🦁👑 heißt was?"
-   },
-   "description": {
-    "en": "Pick movies, songs or celebrities. Five puzzles per round, each a title or name spelled in emoji. You both see the same one; whoever names it first takes the point.",
-    "de": "Wähl Filme, Songs oder Promis. Fünf Rätsel pro Runde, jedes ein Titel oder Name in Emojis. Ihr seht beide dasselbe; wer es zuerst nennt, bekommt den Punkt."
-   },
-   "players": {
-    "en": "2 players",
-    "de": "2 Spieler"
-   },
-   "pace": {
-    "en": "3 minutes",
-    "de": "3 Minuten"
-   },
-   "tint": "brand",
-   "status": "playable",
-   "howItWorks": [
-    {
-     "en": "Choose a category before you start.",
-     "de": "Wähl eine Kategorie, bevor du startest."
-    },
-    {
-     "en": "Type what the emojis spell. After two misses you get the first letters.",
-     "de": "Tipp, was die Emojis bedeuten. Nach zwei Fehlversuchen bekommst du die Anfangsbuchstaben."
-    },
-    {
-     "en": "First to name it wins the point. Most points after five wins.",
-     "de": "Wer es zuerst nennt, bekommt den Punkt. Die meisten Punkte nach fünf Rätseln gewinnen."
-    }
-   ]
   }
  ],
  "decks": [
@@ -395,6 +473,428 @@
     "An welchen meiner Träume glaubst du mehr als ich selbst?",
     "Was soll ich beim nächsten Streit anders machen?",
     "Was an uns würdest du niemals posten, weil es nur uns gehört?"
+   ]
+  },
+  {
+   "key": "deepQuestions",
+   "id": "deep-questions",
+   "title": {
+    "en": "Deep Questions",
+    "de": "Deep Talk"
+   },
+   "tagline": {
+    "en": "Questions that stay with you",
+    "de": "Fragen, die nachwirken"
+   },
+   "instruction": {
+    "en": "Take your time. Answer, then ask why.",
+    "de": "Lasst euch Zeit. Antworten, dann nachfragen."
+   },
+   "symbol": "moon.stars.fill",
+   "tint": "sand",
+   "cards_en": [
+    "What part of you do people most often get wrong, and do you ever let them?",
+    "Which of your traits did you have to earn, and which were you just handed?",
+    "When do you feel most like a fraud?",
+    "What do you believe about yourself that you've never actually tested?",
+    "If you took away your job, your city and your friends, what would still be unmistakably you?",
+    "What role do you keep playing even though it no longer fits?",
+    "Which emotion do you find hardest to show, and who taught you to hide it?",
+    "What are you secretly proud of that you'd never bring up yourself?",
+    "When were you the bravest you've ever been, and did anyone notice?",
+    "What would ten-year-old you think of the life you have now?",
+    "What part of you only comes out with certain people?",
+    "Which of your flaws are you actually fond of?",
+    "What do you do to feel in control when everything feels out of control?",
+    "What story about yourself are you tired of telling?",
+    "When did you last surprise yourself?",
+    "Which part of your personality took you the longest to accept?",
+    "Who are you when no one needs anything from you?",
+    "What do you envy in other people, and what does it say about what you want?",
+    "What are you still trying to prove, and to whom?",
+    "In what way are you harder on yourself than on anyone else?",
+    "Which family rule did you swear you'd never repeat, and which have you repeated anyway?",
+    "What did love look like in the house you grew up in?",
+    "What did you have to figure out on your own as a kid that someone should have explained to you?",
+    "Which of your parents' fears did you inherit?",
+    "What's a moment from your childhood you've never told anyone because it seemed too small?",
+    "When did you first realise your parents were just people?",
+    "What did you need as a teenager that you didn't get, and do you still look for it?",
+    "What role did you play in your family: the peacemaker, the clown, the responsible one or the rebel?",
+    "What did your family never talk about?",
+    "Which adult from your childhood saw something in you that others missed?",
+    "What did your parents do right that you only understand now?",
+    "What do you keep forgiving your parents for, over and over?",
+    "When you think of home as a child, which smell, sound or room comes up first?",
+    "What did you learn about money, love or anger before you were ten that still steers you?",
+    "What did you pretend to understand as a child so the adults wouldn't worry?",
+    "How did your family deal with sadness?",
+    "What did you get praised for as a child, and are you still chasing that praise?",
+    "Which memory of a grandparent or an older relative do you want to keep forever?",
+    "When did you first feel you had to earn love?",
+    "Who were you before you learned to be careful?",
+    "What are you afraid people would think if they saw you at your worst?",
+    "Which old hurt still changes how you act today?",
+    "Which fear has made more of your decisions than you'd like to admit?",
+    "When do you feel smallest?",
+    "What have you never cried about but probably should have?",
+    "What do you do when you feel unlovable?",
+    "What would you be most afraid to lose, apart from people?",
+    "Which criticism hits you hardest, even when it isn't fair?",
+    "What's the loneliest you've ever felt in a room full of people?",
+    "What are you still ashamed of that you've never said out loud?",
+    "What kind of failure would feel unbearable to you, and why that one?",
+    "What do you hide when you're tired?",
+    "Which part of you do you think is too much for other people?",
+    "What do you wish someone had told you during the hardest year of your life?",
+    "When you're anxious, what story does your mind tell you?",
+    "Which fear have you outgrown, and how did it happen?",
+    "What makes you feel safe, really safe?",
+    "What would it take for you to stop protecting yourself so much?",
+    "What do you assume people think of you when you walk into a room?",
+    "Which of your defences do you think I've already seen through?",
+    "What did you think love would feel like before you actually felt it?",
+    "How do you know you're loved when nobody says it?",
+    "What's the difference, for you, between being loved and being understood?",
+    "Which way of showing love comes easily to you, and which feels awkward?",
+    "What do you think you owe the people you love?",
+    "Where did you learn what a good relationship looks like, if you ever did?",
+    "What kind of love did you only recognise years later?",
+    "Can you love someone and still not want them in your life?",
+    "What do you think makes love last, now that you've seen some of it end?",
+    "When have you loved someone in a way they never knew about?",
+    "What's harder for you: giving love or receiving it?",
+    "What does it mean to you to be someone's person?",
+    "How has your idea of romance changed as you've grown up?",
+    "What do you think people misunderstand most about love?",
+    "What do you need to hear when you doubt that you're enough for me?",
+    "When do you feel most chosen by me?",
+    "Which love that ended taught you something you still use today?",
+    "What do you love about me that you think I wouldn't believe?",
+    "What does trust feel like in your body?",
+    "What's the most loving thing anyone has ever done for you that cost them something?",
+    "What are we still learning about each other, even now?",
+    "When did you feel far away from me while I was right next to you?",
+    "Which of our habits do you hope we never lose, and which do you hope we outgrow?",
+    "What do you think I need from you that I've never asked for?",
+    "How have I changed you without trying?",
+    "What part of yourself do you still keep from me, and why?",
+    "When were you most proud to be us?",
+    "What would you want me to remember about us if one day I couldn't remember much?",
+    "What do you love about us that you're almost afraid to say out loud, in case you jinx it?",
+    "What does a good day for us look like, five years from now?",
+    "Where do you think we're too careful with each other?",
+    "What have you never thanked me for?",
+    "Which question do you hope I'll ask you someday?",
+    "When did you last feel truly seen by me?",
+    "What is our relationship quietly teaching you?",
+    "Which of my worries do you think you understand better than I do?",
+    "If our relationship were a house, which room would need the most care right now?",
+    "What have you given up for us that you've never mentioned?",
+    "What part of me do you think the world doesn't get to see?",
+    "When do you feel like we're a team, and when don't you?",
+    "What do you hope I never stop doing?",
+    "What would make you feel even more at home with me?",
+    "What have we come through together that you're quietly proud of?",
+    "Is there a version of us you miss?",
+    "What do you want our love to look like when we're old?",
+    "What do you think our fights are usually about, underneath?",
+    "Which of our arguments have you thought about long after it ended?",
+    "Which of your reactions in a fight are you least proud of?",
+    "How do you know when you're ready to make up?",
+    "What have you agreed to just to keep the peace?",
+    "What's harder for you to say: 'I'm sorry' or 'I'm hurt'?",
+    "When is honesty kind, and when is it just cruelty with a good excuse?",
+    "What truth have you softened so much that it stopped being true?",
+    "What do you need to hear from me after a fight to feel safe again?",
+    "Which topic do you think we avoid because we're afraid of the answer?",
+    "When did you last change your mind because of something I said?",
+    "What have you forgiven me for without telling me?",
+    "Is there something you've never forgiven, in anyone?",
+    "What does respect look like when we disagree?",
+    "Which of my words have stayed with you, for better or worse?",
+    "What do you believe that most people around you don't?",
+    "What would you stand up for even if it cost you friends?",
+    "What does a good life mean to you, with money out of the picture?",
+    "What gives your life meaning on an ordinary Tuesday?",
+    "Which of your values would you never compromise, not even for me?",
+    "Do you think people can really change? What makes you think so?",
+    "What did you once think was important that now seems small?",
+    "What do you think we owe strangers?",
+    "When did you last feel awe?",
+    "What do you believe happens after we die, and does it change how you live?",
+    "Is there anything you consider sacred?",
+    "What's the kindest thing a stranger has ever done for you?",
+    "What does success mean to you now, compared to five years ago?",
+    "Which injustice makes you angriest, and what do you do with that anger?",
+    "Does everything happen for a reason, or do we give it reasons afterwards?",
+    "What question are you afraid to find the answer to?",
+    "What do you think is worth suffering for?",
+    "When are you at peace?",
+    "What do you think we're here for?",
+    "Which of your beliefs would you be most relieved to be wrong about?",
+    "Which decision would you make differently, knowing what you know now?",
+    "Which version of yourself do you miss?",
+    "Which chapter of your life did you rush through?",
+    "What did you lose when you grew up that you'd like back?",
+    "Which door did you close that you still sometimes stand in front of?",
+    "What are you still waiting for permission to do?",
+    "Which year of your life changed you the most, and how?",
+    "What did you finally let go of, and how did it feel afterwards?",
+    "What did the hardest thing that ever happened to you also give you?",
+    "What would you tell yourself on the worst day of your life, if you could go back?",
+    "Which of your habits is left over from a time when you needed it?",
+    "When did you last outgrow something: a friendship, a place, a dream?",
+    "What do you regret not saying to someone?",
+    "Which part of your past are you most at peace with now?",
+    "What are you learning right now that you didn't expect to have to learn?",
+    "How do you really want to grow this year?",
+    "Which mistake are you grateful for?",
+    "Which truth about life did you resist for years before accepting it?",
+    "When did you last feel like you were becoming someone new?",
+    "What would you do if you weren't afraid of starting over?",
+    "If you knew you had one year left, what would you stop doing tomorrow?",
+    "Which of your current worries will still matter in ten years?",
+    "What are you building that will outlast you?",
+    "How do you feel about getting old?",
+    "What would you want to have forgiven before the end?",
+    "Which dream are you quietly giving up on, and is that okay?",
+    "What do you hope you'll finally understand when you're old?",
+    "What do you hope our life feels like in thirty years?",
+    "What do you want to be brave enough to try while you still can?",
+    "What should the people after us inherit from us, other than money?",
+    "What do you want to experience with me that we haven't even talked about yet?",
+    "Which part of your life are you living on autopilot?",
+    "What are you putting off as if you had all the time in the world?",
+    "What do you hope never changes about you, no matter how old you get?",
+    "What would you want to tell your future self on a hard day?",
+    "What do you hope to learn from me over the years?",
+    "Which future are you afraid of that you've never mentioned?",
+    "If you could know one thing about your future, what would it be, and what would you rather never know?",
+    "Do you think about death more often than you let on?",
+    "What do you want us to still be doing together when nothing else is certain?",
+    "What do you want that you feel you're not allowed to want?",
+    "What life would you be living if nobody's expectations mattered?",
+    "What dream have you never said out loud because it sounded silly?",
+    "When did you last feel completely free?",
+    "What makes you come alive, every single time?",
+    "Do you long more for adventure or for calm right now, and what is that telling you?",
+    "Which talent of yours have you never given a real chance?",
+    "If you could live one other life alongside this one, what would it be?",
+    "What do you miss that you've never actually had?",
+    "What would you do with a year in which nobody could reach you?",
+    "What do you secretly hope I'll ask you to do with me someday?",
+    "What do you want more of in your days? Not your life, just your days.",
+    "Which place in the world feels like it belongs to you, and why?",
+    "Which ambition have you outgrown, and what replaced it?",
+    "What do you daydream about when you're bored?",
+    "Which risk do you keep thinking about?",
+    "What does 'enough' look like for you?",
+    "What would make you proud of yourself a year from now?",
+    "If today were the start of a new chapter, what would it be called?",
+    "What would you ask me if you knew I'd answer with complete honesty?"
+   ],
+   "cards_de": [
+    "Welchen Teil von dir verstehen andere am häufigsten falsch – und lässt du sie manchmal?",
+    "Welche deiner Eigenschaften hast du dir erarbeitet, und welche wurden dir einfach mitgegeben?",
+    "Wann hast du am stärksten das Gefühl, nur so zu tun, als ob?",
+    "Was glaubst du über dich selbst, ohne es je wirklich überprüft zu haben?",
+    "Wenn man dir Job, Stadt und Freunde wegnähme: Was wäre dann immer noch unverkennbar du?",
+    "Welche Rolle spielst du immer noch, obwohl sie längst nicht mehr passt?",
+    "Welches Gefühl fällt dir am schwersten zu zeigen – und wer hat dir beigebracht, es zu verstecken?",
+    "Worauf bist du heimlich stolz, würdest es aber nie von selbst erzählen?",
+    "Wann warst du am mutigsten in deinem Leben – und hat es jemand bemerkt?",
+    "Was würde dein zehnjähriges Ich über das Leben denken, das du heute führst?",
+    "Welcher Teil von dir kommt nur bei bestimmten Menschen zum Vorschein?",
+    "Welche deiner Schwächen magst du eigentlich ganz gern?",
+    "Was tust du, um dich unter Kontrolle zu fühlen, wenn alles außer Kontrolle gerät?",
+    "Welche Geschichte über dich bist du es leid zu erzählen?",
+    "Wann hast du dich zuletzt selbst überrascht?",
+    "Welchen Teil deiner Persönlichkeit konntest du am längsten nicht annehmen?",
+    "Wer bist du, wenn gerade niemand etwas von dir braucht?",
+    "Worum beneidest du andere – und was sagt das darüber, was du dir wünschst?",
+    "Was versuchst du immer noch zu beweisen – und wem?",
+    "Inwiefern bist du strenger mit dir als mit allen anderen?",
+    "Welche Familienregel wolltest du nie übernehmen – und welche hast du trotzdem übernommen?",
+    "Wie sah Liebe in dem Zuhause aus, in dem du aufgewachsen bist?",
+    "Was musstest du als Kind allein herausfinden, obwohl es dir jemand hätte erklären sollen?",
+    "Welche Ängste deiner Eltern hast du geerbt?",
+    "Welchen Moment aus deiner Kindheit hast du nie erzählt, weil er dir zu klein vorkam?",
+    "Wann hast du zum ersten Mal gemerkt, dass deine Eltern auch nur Menschen sind?",
+    "Was hättest du als Teenager gebraucht und nicht bekommen – und suchst du es heute noch?",
+    "Welche Rolle hattest du in deiner Familie: Wer hat Frieden gestiftet, wer für Lacher gesorgt, wer war vernünftig und wer hat rebelliert?",
+    "Worüber wurde in deiner Familie nie gesprochen?",
+    "Welcher erwachsene Mensch aus deiner Kindheit hat etwas in dir gesehen, das andere übersehen haben?",
+    "Was haben deine Eltern richtig gemacht, das du erst heute verstehst?",
+    "Was verzeihst du deinen Eltern immer und immer wieder?",
+    "Wenn du an dein Zuhause als Kind denkst: Welcher Geruch, welches Geräusch oder welcher Raum kommt dir zuerst in den Sinn?",
+    "Was hast du vor deinem zehnten Geburtstag über Geld, Liebe oder Wut gelernt, das dich bis heute lenkt?",
+    "Wobei hast du als Kind so getan, als würdest du es verstehen, damit sich die Erwachsenen keine Sorgen machen?",
+    "Wie ist deine Familie mit Traurigkeit umgegangen?",
+    "Wofür wurdest du als Kind gelobt – und jagst du diesem Lob heute noch hinterher?",
+    "Welche Erinnerung an deine Großeltern oder einen älteren Verwandten willst du für immer behalten?",
+    "Wann hattest du zum ersten Mal das Gefühl, dir Liebe verdienen zu müssen?",
+    "Wer warst du, bevor du gelernt hast, vorsichtig zu sein?",
+    "Was würden andere deiner Meinung nach denken, wenn sie dich von deiner schlechtesten Seite sähen?",
+    "Welche alte Verletzung bestimmt bis heute, wie du dich verhältst?",
+    "Welche Angst hat mehr Entscheidungen in deinem Leben getroffen, als dir lieb ist?",
+    "Wann fühlst du dich am kleinsten?",
+    "Worüber hast du nie geweint, obwohl du es wahrscheinlich hättest tun sollen?",
+    "Was tust du, wenn du dich nicht liebenswert fühlst?",
+    "Was hättest du – abgesehen von Menschen – am meisten Angst zu verlieren?",
+    "Welche Kritik trifft dich am härtesten, selbst wenn sie unfair ist?",
+    "Wann hast du dich am einsamsten gefühlt, obwohl der Raum voller Menschen war?",
+    "Wofür schämst du dich bis heute, ohne es je laut gesagt zu haben?",
+    "Welche Art von Scheitern wäre für dich unerträglich – und warum gerade die?",
+    "Was versteckst du, wenn du müde bist?",
+    "Welcher Teil von dir ist deiner Meinung nach zu viel für andere?",
+    "Was hätte dir jemand im schwersten Jahr deines Lebens sagen sollen?",
+    "Welche Geschichte erzählt dir dein Kopf, wenn du Angst hast?",
+    "Aus welcher Angst bist du herausgewachsen – und wie ist das passiert?",
+    "Wodurch fühlst du dich sicher, wirklich sicher?",
+    "Was müsste passieren, damit du dich nicht mehr so sehr schützen musst?",
+    "Was denken andere über dich, wenn du einen Raum betrittst – glaubst du?",
+    "Welche deiner Schutzmauern habe ich wohl längst durchschaut?",
+    "Wie hast du dir Liebe vorgestellt, bevor du sie wirklich gefühlt hast?",
+    "Woran merkst du, dass du geliebt wirst, wenn es niemand ausspricht?",
+    "Was ist für dich der Unterschied zwischen geliebt und verstanden werden?",
+    "Welche Art, Liebe zu zeigen, fällt dir leicht – und welche fühlt sich ungewohnt an?",
+    "Was schuldest du deiner Meinung nach den Menschen, die du liebst?",
+    "Wo hast du gelernt, wie eine gute Beziehung aussieht – falls überhaupt?",
+    "Welche Form von Liebe hast du erst Jahre später als Liebe erkannt?",
+    "Kann man jemanden lieben und ihn trotzdem nicht in seinem Leben haben wollen?",
+    "Was lässt Liebe halten – jetzt, wo du gesehen hast, wie Liebe auch enden kann?",
+    "Wann hast du jemanden auf eine Weise geliebt, von der die Person nie erfahren hat?",
+    "Was fällt dir schwerer: Liebe zu geben oder sie anzunehmen?",
+    "Was bedeutet es für dich, für jemanden der wichtigste Mensch zu sein?",
+    "Wie hat sich deine Vorstellung von Romantik verändert, seit du erwachsen bist?",
+    "Was verstehen die meisten Menschen deiner Meinung nach an der Liebe falsch?",
+    "Was musst du hören, wenn du zweifelst, ob du genug für mich bist?",
+    "Wann hast du am stärksten das Gefühl, dass ich mich für dich entscheide?",
+    "Welche Liebe, die zu Ende ging, hat dich etwas gelehrt, das du bis heute nutzt?",
+    "Was liebst du an mir, von dem du glaubst, dass ich es dir nicht glauben würde?",
+    "Wie fühlt sich Vertrauen in deinem Körper an?",
+    "Was ist das Liebevollste, das je jemand für dich getan hat, obwohl es die Person etwas gekostet hat?",
+    "Was lernen wir immer noch übereinander, selbst jetzt?",
+    "Wann hast du dich weit weg von mir gefühlt, obwohl ich direkt neben dir war?",
+    "Welche unserer Gewohnheiten sollen wir nie verlieren – und aus welchen sollen wir herauswachsen?",
+    "Was brauche ich deiner Meinung nach von dir, ohne je darum gebeten zu haben?",
+    "Wie habe ich dich verändert, ohne es zu versuchen?",
+    "Welchen Teil von dir hältst du noch vor mir zurück – und warum?",
+    "Wann warst du am stolzesten auf uns?",
+    "Was soll ich über uns noch wissen, falls ich mich eines Tages an kaum etwas erinnere?",
+    "Was liebst du an uns, das du dich kaum laut zu sagen traust, um es nicht zu verschreien?",
+    "Wie sieht ein guter Tag für uns in fünf Jahren aus?",
+    "Wo sind wir deiner Meinung nach zu vorsichtig miteinander?",
+    "Wofür hast du dich bei mir nie bedankt?",
+    "Welche Frage soll ich dir eines Tages stellen?",
+    "Wann hast du dich zuletzt wirklich von mir gesehen gefühlt?",
+    "Was bringt dir unsere Beziehung ganz leise bei?",
+    "Welche meiner Sorgen verstehst du vielleicht besser als ich selbst?",
+    "Wenn unsere Beziehung ein Haus wäre: Welcher Raum bräuchte gerade die meiste Pflege?",
+    "Was hast du für uns aufgegeben, ohne es je zu erwähnen?",
+    "Welchen Teil von mir bekommt der Rest der Welt nicht zu sehen?",
+    "Wann fühlst du, dass wir ein Team sind – und wann nicht?",
+    "Was soll ich nie aufhören zu tun?",
+    "Was würde dafür sorgen, dass du dich bei mir noch mehr zu Hause fühlst?",
+    "Was haben wir zusammen durchgestanden, auf das du heimlich stolz bist?",
+    "Gibt es eine Version von uns, die du vermisst?",
+    "Wie soll unsere Liebe aussehen, wenn wir alt sind?",
+    "Worum geht es bei unseren Streits deiner Meinung nach wirklich, ganz tief drunter?",
+    "Über welchen unserer Streits hast du noch lange nachgedacht, nachdem er vorbei war?",
+    "Auf welche deiner Reaktionen im Streit bist du am wenigsten stolz?",
+    "Woran merkst du, dass du bereit bist, dich zu versöhnen?",
+    "Wozu hast du nur Ja gesagt, um den Frieden zu wahren?",
+    "Was fällt dir schwerer zu sagen: „Es tut mir leid“ oder „Das hat mich verletzt“?",
+    "Wann ist Ehrlichkeit freundlich – und wann nur Grausamkeit mit guter Ausrede?",
+    "Welche Wahrheit hast du so lange abgeschwächt, bis sie nicht mehr wahr war?",
+    "Was musst du nach einem Streit von mir hören, um dich wieder sicher zu fühlen?",
+    "Welchem Thema weichen wir aus, weil wir Angst vor der Antwort haben?",
+    "Wann hast du zuletzt deine Meinung geändert, weil ich etwas gesagt habe?",
+    "Was hast du mir verziehen, ohne es mir zu sagen?",
+    "Gibt es etwas, das du jemandem nie verziehen hast?",
+    "Wie sieht Respekt aus, wenn wir verschiedener Meinung sind?",
+    "Welche meiner Worte sind dir geblieben – im Guten wie im Schlechten?",
+    "Was glaubst du, das die meisten Menschen um dich herum nicht glauben?",
+    "Wofür würdest du einstehen, selbst wenn es dich Freunde kostet?",
+    "Was bedeutet ein gutes Leben für dich, wenn Geld keine Rolle spielt?",
+    "Was gibt deinem Leben an einem ganz normalen Dienstag Sinn?",
+    "Welche deiner Werte würdest du nie aufgeben – nicht mal für mich?",
+    "Glaubst du, dass Menschen sich wirklich ändern können? Woher kommt diese Überzeugung?",
+    "Was war dir früher wichtig und kommt dir heute klein vor?",
+    "Was schulden wir deiner Meinung nach Fremden?",
+    "Wann hast du zuletzt Ehrfurcht gespürt?",
+    "Was passiert deiner Meinung nach, wenn wir sterben – und verändert das, wie du lebst?",
+    "Gibt es etwas, das dir heilig ist?",
+    "Was ist das Netteste, das ein fremder Mensch je für dich getan hat?",
+    "Was bedeutet Erfolg heute für dich – im Vergleich zu vor fünf Jahren?",
+    "Welche Ungerechtigkeit macht dich am wütendsten – und was machst du mit dieser Wut?",
+    "Hat alles einen Grund, oder geben wir den Dingen im Nachhinein einen?",
+    "Vor der Antwort auf welche Frage hast du Angst?",
+    "Wofür lohnt es sich deiner Meinung nach zu leiden?",
+    "Wann bist du wirklich im Frieden?",
+    "Wofür sind wir deiner Meinung nach hier?",
+    "Bei welcher deiner Überzeugungen wärst du erleichtert, wenn du falschliegst?",
+    "Welche Entscheidung würdest du mit dem Wissen von heute anders treffen?",
+    "Welche Version von dir vermisst du?",
+    "Durch welches Kapitel deines Lebens bist du zu schnell gegangen?",
+    "Was hast du beim Erwachsenwerden verloren, das du gern zurückhättest?",
+    "Welche Tür hast du geschlossen, vor der du manchmal immer noch stehst?",
+    "Wofür wartest du immer noch auf Erlaubnis?",
+    "Welches Jahr deines Lebens hat dich am meisten verändert – und wie?",
+    "Was hast du endlich losgelassen, und wie hat es sich danach angefühlt?",
+    "Was hat dir das Schwerste, das dir je passiert ist, auch gegeben?",
+    "Was würdest du dir am schlimmsten Tag deines Lebens sagen, wenn du zurückkönntest?",
+    "Welche deiner Gewohnheiten stammt aus einer Zeit, in der du sie gebraucht hast?",
+    "Wann bist du zuletzt aus etwas herausgewachsen – einer Freundschaft, einem Ort, einem Traum?",
+    "Was bereust du, jemandem nie gesagt zu haben?",
+    "Mit welchem Teil deiner Vergangenheit hast du inzwischen am meisten Frieden geschlossen?",
+    "Was lernst du gerade, von dem du nie gedacht hättest, dass du es lernen musst?",
+    "Wie willst du in diesem Jahr wirklich wachsen?",
+    "Für welchen Fehler bist du dankbar?",
+    "Welche Wahrheit über das Leben wolltest du jahrelang nicht wahrhaben?",
+    "Wann hattest du zuletzt das Gefühl, gerade jemand Neues zu werden?",
+    "Was würdest du tun, wenn du keine Angst vor einem Neuanfang hättest?",
+    "Wenn du wüsstest, dass dir nur noch ein Jahr bleibt: Womit würdest du morgen aufhören?",
+    "Welche deiner jetzigen Sorgen wird in zehn Jahren noch eine Rolle spielen?",
+    "Was baust du auf, das dich überdauern wird?",
+    "Wie geht es dir mit dem Gedanken ans Älterwerden?",
+    "Was möchtest du verziehen haben, bevor alles zu Ende ist?",
+    "Welchen Traum gibst du gerade leise auf – und ist das okay?",
+    "Was hoffst du endlich zu verstehen, wenn du alt bist?",
+    "Wie soll sich unser Leben in dreißig Jahren anfühlen?",
+    "Was willst du dich trauen, solange du noch kannst?",
+    "Was sollen die Menschen nach uns von uns erben – außer Geld?",
+    "Was möchtest du mit mir erleben, worüber wir noch nie gesprochen haben?",
+    "In welchem Bereich deines Lebens läufst du auf Autopilot?",
+    "Was schiebst du auf, als hättest du alle Zeit der Welt?",
+    "Was soll sich an dir nie ändern, egal wie alt du wirst?",
+    "Was würdest du deinem zukünftigen Ich an einem schweren Tag sagen?",
+    "Was möchtest du im Lauf der Jahre von mir lernen?",
+    "Vor welcher Zukunft hast du Angst, ohne je darüber gesprochen zu haben?",
+    "Wenn du eine Sache über deine Zukunft wissen könntest: Was wäre es – und was willst du lieber nie wissen?",
+    "Denkst du öfter an den Tod, als du zugibst?",
+    "Was sollen wir noch zusammen tun, wenn sonst nichts mehr sicher ist?",
+    "Was wünschst du dir, obwohl du das Gefühl hast, es dir nicht wünschen zu dürfen?",
+    "Welches Leben würdest du führen, wenn die Erwartungen anderer keine Rolle spielten?",
+    "Welchen Traum hast du nie laut ausgesprochen, weil er albern klang?",
+    "Wann hast du dich zuletzt vollkommen frei gefühlt?",
+    "Was lässt dich jedes Mal aufleben?",
+    "Sehnst du dich gerade mehr nach Abenteuer oder nach Ruhe – und was sagt dir das?",
+    "Welchem deiner Talente hast du nie eine echte Chance gegeben?",
+    "Wenn du parallel zu diesem noch ein zweites Leben führen könntest: Welches wäre es?",
+    "Was vermisst du, obwohl du es nie hattest?",
+    "Was würdest du mit einem Jahr anfangen, in dem dich niemand erreichen kann?",
+    "Was würdest du heimlich gern mal mit mir machen – und hoffst, dass ich es vorschlage?",
+    "Wovon willst du mehr in deinen Tagen? Nicht in deinem Leben, nur in deinen Tagen.",
+    "Welcher Ort auf der Welt fühlt sich an, als würde er dir gehören – und warum?",
+    "Aus welchem Ehrgeiz bist du herausgewachsen – und was ist an seine Stelle getreten?",
+    "Wovon tagträumst du, wenn dir langweilig ist?",
+    "Welches Risiko geht dir nicht mehr aus dem Kopf?",
+    "Wie sieht „genug“ für dich aus?",
+    "Was würde dich in einem Jahr stolz auf dich machen?",
+    "Wenn heute ein neues Kapitel beginnen würde: Wie hieße es?",
+    "Was würdest du mich fragen, wenn du wüsstest, dass ich vollkommen ehrlich antworte?"
    ]
   },
   {

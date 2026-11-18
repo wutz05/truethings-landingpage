@@ -17,6 +17,12 @@
   "title": "Lernt euch kennen",
   "art": "pair-in-love"
  },
+ "deck-deep-questions-de": {
+  "lang": "de",
+  "kicker": "Kostenlos · 100 Karten",
+  "title": "Tiefgründige Fragen für Paare",
+  "art": "pair-neutral"
+ },
  "deck-never-have-i-ever-de": {
   "lang": "de",
   "kicker": "Kostenlos · 50 Karten",
@@ -53,6 +59,42 @@
   "title": "Spielt zusammen, auch auf Distanz",
   "art": "pair-in-love"
  },
+ "blog-wie-gut-kennst-du-mich-fragen": {
+  "lang": "de",
+  "kicker": "Partner-Quiz",
+  "title": "Wie gut kennst du mich? 100 Fragen",
+  "art": "pair-winking"
+ },
+ "blog-langeweile-in-der-beziehung": {
+  "lang": "de",
+  "kicker": "Raus aus der Routine",
+  "title": "Langeweile in der Beziehung? Das hilft",
+  "art": "pair-sleeping"
+ },
+ "blog-fernbeziehung-spiele": {
+  "lang": "de",
+  "kicker": "Ratgeber Fernbeziehung",
+  "title": "20 Spiele für die Fernbeziehung",
+  "art": "pair-happy"
+ },
+ "blog-spiele-fuer-paare": {
+  "lang": "de",
+  "kicker": "Spiele zu zweit",
+  "title": "28 Spiele für Paare – für jede Stimmung",
+  "art": "pair-happy"
+ },
+ "blog-fragen-fuer-paare": {
+  "lang": "de",
+  "kicker": "Ratgeber für Paare",
+  "title": "150 Fragen für Paare: von lustig bis tief",
+  "art": "pair-happy"
+ },
+ "blog-de": {
+  "lang": "de",
+  "kicker": "TrueThings Blog",
+  "title": "Ideen für euch zwei",
+  "art": "pair-happy"
+ },
  "home-en": {
   "lang": "en",
   "kicker": "The app for couples",
@@ -70,6 +112,12 @@
   "kicker": "Free · 50 cards",
   "title": "Get to know each other",
   "art": "pair-in-love"
+ },
+ "deck-deep-questions-en": {
+  "lang": "en",
+  "kicker": "Free · 100 cards",
+  "title": "Deep questions for couples",
+  "art": "pair-neutral"
  },
  "deck-never-have-i-ever-en": {
   "lang": "en",
@@ -107,28 +155,22 @@
   "title": "Play together, even when apart",
   "art": "pair-in-love"
  },
- "blog-fernbeziehung-spiele": {
-  "lang": "de",
-  "kicker": "Ratgeber Fernbeziehung",
-  "title": "20 Spiele für die Fernbeziehung",
-  "art": "pair-happy"
+ "blog-how-well-do-you-know-me-questions": {
+  "lang": "en",
+  "kicker": "Couples quiz",
+  "title": "How well do you know me? 100 questions",
+  "art": "pair-winking"
  },
- "blog-spiele-fuer-paare": {
-  "lang": "de",
-  "kicker": "Spiele zu zweit",
-  "title": "28 Spiele für Paare – für jede Stimmung",
-  "art": "pair-happy"
+ "blog-bored-in-a-relationship": {
+  "lang": "en",
+  "kicker": "Break the routine",
+  "title": "Bored in your relationship? This helps",
+  "art": "pair-sleeping"
  },
- "blog-fragen-fuer-paare": {
-  "lang": "de",
-  "kicker": "Ratgeber für Paare",
-  "title": "150 Fragen für Paare: von lustig bis tief",
-  "art": "pair-happy"
- },
- "blog-de": {
-  "lang": "de",
+ "blog-en": {
+  "lang": "en",
   "kicker": "TrueThings Blog",
-  "title": "Ideen für euch zwei",
+  "title": "Ideas for you two",
   "art": "pair-happy"
  }
 }
