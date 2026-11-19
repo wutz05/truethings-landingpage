@@ -25,7 +25,7 @@ Die Screenshots stammen aus den App-Store-Aufnahmen (`truethings/Design/AppStore
 | `src/content/legal/*.html` | Impressum, Privacy, Terms, unverändert von der alten Seite übernommen |
 | `src/og/og.html` | Vorlage der Vorschaubilder (1200 × 630). `jobs.json` daneben schreibt der Build |
 | `assets/css/site.css`, `assets/js/` | Design (Farben und Radien aus dem Design-System der App) und Skripte: Menü, Cookie-Einwilligung, Kartenspieler |
-| `admin.html` | Dashboard unter `/admin` mit drei Seiten: „Funnel“, „Screens“ (`/admin#screens`, jeder Onboarding-Schritt als Screenshot mit Zahlen) und „Videos“ (`/admin#videos`, Aufrufe der Marketing-Videos aus der Warteschlange, nur Anzeige). Ohne Backend ansehen: `admin.html?demo` |
+| `admin.html` | Dashboard unter `/admin` mit drei Seiten: „Funnel“, „Screens“ (`/admin#screens`, jeder Onboarding-Schritt als Screenshot mit Zahlen) und „Content“ (`/admin#videos`, Aufrufe der Marketing-Videos aus der Warteschlange und der Slideshows vom Slideshow-Server, nur Anzeige). Ohne Backend ansehen: `admin.html?demo` |
 | `assets/admin/onboarding/<de\|en>/` | Screenshots für die Seite „Screens“. Erzeugt `truethings/Design/Onboarding/capture-screens.sh`; danach `SHOT_VERSION` in `admin.html` erhöhen (`/assets` wird ein Jahr gecacht) |
 
 ## Fragen-Decks

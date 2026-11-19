@@ -298,6 +298,11 @@ th.sort[aria-sort] { color: var(--text); }
 td a.num-link { color: inherit; text-decoration: none; border-bottom: 1px dotted var(--border-strong); }
 td a.num-link:hover { border-bottom-style: solid; }
 .pill.sm { font-size: 11px; padding: 1px 7px; }
+.slide-sum { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.slide-sum > div { border: 1px solid var(--grid); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 3px; }
+.slide-sum b { font-weight: 650; font-size: 14px; }
+.slide-sum span { color: var(--muted); font-size: 12px; }
+.slide-sum strong { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
 .chart .bar { fill: var(--series-1); }
 .chart .bar.dim { opacity: .45; }
 
@@ -406,7 +411,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     <nav class="nav" id="nav" aria-label="Seiten">
       <button class="nav-item" data-page="funnel" aria-pressed="true">Funnel</button>
       <button class="nav-item" data-page="screens" aria-pressed="false">Screens</button>
-      <button class="nav-item" data-page="videos" aria-pressed="false">Videos</button>
+      <button class="nav-item" data-page="videos" aria-pressed="false">Content</button>
     </nav>
     <div class="spacer"></div>
     <span id="updated" class="updated"></span>
@@ -606,8 +611,18 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <section class="card" style="margin-top:16px">
           <div class="card-head">
             <div>
+              <div class="card-title">Slideshows</div>
+              <div class="card-sub" id="slide-sub">Vom Slideshow-Server, veröffentlicht über Post Bridge</div>
+            </div>
+          </div>
+          <div class="card-body"><div class="slide-sum" id="slide-sum"></div><div class="table-wrap" id="slide-table"></div></div>
+        </section>
+
+        <section class="card" style="margin-top:16px">
+          <div class="card-head">
+            <div>
               <div class="card-title">Als Nächstes</div>
-              <div class="card-sub" id="vid-next-sub">Bei Post Bridge eingeplant, erscheint von selbst</div>
+              <div class="card-sub" id="vid-next-sub">Videos und Slideshows, bei Post Bridge eingeplant, erscheinen von selbst</div>
             </div>
           </div>
           <div class="card-body"><div class="table-wrap" id="vid-next"></div></div>
@@ -616,7 +631,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <footer>
           Quelle: Post Bridge. Die Zahlen kommen von TikTok und Instagram und sind so frisch wie der letzte Abgleich dort; ein neues Video zeigt oft erst nach Stunden Werte.
           Der Knopf „Neu laden“ oben stößt einen Abgleich an (höchstens alle 30 Minuten). Der Zeitraum filtert nach dem Tag der Veröffentlichung, die Aufrufe zählen bis heute.
-          Von dieser Seite aus wird nichts gepostet: Geplant wird über die Warteschlange (<code>videos/queue</code>).
+          Von dieser Seite aus wird nichts gepostet: Videos plant die Warteschlange (<code>videos/queue</code>), Slideshows der Slideshow-Server (content.truethingsapp.com) jeden Tag selbst.
         </footer>
       </div>
     </div>
@@ -926,7 +941,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   const PAGES = {
     funnel: ['Onboarding-Funnel', 'Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele ein Abo abschließen.'],
     screens: ['Onboarding-Screens', 'Jeder Screen des neuen Onboardings in der Reihenfolge der App, mit den Zahlen aus dem gewählten Zeitraum.'],
-    videos: ['Videos', 'Welche Videos aus der Warteschlange draußen sind, wie viele Aufrufe sie haben und was als Nächstes kommt.'],
+    videos: ['Content', 'Die Videos aus der Warteschlange und die Slideshows vom Slideshow-Server: was draußen ist, wie viele Aufrufe es hat und was als Nächstes kommt.'],
   };
   /** Shows the chosen page. A failed load hides the funnel, never the screenshots. */
   function applyPage() {
@@ -1675,14 +1690,23 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         outShares: v.out.reduce((a, c) => a + (c.shares || 0), 0),
       }));
   }
+  /** Slideshows whose time has come, inside the chosen range. */
+  function outSlides() {
+    if (!videoData) return [];
+    const to = range().to;
+    return (videoData.slideshows || [])
+      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) <= to) }))
+      .filter((v) => v.out.length)
+      .map((v) => ({ ...v, outAt: v.out[0].scheduledAt, outViews: v.out.reduce((a, c) => a + (c.views || 0), 0) }));
+  }
   /** What is still ahead: one line per post (a post can go to several accounts). */
   function nextPosts() {
     if (!videoData) return [];
     const posts = new Map();
-    for (const v of videoData.videos) {
+    for (const v of [...videoData.videos, ...(videoData.slideshows || [])]) {
       for (const c of v.channels) {
         if (c.state !== 'scheduled') continue;
-        const p = posts.get(c.postId) || { at: c.scheduledAt, title: v.title, video: v.video, lang: c.lang, accounts: [] };
+        const p = posts.get(c.postId) || { at: c.scheduledAt, title: v.title, video: v.workflow || v.video, slideshow: Boolean(v.workflow), lang: c.lang, accounts: [] };
         p.accounts.push(c);
         posts.set(c.postId, p);
       }
@@ -1736,11 +1760,13 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const ahead = nextPosts();
 
     // What needs a hand: accounts Post Bridge lost, posts a platform refused.
-    const refused = list.flatMap((v) => v.out.filter((c) => c.state === 'failed').map((c) => `${v.title} auf ${platformName(c.platform)} (@${c.username})`));
+    const slides = outSlides();
+    const refused = [...list, ...slides].flatMap((v) => v.out.filter((c) => c.state === 'failed').map((c) => `${v.workflow ? `${v.workflow}: ` : ''}${v.title} auf ${platformName(c.platform)} (@${c.username})`));
     const lost = (videoData.reconnect || []).map((a) => `@${a.username} (${platformName(a.platform)})`);
     const notice = $('videos-notice');
-    notice.hidden = !refused.length && !lost.length;
+    notice.hidden = !refused.length && !lost.length && !videoData.slideshowError;
     notice.replaceChildren(...[
+      videoData.slideshowError ? el('div', {}, [el('b', { text: 'Slideshows fehlen: ' }), `Die Liste konnte nicht gelesen werden (${videoData.slideshowError}).`]) : null,
       lost.length ? el('div', {}, [el('b', { text: 'Neu verbinden: ' }), `Post Bridge erreicht ${lost.join(', ')} nicht mehr. Geplante Videos gehen dort nicht raus.`]) : null,
       refused.length ? el('div', {}, [el('b', { text: 'Nicht veröffentlicht: ' }), refused.slice(0, 4).join(' · ') + (refused.length > 4 ? ` und ${refused.length - 4} weitere` : '')]) : null,
     ].filter(Boolean));
@@ -1751,7 +1777,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const posts = list.reduce((a, v) => a + v.out.filter((c) => c.state === 'posted').length, 0);
     const synced = list.flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
     const best = live.slice().sort((a, b) => b.outViews - a.outViews)[0];
-    const aheadVideos = new Set(ahead.map((p) => `${p.video}:${p.lang}`)).size;
+    const aheadVideos = new Set(ahead.filter((p) => !p.slideshow).map((p) => `${p.video}:${p.lang}`)).size;
+    const aheadLast = ahead.filter((p) => !p.slideshow).pop();
     const tiles = [
       { label: 'Aufrufe', value: fmt(sum('outViews')), note: synced ? `abgeglichen ${when(synced)}` : 'noch keine Zahlen',
         info: 'Alle Aufrufe der Videos, die im Zeitraum veröffentlicht wurden, über alle Konten' },
@@ -1759,7 +1786,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       { label: 'Ø Aufrufe pro Video', value: live.length ? fmt(sum('outViews') / live.length) : '–',
         note: best && best.outViews ? `Bestes: ${best.title} (${fmt(best.outViews)})` : null },
       { label: 'Likes', value: fmt(sum('outLikes')), note: `${fmt(sum('outComments'))} Kommentare · ${fmt(sum('outShares'))} Shares` },
-      { label: 'Geplant', value: fmt(aheadVideos), note: ahead.length ? `reicht bis ${longDay(localDay(ahead[ahead.length - 1].at))}` : 'Warteschlange ist leer',
+      { label: 'Videos geplant', value: fmt(aheadVideos), note: aheadLast ? `reicht bis ${longDay(localDay(aheadLast.at))}` : 'Warteschlange ist leer',
         info: 'Videos, die bei Post Bridge eingeplant sind und noch erscheinen' },
     ];
     $('vid-kpis').replaceChildren(...tiles.map((t) => el('div', { class: 'card kpi' }, [
@@ -1769,6 +1796,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     ])));
 
     renderVideoTable(list);
+    renderSlides(slides);
     renderVideoNext(ahead);
     renderVideoTrend();
   }
@@ -1841,17 +1869,80 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     box.replaceChildren(table);
   }
 
+  /** The slideshow server's posts: a box per workflow, then one row per slideshow. */
+  function renderSlides(list) {
+    const sum = $('slide-sum');
+    const box = $('slide-table');
+    const views = list.reduce((a, v) => a + v.outViews, 0);
+    $('slide-sub').textContent = list.length ? `${fmt(list.length)} Slideshows im Zeitraum · ${fmt(views)} Aufrufe${list.length > 40 ? ' · die neuesten 40 unten' : ''} · vom Slideshow-Server, veröffentlicht über Post Bridge` : 'Vom Slideshow-Server, veröffentlicht über Post Bridge';
+    const flows = new Map();
+    for (const v of [...(videoData.slideshows || [])]) {
+      const f = flows.get(v.workflow) || { name: v.workflow, accounts: new Set(), posted: 0, views: 0, next: null };
+      for (const c of v.channels) f.accounts.add(`@${c.username}`);
+      flows.set(v.workflow, f);
+    }
+    for (const v of list) {
+      const f = flows.get(v.workflow);
+      f.posted += v.out.filter((c) => c.state === 'posted').length;
+      f.views += v.outViews;
+    }
+    for (const p of nextPosts().filter((x) => x.slideshow)) {
+      const f = flows.get(p.video);
+      if (f && !f.next) f.next = p.at;
+    }
+    sum.replaceChildren(...[...flows.values()].sort((a, b) => b.views - a.views).map((f) => el('div', {}, [
+      el('b', { text: f.name }),
+      el('span', { text: [...f.accounts].join(', ') }),
+      el('strong', { class: 'num', text: fmt(f.views) }),
+      el('span', { text: `Aufrufe aus ${fmt(f.posted)} Posts${f.posted ? ` · Ø ${fmt(f.views / f.posted)}` : ''}${f.next ? ` · nächster ${new Date(f.next).toLocaleString('de-DE', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}` : ''}` }),
+    ])));
+    sum.hidden = !flows.size;
+    if (!list.length) {
+      box.replaceChildren(el('div', { class: 'empty', text: 'Im gewählten Zeitraum ist keine Slideshow erschienen.' }));
+      return;
+    }
+    const rows = list.slice().sort((a, b) => (a.outAt < b.outAt ? 1 : -1)).slice(0, 40);
+    const max = Math.max(1, ...rows.map((v) => v.outViews));
+    box.replaceChildren(el('table', {}, [
+      el('thead', {}, [el('tr', {}, [
+        el('th', { text: 'Slideshow' }), el('th', { text: 'Veröffentlicht' }), el('th', { text: 'Konto' }),
+        el('th', { class: 'r', text: 'Aufrufe' }), el('th', { class: 'r', text: 'Likes' }), el('th', { class: 'r', text: 'Kommentare' }), el('th', { class: 'r', text: 'Shares' }),
+      ])]),
+      el('tbody', {}, rows.map((v) => {
+        const c = v.out[0];
+        const posted = c.state === 'posted';
+        const viewsCell = posted
+          ? el('div', { class: 'vid-total' }, [
+            c.url && /^https:\/\//.test(c.url) ? el('a', { class: 'num-link', href: c.url, target: '_blank', rel: 'noopener', text: c.views === null ? '…' : fmt(c.views), title: `@${c.username} öffnen` }) : el('b', { text: c.views === null ? '…' : fmt(c.views) }),
+            el('div', { class: 'vid-bar' }, [el('i', { style: `width:${((c.views || 0) / max) * 100}%` })]),
+          ])
+          : c.state === 'failed'
+            ? el('span', { class: 'pill sm lost', title: c.error || '' }, [el('i'), 'Fehler'])
+            : el('span', { class: 'pill sm live', title: 'Der Termin ist vorbei, Post Bridge hat noch kein Ergebnis gemeldet' }, [el('i'), 'läuft']);
+        return el('tr', {}, [
+          el('td', { class: 'vid-name' }, [el('b', { text: v.title }), el('span', { text: `${v.workflow} · ${c.lang === 'de' ? 'Deutsch' : 'Englisch'}` })]),
+          el('td', { text: when(v.outAt) }),
+          el('td', { class: 'muted', text: `@${c.username}` }),
+          el('td', { class: 'r' }, [viewsCell]),
+          el('td', { class: 'r', text: posted && c.likes !== null ? fmt(c.likes) : '' }),
+          el('td', { class: 'r', text: posted && c.comments !== null ? fmt(c.comments) : '' }),
+          el('td', { class: 'r', text: posted && c.shares !== null ? fmt(c.shares) : '' }),
+        ]);
+      })),
+    ]));
+  }
+
   function renderVideoNext(ahead) {
     const box = $('vid-next');
     if (!ahead.length) {
-      box.replaceChildren(el('div', { class: 'empty', text: 'Nichts eingeplant. Neue Videos in die Warteschlange legen und einplanen lassen.' }));
+      box.replaceChildren(el('div', { class: 'empty', text: 'Nichts eingeplant. Neue Videos in die Warteschlange legen und einplanen lassen; die Slideshows plant der Server jeden Morgen für den Tag.' }));
       return;
     }
     box.replaceChildren(el('table', {}, [
-      el('thead', {}, [el('tr', {}, ['Termin', 'Video', 'Sprache', 'Konten'].map((h) => el('th', { text: h })))]),
+      el('thead', {}, [el('tr', {}, ['Termin', 'Post', 'Sprache', 'Konten'].map((h) => el('th', { text: h })))]),
       el('tbody', {}, ahead.map((p) => el('tr', {}, [
         el('td', { text: new Date(p.at).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) }),
-        el('td', { class: 'vid-name' }, [el('b', { text: p.title }), el('span', { text: p.video })]),
+        el('td', { class: 'vid-name' }, [el('b', { text: p.title }), el('span', { text: p.slideshow ? `Slideshow · ${p.video}` : p.video })]),
         el('td', { text: p.lang === 'de' ? 'Deutsch' : 'Englisch' }),
         el('td', { class: 'muted', text: p.accounts.map((c) => `@${c.username} (${platformName(c.platform)})`).join(', ') }),
       ]))),
@@ -2257,8 +2348,27 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       });
       videos.push({ video, title, firstAt: channels[0].scheduledAt, cover: null, channels });
     }
+    const flows = [['Handschrift-Szenen', 'de', 'truethingsquiz', 1, ['18:00']], ['Branded Slideshows', 'en', 'truethings.questions', 2, ['12:00', '18:00']], ['Branded Deutsch', 'de', 'lina.truethings', 2, ['12:00', '18:00']]];
+    const lines = ['tag die person, mit der du diese fragen beantworten würdest 👀', 'Send this to your boyfriend and see how well he actually knows you', 'Schreib deine Antworten in die Kommentare 😏'];
+    const slideshows = [];
+    for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= isoDay(new Date(today.getTime() + 1 * 864e5)); d.setDate(d.getDate() + 1)) {
+      flows.forEach(([workflow, lang, username, perDay, slots], f) => {
+        for (const slot of slots.slice(0, perDay)) {
+          const at = new Date(d); at.setHours(Number(slot.slice(0, 2)), 3 + f * 5, 0, 0);
+          const state = at > today ? 'scheduled' : (today - at) / 36e5 < 1 ? 'pending' : 'posted';
+          const views = state === 'posted' ? Math.round(Math.pow(rnd(), 2.5) * 4000 + 120) : null;
+          const id = `demo-s-${isoDay(d)}-${f}-${slot}`;
+          slideshows.push({ video: id, title: lines[f], workflow, firstAt: at.toISOString(), cover: null, channels: [{
+            lang, platform: 'tiktok', username, accountId: 90 + f, postId: id, scheduledAt: at.toISOString(), state, error: null,
+            url: state === 'posted' ? 'https://www.tiktok.com/' : null, analyticsId: null, views,
+            likes: views === null ? null : Math.round(views * 0.05), comments: views === null ? null : Math.round(views * 0.006), shares: views === null ? null : Math.round(views * 0.01),
+            syncedAt: null,
+          }] });
+        }
+      });
+    }
     return {
-      generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(),
+      generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(), slideshows: slideshows.reverse(), slideshowError: null,
       reconnect: [{ platform: 'instagram', username: 'truethings.de' }],
       demoDays: [...gains.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([date, g]) => ({ date, ...g })),
     };
