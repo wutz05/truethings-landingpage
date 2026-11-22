@@ -30,6 +30,7 @@
   --bad: #c42f39;
   --bad-soft: rgba(196, 47, 57, .09);
   --brand: #f4339a;
+  --cat-3: #e08a0b; --cat-4: #17936b; --cat-5: #7c5ce0; --cat-6: #d9472b; --cat-slides: #12a3b4;
   --shadow: 0 1px 2px rgba(42, 26, 34, .05), 0 4px 16px -8px rgba(42, 26, 34, .08);
   --tooltip: #1d1a1c;
   --tooltip-text: #ffffff;
@@ -45,6 +46,7 @@
     --series-1: #ec3d98; --series-2: #3987e5; --track: #3a2131; --none: #6b6368;
     --good: #46c77a; --bad: #f07070; --bad-soft: rgba(240, 112, 112, .12);
     --shadow: 0 1px 2px rgba(0, 0, 0, .3); --tooltip: #f6f2f4; --tooltip-text: #1d1a1c; --tooltip-2: rgba(29, 26, 28, .62);
+    --cat-3: #f0a43a; --cat-4: #36b98c; --cat-5: #9b82f0; --cat-6: #ef6a4c; --cat-slides: #34c3d3;
   }
 }
 :root[data-theme="dark"] {
@@ -55,6 +57,7 @@
   --series-1: #ec3d98; --series-2: #3987e5; --track: #3a2131; --none: #6b6368;
   --good: #46c77a; --bad: #f07070; --bad-soft: rgba(240, 112, 112, .12);
   --shadow: 0 1px 2px rgba(0, 0, 0, .3); --tooltip: #f6f2f4; --tooltip-text: #1d1a1c; --tooltip-2: rgba(29, 26, 28, .62);
+  --cat-3: #f0a43a; --cat-4: #36b98c; --cat-5: #9b82f0; --cat-6: #ef6a4c; --cat-slides: #34c3d3;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -139,11 +142,12 @@ h1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 .kpi-label { color: var(--text-2); font-size: 12.5px; font-weight: 550; display: flex; align-items: flex-start; gap: 6px; min-height: 18px; }
 .kpi-value { font-size: 26px; font-weight: 700; letter-spacing: -.025em; line-height: 1.15; }
 .kpi-foot { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; }
-.delta { font-size: 12.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; }
-.delta.up { color: var(--good); }
-.delta.down { color: var(--bad); }
-.delta.flat { color: var(--muted); }
-.delta small { color: var(--muted); font-weight: 500; }
+.delta { font-size: 12px; font-weight: 650; display: inline-flex; align-items: center; gap: 3px; white-space: nowrap; padding: 2px 7px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+.delta.up { color: var(--good); background: color-mix(in srgb, var(--good) 12%, transparent); }
+.delta.down { color: var(--bad); background: var(--bad-soft); }
+.delta.flat { color: var(--muted); background: var(--surface-2); }
+.delta-wrap { display: inline-flex; align-items: center; gap: 6px; min-width: 0; }
+.delta-wrap small { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .kpi-note { color: var(--muted); font-size: 12px; }
 .spark { width: 72px; height: 24px; flex: 0 1 72px; min-width: 0; }
 .info { color: var(--muted); display: inline-grid; place-items: center; cursor: help; }
@@ -205,6 +209,28 @@ h1 { font-size: 24px; font-weight: 700; letter-spacing: -.02em; }
 .mini-stats div { display: flex; flex-direction: column; gap: 2px; }
 .mini-stats span { color: var(--text-2); font-size: 12px; }
 .mini-stats b { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+
+/* ---------- Hero: the headline numbers over a chart ---------- */
+.hero-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 2px 0 18px; border: 1px solid var(--grid); border-radius: 12px; overflow: hidden; }
+.hero-stat { padding: 14px 16px 13px; display: flex; flex-direction: column; gap: 6px; border-right: 1px solid var(--grid); min-width: 0; }
+.hero-stat:last-child { border-right: 0; }
+.hero-stat .label { color: var(--text-2); font-size: 12.5px; font-weight: 550; display: flex; align-items: center; gap: 6px; }
+.hero-stat .value { font-size: 32px; font-weight: 700; letter-spacing: -.03em; line-height: 1.05; }
+.hero-stat .sub { color: var(--muted); font-size: 12px; }
+@media (max-width: 760px) {
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .hero-stat:nth-child(2) { border-right: 0; }
+  .hero-stat:nth-child(-n+2) { border-bottom: 1px solid var(--grid); }
+  .hero-stat .value { font-size: 26px; }
+}
+.chart-legend i.dash { background: none; height: 0; border-top: 2px dashed var(--muted); }
+.legend-chips { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 14px; font-size: 12.5px; color: var(--text-2); }
+.legend-chips span { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; }
+.legend-chips i { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+.legend-chips em { font-style: normal; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.legend-chips b { color: var(--text); font-weight: 650; font-variant-numeric: tabular-nums; }
+.chart .col.dim { opacity: .4; }
+.foot-note { color: var(--muted); font-size: 12px; margin-top: 12px; }
 
 /* ---------- Trend ---------- */
 .chart-legend { display: flex; gap: 16px; align-items: center; font-size: 12.5px; color: var(--text-2); }
@@ -384,6 +410,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   .f-bar { grid-area: bar; padding-top: 7px !important; }
   .f-section { padding: 12px 0 2px; }
 }
+@media (max-width: 480px) {
+  .topbar { gap: 8px; padding: 0 12px; }
+  .nav-item { padding: 6px 7px; font-size: 13px; }
+  .icon-btn { width: 30px; height: 30px; }
+  .field { max-width: 100%; min-width: 0; }
+  .field select { min-width: 0; max-width: 58vw; text-overflow: ellipsis; }
+  .seg button { padding: 5px 8px; }
+  .hero-stat { padding: 12px 12px 11px; }
+  .kpi { min-height: 0; }
+}
 </style>
 </head>
 <body>
@@ -409,7 +445,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     <div class="brand"><img src="assets/admin-icon.png" alt="">TrueThings <small>Admin</small></div>
     <span class="crumb">/</span>
     <nav class="nav" id="nav" aria-label="Seiten">
-      <button class="nav-item" data-page="funnel" aria-pressed="true">Funnel</button>
+      <button class="nav-item" data-page="funnel" aria-pressed="true">Übersicht</button>
       <button class="nav-item" data-page="screens" aria-pressed="false">Screens</button>
       <button class="nav-item" data-page="videos" aria-pressed="false">Content</button>
     </nav>
@@ -459,6 +495,27 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     <div id="state" class="card state" hidden></div>
 
     <div id="content">
+      <section class="card" id="dl-card" style="margin-bottom:16px" hidden>
+        <div class="card-head">
+          <div>
+            <div class="card-title">Downloads</div>
+            <div class="card-sub" id="dl-sub">Erste Starts nach der Installation, pro Tag</div>
+          </div>
+          <div class="head-tools">
+            <div class="chart-legend">
+              <span><i style="background:var(--series-1)"></i>Zeitraum</span>
+              <span><i class="dash"></i>Vorzeitraum</span>
+            </div>
+            <button class="view-toggle" data-toggle="dl">Tabelle</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="hero-stats" id="dl-stats"></div>
+          <div class="chart" id="dl-chart"></div>
+          <p class="foot-note">Gezählt wird der erste Start nach einer Installation (PostHog „Application Installed“, aus der App selbst). Wer die App lädt und nie öffnet, fehlt; das weiß nur App Store Connect. Die Filter oben gelten auch hier.</p>
+        </div>
+      </section>
+
       <section class="kpis" id="kpis" aria-label="Kennzahlen"></section>
 
       <div class="grid two-col">
@@ -590,12 +647,15 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <section class="card">
           <div class="card-head">
             <div>
-              <div class="card-title">Neue Aufrufe pro Tag</div>
-              <div class="card-sub" id="vid-trend-sub">Alle Videos aus dem Zeitraum zusammen</div>
+              <div class="card-title">Aufrufe pro Tag nach Video</div>
+              <div class="card-sub" id="vid-trend-sub">Neue Aufrufe je Tag, gestapelt nach Video</div>
             </div>
-            <div class="head-tools"><button class="view-toggle" id="vid-trend-toggle">Tabelle</button></div>
+            <div class="head-tools">
+              <div class="chart-legend"><span><i class="dash"></i>Vorzeitraum</span></div>
+              <button class="view-toggle" id="vid-trend-toggle">Tabelle</button>
+            </div>
           </div>
-          <div class="card-body"><div class="chart" id="vid-trend"></div></div>
+          <div class="card-body"><div class="chart" id="vid-trend"></div><div class="legend-chips" id="vid-legend"></div></div>
         </section>
 
         <section class="card" style="margin-top:16px">
@@ -798,6 +858,14 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   };
   const isoDay = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const addDays = (iso, n) => { const d = new Date(`${iso}T12:00:00`); d.setDate(d.getDate() + n); return isoDay(d); };
+  const dayCount = (from, to) => Math.round((Date.parse(`${to}T12:00:00`) - Date.parse(`${from}T12:00:00`)) / 864e5) + 1;
+  /** Every day from `from` to `to`, at most up to today. */
+  const daysBetween = (from, to) => {
+    const out = [], last = to < isoDay(new Date()) ? to : isoDay(new Date());
+    for (let d = from; d <= last; d = addDays(d, 1)) out.push(d);
+    return out;
+  };
 
   // ---------------------------------------------------------------- dom
 
@@ -847,7 +915,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   // Which range the loaded data belongs to, so a page shown again knows if it is stale.
   let dataKey = '';
   const rangeKey = () => { const r = range(); return `${r.from}:${r.to}`; };
-  const views = { funnel: 'chart', trend: 'chart' };
+  const views = { funnel: 'chart', trend: 'chart', dl: 'chart' };
   let session = store.get(SESSION_KEY);
   let loadToken = 0;
 
@@ -939,7 +1007,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   }
 
   const PAGES = {
-    funnel: ['Onboarding-Funnel', 'Wie viele neue Nutzer das Onboarding der App starten, wo sie aussteigen und wie viele ein Abo abschließen.'],
+    funnel: ['Übersicht', 'Wie viele die App laden, wie viele das Onboarding starten, wo sie aussteigen und wie viele ein Abo abschließen.'],
     screens: ['Onboarding-Screens', 'Jeder Screen des neuen Onboardings in der Reihenfolge der App, mit den Zahlen aus dem gewählten Zeitraum.'],
     videos: ['Content', 'Die Videos aus der Warteschlange und die Slideshows vom Slideshow-Server: was draußen ist, wie viele Aufrufe es hat und was als Nächstes kommt.'],
   };
@@ -978,6 +1046,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     if (!data) return;
     stamp();
     renderVersions();
+    renderDownloads();
     renderKpis();
     renderFunnel();
     renderSplit();
@@ -1056,7 +1125,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       el('div', { class: 'kpi-label' }, [t.label, t.info ? el('span', { class: 'info', title: t.info }, [icon(ICON_INFO)]) : null]),
       el('div', { class: 'kpi-value', text: t.value }),
       t.note ? el('div', { class: 'kpi-note', text: t.note }) : null,
-      el('div', { class: 'kpi-foot' }, [deltaNode(t.delta), t.spark ? sparkline(t.spark) : null]),
+      el('div', { class: 'kpi-foot' }, [deltaNode(t.delta, t.spark ? '' : 'vs. davor'), t.spark ? sparkline(t.spark) : null]),
     ])));
   }
 
@@ -1078,9 +1147,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     if (Math.abs(d) < 0.05) return { text: '±0 Pp.', dir: 'flat' };
     return { text: `${d > 0 ? '+' : '−'}${pf.format(Math.abs(Math.round(d * 10) / 10))} Pp.`, dir: d > 0 ? 'up' : 'down', arrow: d > 0 ? '▲' : '▼' };
   }
-  function deltaNode(d) {
-    if (!d) return el('span', { class: 'delta flat', text: 'kein Vergleich' });
-    return el('span', { class: `delta ${d.dir}` }, [d.arrow ? `${d.arrow} ` : '', d.text, el('small', { text: ' vs. davor' })]);
+  function deltaNode(d, vs = 'vs. davor') {
+    if (!d) return el('span', { class: 'delta-wrap' }, [el('span', { class: 'delta flat', text: '–' }), el('small', { text: 'kein Vergleich' })]);
+    return el('span', { class: 'delta-wrap' }, [el('span', { class: `delta ${d.dir}` }, [d.arrow ? `${d.arrow} ` : '', d.text]), vs ? el('small', { text: vs }) : null]);
   }
 
   function sparkline(values) {
@@ -1641,7 +1710,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     $('main').classList.add('loading');
     $('refresh').classList.add('spin');
     try {
-      const next = DEMO ? demoVideos(r) : await call({ action: 'videos', from: r.from, refresh }, CONTENT_API);
+      // From the start of the previous period: its numbers are the comparison.
+      const pr = prevRange();
+      const next = DEMO ? demoVideos({ from: pr.from, to: r.to }) : await call({ action: 'videos', from: pr.from, refresh }, CONTENT_API);
       if (ticket !== videoToken) return;
       videoData = next; videoError = null; videoDaily = null; videoKey = `${r.from}:${r.to}`;
       renderVideos();
@@ -1661,25 +1732,57 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
 
   /** The day-by-day numbers come second: one request per video at Post Bridge. */
   async function loadVideoDaily(ticket, refresh) {
-    const ids = [...new Set(outVideos().flatMap((v) => v.channels.map((c) => c.analyticsId).filter(Boolean)))].slice(0, 200);
+    const channels = [...videoData.videos, ...(videoData.slideshows || [])].flatMap((v) => v.channels).filter((c) => c.analyticsId);
+    channels.sort((a, b) => (a.scheduledAt < b.scheduledAt ? 1 : -1));
+    const ids = [...new Set(channels.map((c) => c.analyticsId))].slice(0, 400);
     let next;
     try {
-      next = !ids.length ? { days: [] } : DEMO ? { days: videoData.demoDays } : await call({ action: 'daily', analytics_ids: ids, refresh }, CONTENT_API);
+      next = !ids.length ? { days: [], byId: [] } : DEMO ? { days: videoData.demoDays, byId: videoData.demoById } : await call({ action: 'daily', analytics_ids: ids, refresh }, CONTENT_API);
     } catch (err) {
-      next = { days: [], failed: true };
+      next = { days: [], byId: [], failed: true };
     }
     if (ticket !== videoToken) return;
     videoDaily = next;
-    renderVideoTrend();
+    renderVideos();
+  }
+
+  /** The period before the chosen one, just as long. */
+  function prevRange() {
+    const r = range();
+    const n = dayCount(r.from, r.to);
+    return { from: addDays(r.from, -n), to: addDays(r.from, -1) };
+  }
+
+  /** New views per day for each group (one per video, all slideshows together), from Post Bridge's daily totals. */
+  function viewGains() {
+    if (!videoData || !videoDaily || !videoDaily.byId) return null;
+    const groupOf = new Map();
+    for (const v of videoData.videos) for (const c of v.channels) if (c.analyticsId) groupOf.set(c.analyticsId, { key: v.video, title: v.title });
+    for (const v of videoData.slideshows || []) for (const c of v.channels) if (c.analyticsId) groupOf.set(c.analyticsId, { key: '#slides', title: 'Slideshows' });
+    const byDay = new Map(); // day -> Map(group -> views)
+    const titles = new Map();
+    for (const one of videoDaily.byId) {
+      const g = groupOf.get(one.id);
+      if (!g) continue;
+      titles.set(g.key, g.title);
+      for (const d of one.days) {
+        const m = byDay.get(d.date) || new Map();
+        m.set(g.key, (m.get(g.key) || 0) + d.views);
+        byDay.set(d.date, m);
+      }
+    }
+    const on = (day, pick = () => true) => { const m = byDay.get(day); if (!m) return 0; let n = 0; for (const [k, v] of m) if (pick(k)) n += v; return n; };
+    const sum = (from, to, pick) => daysBetween(from, to).reduce((a, d) => a + on(d, pick), 0);
+    return { byDay, titles, on, sum };
   }
 
   const localDay = (iso) => isoDay(new Date(iso));
   /** Videos with at least one channel whose time has come, inside the chosen range. */
   function outVideos() {
     if (!videoData) return [];
-    const to = range().to;
+    const { from, to } = range();
     return videoData.videos
-      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) <= to) }))
+      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) >= from && localDay(c.scheduledAt) <= to) }))
       .filter((v) => v.out.length)
       .map((v) => ({
         ...v,
@@ -1693,9 +1796,9 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   /** Slideshows whose time has come, inside the chosen range. */
   function outSlides() {
     if (!videoData) return [];
-    const to = range().to;
+    const { from, to } = range();
     return (videoData.slideshows || [])
-      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) <= to) }))
+      .map((v) => ({ ...v, out: v.channels.filter((c) => c.state !== 'scheduled' && localDay(c.scheduledAt) >= from && localDay(c.scheduledAt) <= to) }))
       .filter((v) => v.out.length)
       .map((v) => ({ ...v, outAt: v.out[0].scheduledAt, outViews: v.out.reduce((a, c) => a + (c.views || 0), 0) }));
   }
@@ -1771,21 +1874,31 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       refused.length ? el('div', {}, [el('b', { text: 'Nicht veröffentlicht: ' }), refused.slice(0, 4).join(' · ') + (refused.length > 4 ? ` und ${refused.length - 4} weitere` : '')]) : null,
     ].filter(Boolean));
 
-    // KPI tiles
+    // KPI tiles: views today and in the period from the day-by-day numbers, each against the time before.
     const live = list.filter((v) => v.out.some((c) => c.state === 'posted'));
+    const pr = prevRange();
+    const prevLive = videoData.videos.filter((v) => v.channels.some((c) => c.state === 'posted' && localDay(c.scheduledAt) >= pr.from && localDay(c.scheduledAt) <= pr.to));
     const sum = (key) => list.reduce((a, v) => a + v[key], 0);
-    const posts = list.reduce((a, v) => a + v.out.filter((c) => c.state === 'posted').length, 0);
-    const synced = list.flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
     const best = live.slice().sort((a, b) => b.outViews - a.outViews)[0];
     const aheadVideos = new Set(ahead.filter((p) => !p.slideshow).map((p) => `${p.video}:${p.lang}`)).size;
     const aheadLast = ahead.filter((p) => !p.slideshow).pop();
+    const g = viewGains();
+    const today = isoDay(new Date());
+    const yesterday = addDays(today, -1);
+    const r = range();
+    const slidesOnly = (k) => k === '#slides';
+    const videosOnly = (k) => k !== '#slides';
+    const synced = [...list, ...outSlides()].flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
     const tiles = [
-      { label: 'Aufrufe', value: fmt(sum('outViews')), note: synced ? `abgeglichen ${when(synced)}` : 'noch keine Zahlen',
-        info: 'Alle Aufrufe der Videos, die im Zeitraum veröffentlicht wurden, über alle Konten' },
-      { label: 'Videos veröffentlicht', value: fmt(live.length), note: posts ? `${fmt(posts)} Posts auf den Konten` : null },
+      { label: 'Aufrufe heute', value: g ? fmt(g.on(today)) : '…', delta: g ? relDelta(g.on(today), g.on(yesterday)) : undefined, vs: 'vs. gestern, ganzer Tag',
+        note: g ? `Videos ${fmt(g.on(today, videosOnly))} · Slideshows ${fmt(g.on(today, slidesOnly))}` : 'lade Tageswerte',
+        info: `Neue Aufrufe heute laut letztem Abgleich mit TikTok und Instagram${synced ? ` (${when(synced)})` : ''}, Videos und Slideshows zusammen. Verglichen mit dem ganzen gestrigen Tag; heute läuft noch.` },
+      { label: 'Aufrufe im Zeitraum', value: g ? fmt(g.sum(r.from, r.to)) : '…', delta: g ? relDelta(g.sum(r.from, r.to), g.sum(pr.from, pr.to)) : undefined,
+        note: g ? `Videos ${fmt(g.sum(r.from, r.to, videosOnly))} · Slideshows ${fmt(g.sum(r.from, r.to, slidesOnly))}` : null,
+        info: 'Neue Aufrufe an den Tagen des Zeitraums, egal wann der Post erschien. Verglichen mit gleich vielen Tagen davor.' },
+      { label: 'Videos veröffentlicht', value: fmt(live.length), delta: relDelta(live.length, prevLive.length) },
       { label: 'Ø Aufrufe pro Video', value: live.length ? fmt(sum('outViews') / live.length) : '–',
-        note: best && best.outViews ? `Bestes: ${best.title} (${fmt(best.outViews)})` : null },
-      { label: 'Likes', value: fmt(sum('outLikes')), note: `${fmt(sum('outComments'))} Kommentare · ${fmt(sum('outShares'))} Shares` },
+        note: best && best.outViews ? `Bestes: ${best.title} (${fmt(best.outViews)})` : null, info: 'Alle Aufrufe der Videos aus dem Zeitraum bis heute, geteilt durch ihre Anzahl' },
       { label: 'Videos geplant', value: fmt(aheadVideos), note: aheadLast ? `reicht bis ${longDay(localDay(aheadLast.at))}` : 'Warteschlange ist leer',
         info: 'Videos, die bei Post Bridge eingeplant sind und noch erscheinen' },
     ];
@@ -1793,6 +1906,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       el('div', { class: 'kpi-label' }, [t.label, t.info ? el('span', { class: 'info', title: t.info }, [icon(ICON_INFO)]) : null]),
       el('div', { class: 'kpi-value num', text: t.value }),
       t.note ? el('div', { class: 'kpi-note', text: t.note }) : null,
+      t.delta === undefined ? null : el('div', { class: 'kpi-foot' }, [deltaNode(t.delta, t.vs)]),
     ])));
 
     renderVideoTable(list);
@@ -1949,75 +2063,141 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     ]));
   }
 
+  /** The views chart: new views per day, stacked by video (the six strongest
+   *  of the period, the rest together, all slideshows as one), with the
+   *  previous period as a dashed line. */
   function renderVideoTrend() {
     const box = $('vid-trend');
+    const legend = $('vid-legend');
     if (!videoData || videoError) return;
-    if (!videoDaily) { box.replaceChildren(el('div', { class: 'empty', text: 'Lade Tageswerte …' })); return; }
-    if (!videoDaily.days.length) {
+    if (!videoDaily) { box.replaceChildren(el('div', { class: 'empty', text: 'Lade Tageswerte …' })); legend.replaceChildren(); return; }
+    const g = viewGains();
+    if (!g || !g.byDay.size) {
+      legend.replaceChildren();
       box.replaceChildren(el('div', { class: 'empty', text: videoDaily.failed
         ? 'Die Tageswerte konnten nicht geladen werden.'
-        : 'Noch keine Tageswerte. Sie erscheinen, sobald Post Bridge für ein Video Zahlen von der Plattform hat.' }));
+        : 'Noch keine Tageswerte. Sie erscheinen, sobald Post Bridge für einen Post Zahlen von der Plattform hat.' }));
       return;
     }
-    // Every day of the range up to today; days without a number are zeros.
-    const r = range();
-    const today = isoDay(new Date());
-    const gain = new Map(videoDaily.days.map((d) => [d.date, d]));
-    const days = [];
-    for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= r.to && isoDay(d) <= today; d.setDate(d.getDate() + 1)) {
-      const g = gain.get(isoDay(d));
-      days.push({ day: isoDay(d), views: g ? g.views : 0, likes: g ? g.likes : 0 });
-    }
+    const r = range(), pr = prevRange();
+    const days = daysBetween(r.from, r.to);
+    const prevDays = daysBetween(pr.from, pr.to);
+    const totals = new Map();
+    for (const d of days) for (const [k, v] of g.byDay.get(d) || []) totals.set(k, (totals.get(k) || 0) + v);
+    const videos = [...totals.entries()].filter(([k, v]) => k !== '#slides' && v > 0).sort((a, b) => b[1] - a[1]);
+    const top = videos.slice(0, 6).map(([k]) => k);
+    const colors = ['var(--series-1)', 'var(--series-2)', 'var(--cat-3)', 'var(--cat-4)', 'var(--cat-5)', 'var(--cat-6)'];
+    const series = top.map((k, i) => ({ key: k, label: g.titles.get(k) || k, color: colors[i] }));
+    if (videos.length > top.length) series.push({ key: '#rest', label: 'Weitere Videos', color: 'var(--none)' });
+    if ((totals.get('#slides') || 0) > 0) series.push({ key: '#slides', label: 'Slideshows', color: 'var(--cat-slides)' });
+    const valueOf = (day, key) => {
+      const m = g.byDay.get(day);
+      if (!m) return 0;
+      if (key === '#rest') { let n = 0; for (const [k, v] of m) if (k !== '#slides' && !top.includes(k)) n += v; return n; }
+      return m.get(key) || 0;
+    };
+    const rows = days.map((day, i) => ({ day, values: series.map((se) => valueOf(day, se.key)), prev: prevDays[i] ? g.on(prevDays[i]) : null, prevDay: prevDays[i] }));
+    const sumOf = (key) => days.reduce((a, d) => a + valueOf(d, key), 0);
+    legend.replaceChildren(...series.map((se) => el('span', {}, [el('i', { style: `background:${se.color}` }), el('em', { text: se.label }), el('b', { text: fmt(sumOf(se.key)) })])));
+    $('vid-trend-sub').textContent = `Neue Aufrufe je Tag, gestapelt nach Video · zusammen ${fmt(g.sum(r.from, r.to))}, davor ${fmt(g.sum(pr.from, pr.to))}`;
     if (vidView.trend === 'table') {
-      box.replaceChildren(el('div', { class: 'table-wrap' }, [el('table', {}, [
-        el('thead', {}, [el('tr', {}, ['Tag', 'Neue Aufrufe', 'Neue Likes'].map((h, i) => el('th', { class: i ? 'r' : '', text: h })))]),
-        el('tbody', {}, days.slice().reverse().map((d) => el('tr', {}, [
-          el('td', { text: longDay(d.day) }), el('td', { class: 'r', text: fmt(d.views) }), el('td', { class: 'r', text: fmt(d.likes) }),
-        ]))),
-      ])]));
+      box.replaceChildren(dayTable(rows, series, 'Aufrufe'));
       return;
     }
+    barChart(box, rows, series, { label: 'Neue Aufrufe pro Tag nach Video', unit: 'Aufrufe' });
+  }
+
+  /** Days as rows, one column per series, plus total and the day of the previous period. */
+  function dayTable(rows, series, unit) {
+    return el('div', { class: 'table-wrap' }, [el('table', {}, [
+      el('thead', {}, [el('tr', {}, [
+        el('th', { text: 'Tag' }),
+        ...(series.length > 1 ? series.map((se) => el('th', { class: 'r', text: se.label })) : []),
+        el('th', { class: 'r', text: series.length > 1 ? 'Gesamt' : unit }),
+        el('th', { class: 'r', text: 'Vorzeitraum' }), el('th', { class: 'r', text: 'Veränderung' }),
+      ])]),
+      el('tbody', {}, rows.slice().reverse().map((row) => {
+        const total = row.values.reduce((a, v) => a + v, 0);
+        const d = row.prev === null ? null : relDelta(total, row.prev);
+        return el('tr', {}, [
+          el('td', { text: longDay(row.day) }),
+          ...(series.length > 1 ? row.values.map((v) => el('td', { class: 'r muted', text: v ? fmt(v) : '' })) : []),
+          el('td', { class: 'r', text: fmt(total) }),
+          el('td', { class: 'r muted', text: row.prev === null ? '–' : fmt(row.prev) }),
+          el('td', { class: 'r' }, [d ? el('span', { class: `delta ${d.dir}` }, [d.arrow ? `${d.arrow} ` : '', d.text]) : '–']),
+        ]);
+      })),
+    ])]);
+  }
+
+  /** Columns per day, stacked by series, the previous period as a dashed line,
+   *  one tooltip per day. rows: [{ day, values: [n per series], prev, prevDay }]. */
+  function barChart(box, rows, series, { label = '', unit = '', height = 250 } = {}) {
     const W = Math.max(320, box.clientWidth || 800);
-    const H = 220, padL = 44, padR = 12, padT = 10, padB = 26;
+    const H = height, padL = 44, padR = 12, padT = 12, padB = 26;
     const plotW = W - padL - padR, plotH = H - padT - padB;
-    const max = niceMax(Math.max(1, ...days.map((d) => d.views)));
-    const band = plotW / days.length;
-    const barW = Math.max(2, Math.min(18, band - 2));
+    const totals = rows.map((r) => r.values.reduce((a, v) => a + v, 0));
+    const max = niceMax(Math.max(1, ...totals, ...rows.map((r) => r.prev || 0)));
+    const band = plotW / Math.max(1, rows.length);
+    const barW = Math.max(2, Math.min(26, band * 0.68));
     const x = (i) => padL + band * i + band / 2;
     const y = (v) => padT + plotH - (v / max) * plotH;
-    const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': 'Neue Aufrufe pro Tag' });
+    const s = svg('svg', { viewBox: `0 0 ${W} ${H}`, height: H, role: 'img', 'aria-label': label });
     for (let k = 0; k <= 4; k++) {
       const v = (max / 4) * k;
       s.append(svg('line', { x1: padL, x2: padL + plotW, y1: y(v), y2: y(v), stroke: k ? 'var(--grid)' : 'var(--axis)', 'stroke-width': 1 }));
       const t = svg('text', { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end' });
-      t.textContent = nf.format(v);
+      t.textContent = v >= 10000 ? `${nf.format(Math.round(v / 1000))}k` : nf.format(v);
       s.append(t);
     }
-    const every = Math.max(1, Math.ceil(days.length / Math.max(2, Math.floor(plotW / 64))));
-    for (let i = days.length - 1; i >= 0; i -= every) {
+    const every = Math.max(1, Math.ceil(rows.length / Math.max(2, Math.floor(plotW / 64))));
+    for (let i = rows.length - 1; i >= 0; i -= every) {
       const t = svg('text', { x: x(i), y: H - 6, 'text-anchor': 'middle' });
-      t.textContent = dayLabel(days[i].day);
+      t.textContent = dayLabel(rows[i].day);
       s.append(t);
     }
-    // Columns stand on the baseline; only the top end is rounded.
-    const bars = days.map((d, i) => {
-      const top = y(d.views), h = y(0) - top, rad = Math.min(4, barW / 2, h);
-      const left = x(i) - barW / 2, right = x(i) + barW / 2;
-      const bar = svg('path', { class: 'bar', d: h <= 0 ? '' : `M${left},${y(0)}V${top + rad}Q${left},${top} ${left + rad},${top}H${right - rad}Q${right},${top} ${right},${top + rad}V${y(0)}Z` });
-      s.append(bar);
-      return bar;
+    const cols = rows.map((row, i) => {
+      const col = svg('g', { class: 'col' });
+      let base = 0;
+      const lastOn = row.values.reduce((last, v, k) => (v > 0 ? k : last), -1);
+      row.values.forEach((v, k) => {
+        if (v <= 0) return;
+        const top = y(base + v), bottom = y(base), left = x(i) - barW / 2, right = x(i) + barW / 2;
+        const rad = k === lastOn ? Math.min(4, barW / 2, bottom - top) : 0;
+        col.append(svg('path', {
+          fill: series[k].color,
+          d: rad ? `M${left},${bottom}V${top + rad}Q${left},${top} ${left + rad},${top}H${right - rad}Q${right},${top} ${right},${top + rad}V${bottom}Z` : `M${left},${bottom}V${top}H${right}V${bottom}Z`,
+        }));
+        base += v;
+      });
+      s.append(col);
+      return col;
     });
+    // The previous period, day for day.
+    let d = '';
+    rows.forEach((row, i) => { if (row.prev !== null && row.prev !== undefined) d += `${d && rows[i - 1] && rows[i - 1].prev !== null ? 'L' : 'M'}${x(i).toFixed(1)},${y(row.prev).toFixed(1)}`; });
+    if (d) s.append(svg('path', { d, fill: 'none', stroke: 'var(--muted)', 'stroke-width': 1.6, 'stroke-dasharray': '4 4', 'stroke-linejoin': 'round' }));
     const hit = svg('rect', { x: padL, y: padT, width: plotW, height: plotH, fill: 'transparent', tabindex: '0', style: 'outline:none' });
-    let focusIndex = days.length - 1;
+    let focusIndex = rows.length - 1;
     const show = (i, clientX, clientY) => {
-      bars.forEach((b, k) => b.classList.toggle('dim', k !== i));
-      showTip([longDay(days[i].day), ['Neue Aufrufe', fmt(days[i].views), 'var(--series-1)'], ['Neue Likes', fmt(days[i].likes)]], clientX, clientY);
+      cols.forEach((c, k) => c.classList.toggle('dim', k !== i));
+      const row = rows[i];
+      const total = totals[i];
+      const parts = row.values.map((v, k) => [series[k].label, fmt(v), series[k].color, v]).filter((p) => p[3] > 0).sort((a, b) => b[3] - a[3]);
+      const dd = row.prev === null || row.prev === undefined ? null : relDelta(total, row.prev);
+      showTip([
+        longDay(row.day) + (row.day === isoDay(new Date()) ? ' (läuft noch)' : ''),
+        ...(series.length > 1 ? parts.slice(0, 7).map((p) => [p[0].length > 28 ? `${p[0].slice(0, 27)}…` : p[0], p[1], p[2]]) : []),
+        [series.length > 1 ? 'Gesamt' : unit || series[0].label, fmt(total), series.length > 1 ? null : series[0].color],
+        row.prevDay ? [`Vorzeitraum (${dayLabel(row.prevDay)})`, fmt(row.prev)] : null,
+        dd ? ['Veränderung', dd.text] : null,
+      ], clientX, clientY);
     };
-    const hide = () => { bars.forEach((b) => b.classList.remove('dim')); hideTip(); };
+    const hide = () => { cols.forEach((c) => c.classList.remove('dim')); hideTip(); };
     hit.addEventListener('pointermove', (e) => {
       const rect = s.getBoundingClientRect();
       const px = ((e.clientX - rect.left) / rect.width) * W;
-      focusIndex = Math.max(0, Math.min(days.length - 1, Math.floor((px - padL) / band)));
+      focusIndex = Math.max(0, Math.min(rows.length - 1, Math.floor((px - padL) / band)));
       show(focusIndex, e.clientX, e.clientY);
     });
     hit.addEventListener('pointerleave', hide);
@@ -2026,12 +2206,56 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     hit.addEventListener('keydown', (e) => {
       if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
       e.preventDefault();
-      focusIndex = Math.max(0, Math.min(days.length - 1, focusIndex + (e.key === 'ArrowRight' ? 1 : -1)));
+      focusIndex = Math.max(0, Math.min(rows.length - 1, focusIndex + (e.key === 'ArrowRight' ? 1 : -1)));
       const b = hit.getBoundingClientRect();
       show(focusIndex, b.left + ((x(focusIndex) - padL) / plotW) * b.width, b.top + 20);
     });
     s.append(hit);
     box.replaceChildren(s);
+  }
+
+  // ---------------------------------------------------------------- downloads
+
+  /** The downloads card on the main page: today, the period, the average, the best day, and the chart. */
+  function renderDownloads() {
+    const card = $('dl-card');
+    const dl = data && data.downloads;
+    card.hidden = !dl;
+    if (!dl) return;
+    const n = new Map(dl.days.map((d) => [d.day, d.n]));
+    const days = daysBetween(data.range.from, data.range.to);
+    const prevDays = daysBetween(data.previousRange.from, data.previousRange.to);
+    const rows = days.map((day, i) => ({ day, values: [n.get(day) || 0], prev: prevDays[i] ? n.get(prevDays[i]) || 0 : null, prevDay: prevDays[i] }));
+    const total = rows.reduce((a, r) => a + r.values[0], 0);
+    const prevTotal = prevDays.reduce((a, d) => a + (n.get(d) || 0), 0);
+    const today = isoDay(new Date());
+    const hasToday = today >= data.range.from && today <= data.range.to;
+    const todayN = n.get(today) || 0;
+    const clock = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    // Whole days only for the average, so a young today does not pull it down.
+    const full = days.filter((d) => d < today);
+    const prevFull = prevDays.slice(0, full.length);
+    const avg = full.length ? full.reduce((a, d) => a + (n.get(d) || 0), 0) / full.length : null;
+    const prevAvg = prevFull.length ? prevFull.reduce((a, d) => a + (n.get(d) || 0), 0) / prevFull.length : null;
+    const best = rows.slice().sort((a, b) => b.values[0] - a.values[0])[0];
+    const stat = (label, value, delta, vs, sub, info) => el('div', { class: 'hero-stat' }, [
+      el('div', { class: 'label' }, [label, info ? el('span', { class: 'info', title: info }, [icon(ICON_INFO)]) : null]),
+      el('div', { class: 'value num', text: value }),
+      delta === undefined ? null : deltaNode(delta, vs),
+      sub ? el('div', { class: 'sub', text: sub }) : null,
+    ]);
+    $('dl-stats').replaceChildren(
+      hasToday
+        ? stat('Downloads heute', fmt(todayN), relDelta(todayN, dl.yesterdaySoFar), `vs. gestern bis ${clock}`, `gestern bis dahin: ${fmt(dl.yesterdaySoFar)}`, 'Erste Starts seit Mitternacht, verglichen mit gestern bis zur selben Uhrzeit')
+        : stat('Downloads heute', '–', undefined, '', 'heute liegt nicht im Zeitraum'),
+      stat('Downloads im Zeitraum', fmt(total), relDelta(total, prevTotal), 'vs. davor', `davor: ${fmt(prevTotal)}`),
+      stat('Ø pro Tag', avg === null ? '–' : pf.format(Math.round(avg * 10) / 10), avg === null || prevAvg === null ? null : relDelta(avg, prevAvg), 'vs. davor', 'nur abgeschlossene Tage'),
+      stat('Bester Tag', best && best.values[0] ? fmt(best.values[0]) : '–', undefined, '', best && best.values[0] ? longDay(best.day) : 'noch keine Downloads'),
+    );
+    $('dl-sub').textContent = `Erste Starts nach der Installation, pro Tag · ${longDay(data.range.from)} – ${longDay(data.range.to)}`;
+    const series = [{ key: 'dl', label: 'Downloads', color: 'var(--series-1)' }];
+    if (views.dl === 'table') { $('dl-chart').replaceChildren(dayTable(rows, series, 'Downloads')); return; }
+    barChart($('dl-chart'), rows, series, { label: 'Downloads pro Tag', unit: 'Downloads', height: 230 });
   }
 
   // ---------------------------------------------------------------- tooltip
@@ -2098,7 +2322,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const k = b.dataset.toggle;
     views[k] = views[k] === 'chart' ? 'table' : 'chart';
     b.textContent = views[k] === 'chart' ? 'Tabelle' : 'Diagramm';
-    k === 'funnel' ? renderFunnel() : renderTrend();
+    k === 'funnel' ? renderFunnel() : k === 'dl' ? renderDownloads() : renderTrend();
   }));
   /** Loads what the open page shows. */
   function loadPage(refresh = false) { return page === 'videos' ? loadVideos(refresh) : load(refresh); }
@@ -2111,7 +2335,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       else renderVideos();
     } else if (dataKey !== rangeKey() && !failed) load();
     // The charts measure their box: drawn while hidden they have no width.
-    else if (page === 'funnel' && data && !failed && views.trend === 'chart') renderTrend();
+    else if (page === 'funnel' && data && !failed) { if (views.trend === 'chart') renderTrend(); if (views.dl === 'chart') renderDownloads(); }
   }
   $('nav').addEventListener('click', (e) => {
     const b = e.target.closest('button'); if (!b) return;
@@ -2154,6 +2378,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       if (page === 'funnel' && data && views.trend === 'chart') renderTrend();
+      if (page === 'funnel' && data && views.dl === 'chart') renderDownloads();
       if (page === 'videos' && vidView.trend === 'chart') renderVideoTrend();
     }, 120);
   });
@@ -2299,7 +2524,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       };
     });
     const prevFrom = prevDays[0], prevTo = prevDays[prevDays.length - 1];
+    const dlDays = [...prevDays, ...days].map((day, i) => ({ day, n: Math.round((38 + rnd() * 30) * (1 + i / (prevDays.length + days.length)) * (new Date(`${day}T12:00:00`).getDay() % 6 === 0 ? 1.3 : 1)) }));
+    const dlToday = dlDays.find((d) => d.day === isoDay(new Date()));
+    if (dlToday) dlToday.n = Math.round(dlToday.n * Math.min(1, new Date().getHours() / 24 + 0.1));
     return {
+      downloads: { days: dlDays.filter((d) => d.day <= isoDay(new Date())), yesterdaySoFar: Math.round((dlToday ? dlToday.n : 40) * 0.9), source: 'demo' },
       generatedAt: new Date().toISOString(), cached: false,
       range: { from: r.from, to: r.to, days: count }, previousRange: { from: prevFrom, to: prevTo },
       current: cur.totals, previous: prev.totals, trend: cur.trend, recent,
@@ -2314,7 +2543,20 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const titles = ['Eight Days', 'One Percent', 'Inside Jokes', 'The Scroll', 'A Thousand Evenings', 'Low Power Mode', 'Houseplant', 'Velcro', 'Elevator', '48 Days', 'Final Bosses', 'Day 47'];
     const accounts = [['en', 'tiktok', 'truethings.en'], ['en', 'instagram', 'truethings.app'], ['de', 'tiktok', 'truethings.de'], ['de', 'instagram', 'truethings.de']];
     const today = new Date();
-    const videos = [], gains = new Map();
+    const videos = [], gains = new Map(), byId = [];
+    /** Spreads a post's views over its first days, the way they usually come in. */
+    const spread = (id, d, views) => {
+      const out = [];
+      let left = views;
+      for (let k2 = 0; k2 < 6 && left > 0; k2++) {
+        const day = new Date(d); day.setDate(day.getDate() + k2);
+        if (isoDay(day) > isoDay(today)) break;
+        const part = k2 === 5 ? left : Math.round(left * 0.55);
+        out.push({ date: isoDay(day), views: part, likes: Math.round(part * 0.06) });
+        left -= part;
+      }
+      byId.push({ id, days: out });
+    };
     let n = 0;
     for (let d = new Date(`${r.from}T12:00:00`); isoDay(d) <= isoDay(new Date(today.getTime() + 5 * 864e5)); d.setDate(d.getDate() + 1), n++) {
       const future = isoDay(d) > isoDay(today);
@@ -2326,6 +2568,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         const at = new Date(d); at.setHours(lang === 'en' ? 19 : 18, 30 + k, 0, 0);
         const state = future ? 'scheduled' : (n === 9 && k === 1) ? 'failed' : age < 0.1 ? 'pending' : 'posted';
         const views = state === 'posted' ? Math.round((platform === 'tiktok' ? 900 : 350) * pull * (1 - Math.exp(-(age + 0.3) / 2)) * (lang === 'de' ? 0.6 : 1)) : null;
+        if (views) spread(`a-${n}-${k}`, d, views);
         if (views) {
           // Most of a video's views come in its first days.
           let left = views;
@@ -2358,9 +2601,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
           const state = at > today ? 'scheduled' : (today - at) / 36e5 < 1 ? 'pending' : 'posted';
           const views = state === 'posted' ? Math.round(Math.pow(rnd(), 2.5) * 4000 + 120) : null;
           const id = `demo-s-${isoDay(d)}-${f}-${slot}`;
+          if (views) spread(`s-${id}`, at, views);
           slideshows.push({ video: id, title: lines[f], workflow, firstAt: at.toISOString(), cover: null, channels: [{
             lang, platform: 'tiktok', username, accountId: 90 + f, postId: id, scheduledAt: at.toISOString(), state, error: null,
-            url: state === 'posted' ? 'https://www.tiktok.com/' : null, analyticsId: null, views,
+            url: state === 'posted' ? 'https://www.tiktok.com/' : null, analyticsId: views === null ? null : `s-${id}`, views,
             likes: views === null ? null : Math.round(views * 0.05), comments: views === null ? null : Math.round(views * 0.006), shares: views === null ? null : Math.round(views * 0.01),
             syncedAt: null,
           }] });
@@ -2368,7 +2612,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       });
     }
     return {
-      generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(), slideshows: slideshows.reverse(), slideshowError: null,
+      generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(), slideshows: slideshows.reverse(), slideshowError: null, demoById: byId,
       reconnect: [{ platform: 'instagram', username: 'truethings.de' }],
       demoDays: [...gains.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([date, g]) => ({ date, ...g })),
     };
