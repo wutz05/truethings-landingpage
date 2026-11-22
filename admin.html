@@ -1890,8 +1890,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const videosOnly = (k) => k !== '#slides';
     const synced = [...list, ...outSlides()].flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
     const tiles = [
-      { label: 'Aufrufe heute', value: g ? fmt(g.on(today)) : '…', delta: g ? relDelta(g.on(today), g.on(yesterday)) : undefined, vs: 'vs. gestern, ganzer Tag',
-        note: g ? `Videos ${fmt(g.on(today, videosOnly))} · Slideshows ${fmt(g.on(today, slidesOnly))}` : 'lade Tageswerte',
+      { label: 'Aufrufe heute', value: g ? fmt(g.on(today)) : '…',
+        // Before the first sync of the day there is no number for today yet, not zero views.
+        delta: g && g.byDay.has(today) ? relDelta(g.on(today), g.on(yesterday)) : undefined, vs: 'vs. gestern, ganzer Tag',
+        note: !g ? 'lade Tageswerte' : g.byDay.has(today) ? `Videos ${fmt(g.on(today, videosOnly))} · Slideshows ${fmt(g.on(today, slidesOnly))}` : `noch kein Abgleich heute · gestern ${fmt(g.on(yesterday))}`,
         info: `Neue Aufrufe heute laut letztem Abgleich mit TikTok und Instagram${synced ? ` (${when(synced)})` : ''}, Videos und Slideshows zusammen. Verglichen mit dem ganzen gestrigen Tag; heute läuft noch.` },
       { label: 'Aufrufe im Zeitraum', value: g ? fmt(g.sum(r.from, r.to)) : '…', delta: g ? relDelta(g.sum(r.from, r.to), g.sum(pr.from, pr.to)) : undefined,
         note: g ? `Videos ${fmt(g.sum(r.from, r.to, videosOnly))} · Slideshows ${fmt(g.sum(r.from, r.to, slidesOnly))}` : null,
