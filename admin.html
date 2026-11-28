@@ -333,6 +333,14 @@ td a.num-link:hover { border-bottom-style: solid; }
 .fmt-table tr.fmt-head:first-child td { border-top: 0; }
 .fmt-table tr.fmt-acc td:first-child { padding-left: 26px; }
 .fmt-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; }
+.pill.warn { color: var(--cat-3); }
+.queue-cal td, .queue-cal th { vertical-align: top; }
+.queue-cal td.q-day { white-space: nowrap; font-weight: 600; }
+.queue-cal td.q-day span { display: block; font-weight: 400; color: var(--muted); font-size: 12px; }
+.queue-cal .q-cell b { display: block; font-weight: 600; font-size: 13px; line-height: 1.3; white-space: normal; min-width: 130px; }
+.queue-cal .q-cell span { color: var(--muted); font-size: 12px; }
+.queue-cal td.q-gap { color: var(--bad); background: var(--bad-soft); font-size: 12.5px; font-weight: 600; }
+.queue-cal td.q-done b { color: var(--text-2); font-weight: 500; }
 .chart .bar { fill: var(--series-1); }
 .chart .bar.dim { opacity: .45; }
 
@@ -647,6 +655,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       <div id="videos-content">
         <div id="videos-notice" class="notice" hidden></div>
         <section class="kpis five" id="vid-kpis" aria-label="Kennzahlen"></section>
+
+        <section class="card" style="margin-bottom:16px">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Warteschlange</div>
+              <div class="card-sub" id="queue-sub"></div>
+            </div>
+          </div>
+          <div class="card-body"><div class="slide-sum" id="queue-lanes"></div><div class="table-wrap" id="queue-cal"></div></div>
+        </section>
 
         <section class="card">
           <div class="card-head">
@@ -1974,11 +1992,113 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       t.delta === undefined ? null : el('div', { class: 'kpi-foot' }, [deltaNode(t.delta, t.vs)]),
     ])));
 
+    renderQueue();
     renderFormatTable();
     renderVideoTable(list);
     renderSlides(slides);
     renderVideoNext(ahead);
     renderVideoTrend();
+  }
+
+  /** The queue: one lane per format and language (the accounts one post goes
+   *  to), with what is planned on it and until when. Slideshow workflows plan
+   *  themselves day by day, so they have no end. A lane with nothing planned
+   *  still shows for a week after its last post, unless another format has
+   *  taken over its accounts. */
+  /** Every day from `from` to `to`, also ahead of today (daysBetween stops at today). */
+  const daySpan = (from, to) => { const out = []; for (let d = from; d <= to; d = addDays(d, 1)) out.push(d); return out; };
+
+  function queueLanes() {
+    const today = isoDay(new Date());
+    const lanes = new Map();
+    const laneFor = (v, c) => {
+      const f = formatOf(v, c);
+      const key = `${f}|${c.lang}`;
+      if (!lanes.has(key)) lanes.set(key, { key, format: f, lang: c.lang, auto: Boolean(v.workflow), accounts: new Map(), past: new Map(), posts: new Map(), out: new Map(), lastOut: null });
+      return lanes.get(key);
+    };
+    for (const v of [...videoData.videos, ...(videoData.slideshows || [])]) {
+      for (const c of v.channels) {
+        const day = localDay(c.scheduledAt);
+        if (c.state === 'scheduled') {
+          const l = laneFor(v, c);
+          l.accounts.set(accountKey(c), c);
+          if (!l.posts.has(c.postId)) l.posts.set(c.postId, { at: c.scheduledAt, day, title: v.title });
+        } else if (day >= addDays(today, -6)) {
+          const l = laneFor(v, c);
+          l.past.set(accountKey(c), c);
+          if (!l.lastOut || c.scheduledAt > l.lastOut) l.lastOut = c.scheduledAt;
+          if (day === today) l.out.set(c.postId, { at: c.scheduledAt, day, title: v.title });
+        }
+      }
+    }
+    const planned = new Set([...lanes.values()].filter((l) => l.posts.size).flatMap((l) => [...l.accounts.keys()]));
+    const list = [];
+    for (const l of lanes.values()) {
+      if (!l.posts.size) {
+        // Nothing ahead: only worth a line if its accounts are not served by another format now.
+        const free = [...l.past.entries()].filter(([k]) => !planned.has(k));
+        if (!free.length) continue;
+        l.accounts = new Map(free);
+      }
+      const posts = [...l.posts.values()].sort((a, b) => (a.at < b.at ? -1 : 1));
+      const last = posts.length ? posts[posts.length - 1].day : null;
+      const days = new Set(posts.map((p) => p.day));
+      const gaps = last ? daySpan(addDays(today, 1), last).filter((d) => !days.has(d)) : [];
+      list.push({ ...l, posts, last, left: last ? dayCount(today, last) - 1 : -1, gaps });
+    }
+    const rank = (l) => `${l.auto ? 1 : 0}${l.format}${l.lang === 'en' ? 0 : 1}`;
+    return list.sort((a, b) => rank(a).localeCompare(rank(b)));
+  }
+
+  function renderQueue() {
+    const today = isoDay(new Date());
+    const lanes = queueLanes();
+    const dayName = (iso) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { weekday: 'short', day: 'numeric', month: 'short' });
+    const hour = (iso) => new Date(iso).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    const leftText = (n) => (n <= 0 ? 'nur noch heute' : n === 1 ? 'noch 1 Tag' : `noch ${n} Tage`);
+    const own = lanes.filter((l) => !l.auto);
+    const tight = own.slice().sort((a, b) => a.left - b.left)[0];
+    $('queue-sub').textContent = !own.length ? 'Nichts eingeplant'
+      : tight.left < 0 ? `Leer: ${tight.format} ${tight.lang.toUpperCase()} hat nichts mehr eingeplant`
+        : `Vorproduziert bis mindestens ${dayName(tight.last)} · am knappsten: ${tight.format} ${tight.lang.toUpperCase()} (${leftText(tight.left)})`;
+
+    $('queue-lanes').replaceChildren(...lanes.map((l) => {
+      const state = l.auto ? ['live', 'automatisch'] : l.left < 0 ? ['lost', 'leer'] : l.left <= 1 ? ['lost', 'nachlegen'] : l.left <= 3 ? ['warn', 'bald nachlegen'] : ['done', 'ok'];
+      const accounts = [...l.accounts.values()].map((c) => `@${c.username}`).join(', ');
+      const detail = l.auto
+        ? (l.posts.length ? `heute ${l.posts.map((p) => hour(p.at)).join(', ')} · der Slideshow-Server plant jeden Tag neu` : 'der Slideshow-Server plant jeden Tag neu')
+        : l.left < 0 ? `letzter Post ${l.lastOut ? dayName(localDay(l.lastOut)) : '–'}`
+          : `${fmt(l.posts.length)} ${l.posts.length === 1 ? 'Post' : 'Posts'} · ${leftText(l.left)}${l.gaps.length ? ` · Lücke: ${l.gaps.map(dayName).join(', ')}` : ''}`;
+      return el('div', {}, [
+        el('b', {}, [el('span', { class: 'fmt-dot', style: `background:${formatColor(l.format)}` }), `${l.format} ${l.lang.toUpperCase()}`]),
+        el('span', { text: accounts }),
+        el('strong', { class: 'num', text: l.auto ? 'läuft täglich' : l.left < 0 ? 'nichts eingeplant' : `bis ${dayName(l.last)}` }),
+        el('span', { text: detail }),
+        el('div', {}, [el('span', { class: `pill sm ${state[0]}` }, [el('i'), state[1]])]),
+      ]);
+    }));
+    $('queue-lanes').hidden = !lanes.length;
+
+    // The calendar: a row per day, a column per lane that is planned by hand.
+    const box = $('queue-cal');
+    if (!own.length) { box.replaceChildren(); return; }
+    const end = own.reduce((a, l) => (l.last && l.last > a ? l.last : a), addDays(today, 6));
+    const days = daySpan(today, end).slice(0, 28);
+    const cell = (l, day) => {
+      const posts = l.posts.filter((p) => p.day === day);
+      if (posts.length) return el('td', { class: 'q-cell' }, posts.flatMap((p) => [el('b', { text: p.title }), el('span', { text: hour(p.at) })]));
+      const out = day === today ? [...l.out.values()] : [];
+      if (out.length) return el('td', { class: 'q-cell q-done' }, out.flatMap((p) => [el('b', { text: p.title }), el('span', { text: `erschienen ${hour(p.at)}` })]));
+      return el('td', { class: 'q-gap', text: 'leer' });
+    };
+    box.replaceChildren(el('table', { class: 'queue-cal' }, [
+      el('thead', {}, [el('tr', {}, [el('th', { text: 'Tag' }), ...own.map((l) => el('th', {}, [el('span', { class: 'fmt-dot', style: `background:${formatColor(l.format)}` }), `${l.format} ${l.lang.toUpperCase()}`]))])]),
+      el('tbody', {}, days.map((day) => el('tr', {}, [
+        el('td', { class: 'q-day' }, [dayName(day), day === today ? el('span', { text: 'heute' }) : null]),
+        ...own.map((l) => cell(l, day)),
+      ]))),
+    ]));
   }
 
   /** One row per format and account: what went out in the period, its views
