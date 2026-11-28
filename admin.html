@@ -329,6 +329,10 @@ td a.num-link:hover { border-bottom-style: solid; }
 .slide-sum b { font-weight: 650; font-size: 14px; }
 .slide-sum span { color: var(--muted); font-size: 12px; }
 .slide-sum strong { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+.fmt-table tr.fmt-head td { font-weight: 650; border-top: 1px solid var(--border); }
+.fmt-table tr.fmt-head:first-child td { border-top: 0; }
+.fmt-table tr.fmt-acc td:first-child { padding-left: 26px; }
+.fmt-dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; }
 .chart .bar { fill: var(--series-1); }
 .chart .bar.dim { opacity: .45; }
 
@@ -647,11 +651,12 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <section class="card">
           <div class="card-head">
             <div>
-              <div class="card-title">Aufrufe pro Tag nach Video</div>
-              <div class="card-sub" id="vid-trend-sub">Neue Aufrufe je Tag, gestapelt nach Video</div>
+              <div class="card-title" id="vid-trend-title">Aufrufe pro Tag nach Format</div>
+              <div class="card-sub" id="vid-trend-sub">Neue Aufrufe je Tag, gestapelt nach Format</div>
             </div>
             <div class="head-tools">
               <div class="chart-legend"><span><i class="dash"></i>Vorzeitraum</span></div>
+              <button class="view-toggle" id="vid-group-toggle">nach Konto</button>
               <button class="view-toggle" id="vid-trend-toggle">Tabelle</button>
             </div>
           </div>
@@ -661,7 +666,17 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
         <section class="card" style="margin-top:16px">
           <div class="card-head">
             <div>
-              <div class="card-title">Videos</div>
+              <div class="card-title">Formate und Konten</div>
+              <div class="card-sub" id="fmt-sub"></div>
+            </div>
+          </div>
+          <div class="card-body"><div class="table-wrap" id="fmt-table"></div></div>
+        </section>
+
+        <section class="card" style="margin-top:16px">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Einzelne Videos</div>
               <div class="card-sub" id="vid-sub"></div>
             </div>
           </div>
@@ -1702,7 +1717,43 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
   const PLATFORM = { tiktok: 'TikTok', instagram: 'Instagram', youtube: 'YouTube', facebook: 'Facebook' };
   const platformName = (p) => PLATFORM[p] || p;
   let videoData = null, videoDaily = null, videoKey = '', videoError = null, videoToken = 0;
-  const vidView = { trend: 'chart', sort: 'date' };
+  const vidView = { trend: 'chart', sort: 'date', group: 'format' };
+
+  // Which format a post belongs to. A format lives on accounts, and Hannes
+  // moves formats between accounts now and then, so a rule can start on a
+  // day. First match wins. Videos from the queue go by video name or account,
+  // slideshows by the server's workflow. A new format or a move to other
+  // accounts is a new rule here (and maybe in SLIDESHOWS in admin-content).
+  const QUIZ_ACCOUNTS = ['lara65163', 'truethings.app', 'sara.fdg', 'truethings_app'];
+  const FORMAT_RULES = [
+    { name: 'Vox-Collagen', videos: ['071-shaky-bridge'] }, // the first collage ran on the explainer accounts (26.11.)
+    { name: 'Paar-Quiz', accounts: QUIZ_ACCOUNTS, from: '2026-11-27' },
+    { name: 'Erklärvideos', accounts: QUIZ_ACCOUNTS },
+    { name: 'Vox-Collagen', accounts: ['truethings.questions', 'lina.truethings'] },
+    { name: 'Handschrift-Slideshows', workflows: ['Handschrift-Szenen'] },
+    { name: 'Branded-Slideshows', workflows: ['Branded Slideshows', 'Branded Deutsch'] },
+  ];
+  /** Fixed colours, so a format keeps its colour whatever the period. */
+  const FORMAT_COLOR = {
+    'Paar-Quiz': 'var(--series-1)', 'Vox-Collagen': 'var(--series-2)', 'Erklärvideos': 'var(--cat-3)',
+    'Handschrift-Slideshows': 'var(--cat-slides)', 'Branded-Slideshows': 'var(--cat-4)', 'Sonstige Videos': 'var(--cat-5)', 'Sonstige Slideshows': 'var(--cat-6)',
+  };
+  const formatColor = (name) => FORMAT_COLOR[name] || 'var(--none)';
+  function formatOf(v, c) {
+    const day = localDay(c.scheduledAt);
+    for (const r of FORMAT_RULES) {
+      if (Boolean(r.workflows) !== Boolean(v.workflow)) continue;
+      if (r.workflows && !r.workflows.includes(v.workflow)) continue;
+      if (r.videos && !r.videos.includes(v.video)) continue;
+      if (r.accounts && !r.accounts.includes(c.username)) continue;
+      if (r.from && day < r.from) continue;
+      return r.name;
+    }
+    return v.workflow ? 'Sonstige Slideshows' : 'Sonstige Videos';
+  }
+  const isSlideFormat = (name) => /Slideshows$/.test(name);
+  const accountKey = (c) => `${c.platform}:${c.username}`;
+  const accountLabel = (c) => `@${c.username} · ${platformName(c.platform)} ${c.lang.toUpperCase()}`;
 
   async function loadVideos(refresh = false) {
     const ticket = ++videoToken;
@@ -1753,18 +1804,29 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     return { from: addDays(r.from, -n), to: addDays(r.from, -1) };
   }
 
-  /** New views per day for each group (one per video, all slideshows together), from Post Bridge's daily totals. */
-  function viewGains() {
+  /** New views per day for each group, from Post Bridge's daily totals. Groups
+   *  are formats (by = 'format') or format and account (by = 'account'); `slide`
+   *  says which groups are slideshows. */
+  function viewGains(by = 'format') {
     if (!videoData || !videoDaily || !videoDaily.byId) return null;
     const groupOf = new Map();
-    for (const v of videoData.videos) for (const c of v.channels) if (c.analyticsId) groupOf.set(c.analyticsId, { key: v.video, title: v.title });
-    for (const v of videoData.slideshows || []) for (const c of v.channels) if (c.analyticsId) groupOf.set(c.analyticsId, { key: '#slides', title: 'Slideshows' });
+    for (const v of [...videoData.videos, ...(videoData.slideshows || [])]) {
+      for (const c of v.channels) {
+        if (!c.analyticsId) continue;
+        const f = formatOf(v, c);
+        groupOf.set(c.analyticsId, by === 'account'
+          ? { key: `${f}|${accountKey(c)}`, title: `${f} · ${accountLabel(c)}`, format: f }
+          : { key: f, title: f, format: f });
+      }
+    }
     const byDay = new Map(); // day -> Map(group -> views)
     const titles = new Map();
+    const formats = new Map();
     for (const one of videoDaily.byId) {
       const g = groupOf.get(one.id);
       if (!g) continue;
       titles.set(g.key, g.title);
+      formats.set(g.key, g.format);
       for (const d of one.days) {
         const m = byDay.get(d.date) || new Map();
         m.set(g.key, (m.get(g.key) || 0) + d.views);
@@ -1773,7 +1835,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     }
     const on = (day, pick = () => true) => { const m = byDay.get(day); if (!m) return 0; let n = 0; for (const [k, v] of m) if (pick(k)) n += v; return n; };
     const sum = (from, to, pick) => daysBetween(from, to).reduce((a, d) => a + on(d, pick), 0);
-    return { byDay, titles, on, sum };
+    const slide = (k) => isSlideFormat(formats.get(k) || '');
+    return { byDay, titles, formats, slide, on, sum };
   }
 
   const localDay = (iso) => isoDay(new Date(iso));
@@ -1809,7 +1872,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     for (const v of [...videoData.videos, ...(videoData.slideshows || [])]) {
       for (const c of v.channels) {
         if (c.state !== 'scheduled') continue;
-        const p = posts.get(c.postId) || { at: c.scheduledAt, title: v.title, video: v.workflow || v.video, slideshow: Boolean(v.workflow), lang: c.lang, accounts: [] };
+        const p = posts.get(c.postId) || { at: c.scheduledAt, title: v.title, video: v.workflow || v.video, slideshow: Boolean(v.workflow), lang: c.lang, format: formatOf(v, c), accounts: [] };
         p.accounts.push(c);
         posts.set(c.postId, p);
       }
@@ -1886,8 +1949,8 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const today = isoDay(new Date());
     const yesterday = addDays(today, -1);
     const r = range();
-    const slidesOnly = (k) => k === '#slides';
-    const videosOnly = (k) => k !== '#slides';
+    const slidesOnly = (k) => g.slide(k);
+    const videosOnly = (k) => !g.slide(k);
     const synced = [...list, ...outSlides()].flatMap((v) => v.out.map((c) => c.syncedAt).filter(Boolean)).sort().pop();
     const tiles = [
       { label: 'Aufrufe heute', value: g ? fmt(g.on(today)) : '…',
@@ -1911,10 +1974,103 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       t.delta === undefined ? null : el('div', { class: 'kpi-foot' }, [deltaNode(t.delta, t.vs)]),
     ])));
 
+    renderFormatTable();
     renderVideoTable(list);
     renderSlides(slides);
     renderVideoNext(ahead);
     renderVideoTrend();
+  }
+
+  /** One row per format and account: what went out in the period, its views
+   *  so far, the best post, and how far ahead it is planned. Formats as
+   *  headings with their sums, strongest first. */
+  function renderFormatTable() {
+    const box = $('fmt-table');
+    const { from, to } = range();
+    const rows = new Map(); // format|account -> row
+    const rowFor = (v, c) => {
+      const f = formatOf(v, c);
+      const key = `${f}|${accountKey(c)}`;
+      if (!rows.has(key)) rows.set(key, { format: f, label: accountLabel(c), lang: c.lang, posts: 0, live: 0, views: 0, likes: 0, comments: 0, shares: 0, best: null, next: null, last: null });
+      return rows.get(key);
+    };
+    for (const v of [...videoData.videos, ...(videoData.slideshows || [])]) {
+      for (const c of v.channels) {
+        const day = localDay(c.scheduledAt);
+        if (c.state === 'scheduled') {
+          const r = rowFor(v, c);
+          if (!r.next || c.scheduledAt < r.next) r.next = c.scheduledAt;
+          if (!r.last || c.scheduledAt > r.last) r.last = c.scheduledAt;
+          continue;
+        }
+        if (day < from || day > to) continue;
+        const r = rowFor(v, c);
+        r.posts += 1;
+        if (c.state === 'posted') r.live += 1;
+        r.views += c.views || 0; r.likes += c.likes || 0; r.comments += c.comments || 0; r.shares += c.shares || 0;
+        // Slideshow titles are their whole caption: the start is enough here.
+        const title = v.title.length > 48 ? `${v.title.slice(0, 46).trimEnd()}…` : v.title;
+        if ((c.views || 0) > (r.best ? r.best.views : -1)) r.best = { title, views: c.views || 0, url: c.url };
+      }
+    }
+    if (!rows.size) {
+      $('fmt-sub').textContent = '';
+      box.replaceChildren(el('div', { class: 'empty', text: 'Im gewählten Zeitraum ist nichts erschienen und nichts eingeplant.' }));
+      return;
+    }
+    const formats = new Map();
+    for (const r of rows.values()) {
+      const f = formats.get(r.format) || { name: r.format, rows: [], posts: 0, live: 0, views: 0, likes: 0, comments: 0, shares: 0, next: null, last: null };
+      f.rows.push(r);
+      for (const k of ['posts', 'live', 'views', 'likes', 'comments', 'shares']) f[k] += r[k];
+      if (r.next && (!f.next || r.next < f.next)) f.next = r.next;
+      if (r.last && (!f.last || r.last > f.last)) f.last = r.last;
+      formats.set(r.format, f);
+    }
+    const order = [...formats.values()].sort((a, b) => b.views - a.views || a.name.localeCompare(b.name));
+    const max = Math.max(1, ...[...rows.values()].map((r) => r.views));
+    const short = (iso) => new Date(iso).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' });
+    const avg = (x) => (x.live ? fmt(x.views / x.live) : '–');
+    const ahead = (x) => (x.next ? `${short(x.next)}${x.last && localDay(x.last) !== localDay(x.next) ? ` – ${short(x.last)}` : ''}` : '–');
+    const total = order.reduce((a, f) => a + f.views, 0);
+    $('fmt-sub').textContent = `${fmt(order.length)} Formate auf ${fmt(rows.size)} Konten · ${fmt(total)} Aufrufe der Posts aus dem Zeitraum bis heute`;
+    const body = [];
+    for (const f of order) {
+      body.push(el('tr', { class: 'fmt-head' }, [
+        el('td', {}, [el('span', { class: 'fmt-dot', style: `background:${formatColor(f.name)}` }), f.name]),
+        el('td', { class: 'r', text: fmt(f.posts) }),
+        el('td', { class: 'r', text: fmt(f.views) }),
+        el('td', { class: 'r', text: avg(f) }),
+        el('td', { class: 'r', text: fmt(f.likes) }), el('td', { class: 'r', text: fmt(f.comments) }), el('td', { class: 'r', text: fmt(f.shares) }),
+        el('td', {}),
+        el('td', { text: ahead(f) }),
+      ]));
+      for (const r of f.rows.sort((a, b) => b.views - a.views || (a.lang === 'en' ? -1 : 1))) {
+        const best = r.best && r.best.views ? r.best : null;
+        body.push(el('tr', { class: 'fmt-acc' }, [
+          el('td', { class: 'muted', text: r.label }),
+          el('td', { class: 'r', text: r.posts ? fmt(r.posts) : '–' }),
+          el('td', { class: 'r' }, [el('div', { class: 'vid-total' }, [
+            el('b', { text: fmt(r.views) }),
+            el('div', { class: 'vid-bar' }, [el('i', { style: `width:${(r.views / max) * 100}%;background:${formatColor(r.format)}` })]),
+          ])]),
+          el('td', { class: 'r', text: avg(r) }),
+          el('td', { class: 'r muted', text: fmt(r.likes) }), el('td', { class: 'r muted', text: fmt(r.comments) }), el('td', { class: 'r muted', text: fmt(r.shares) }),
+          el('td', { class: 'vid-name' }, best ? [best.url && /^https:\/\//.test(best.url)
+            ? el('a', { class: 'num-link', href: best.url, target: '_blank', rel: 'noopener', text: best.title })
+            : el('span', { text: best.title }), el('span', { text: ` · ${fmt(best.views)}` })] : []),
+          el('td', { class: 'muted', text: ahead(r) }),
+        ]));
+      }
+    }
+    box.replaceChildren(el('table', { class: 'fmt-table' }, [
+      el('thead', {}, [el('tr', {}, [
+        el('th', { text: 'Format / Konto' }), el('th', { class: 'r', text: 'Posts' }), el('th', { class: 'r', text: 'Aufrufe' }),
+        el('th', { class: 'r', text: 'Ø pro Post' }), el('th', { class: 'r', text: 'Likes' }), el('th', { class: 'r', text: 'Kommentare' }),
+        el('th', { class: 'r', text: 'Shares' }), el('th', { text: 'Bester Post' }), el('th', { text: 'Eingeplant' }),
+      ])]),
+      el('tbody', {}, body),
+    ]));
   }
 
   function renderVideoTable(list) {
@@ -1964,7 +2120,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       ])]),
       el('tbody', {}, rows.map((v) => {
         const tr = el('tr', {}, [
-          el('td', { class: 'vid-name' }, [el('b', { text: v.title }), el('span', { text: v.video })]),
+          el('td', { class: 'vid-name' }, [el('b', { text: v.title }), el('span', { text: `${formatOf(v, v.out[0])} · ${v.video}` })]),
           el('td', { text: when(v.outAt) }),
           ...groups.map((g) => cell(v, g)),
           el('td', { class: 'r' }, [el('div', { class: 'vid-total' }, [
@@ -2055,9 +2211,10 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
       return;
     }
     box.replaceChildren(el('table', {}, [
-      el('thead', {}, [el('tr', {}, ['Termin', 'Post', 'Sprache', 'Konten'].map((h) => el('th', { text: h })))]),
+      el('thead', {}, [el('tr', {}, ['Termin', 'Format', 'Post', 'Sprache', 'Konten'].map((h) => el('th', { text: h })))]),
       el('tbody', {}, ahead.map((p) => el('tr', {}, [
         el('td', { text: new Date(p.at).toLocaleString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) }),
+        el('td', {}, [el('span', { class: 'fmt-dot', style: `background:${formatColor(p.format)}` }), p.format]),
         el('td', { class: 'vid-name' }, [el('b', { text: p.title }), el('span', { text: p.slideshow ? `Slideshow · ${p.video}` : p.video })]),
         el('td', { text: p.lang === 'de' ? 'Deutsch' : 'Englisch' }),
         el('td', { class: 'muted', text: p.accounts.map((c) => `@${c.username} (${platformName(c.platform)})`).join(', ') }),
@@ -2065,15 +2222,16 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     ]));
   }
 
-  /** The views chart: new views per day, stacked by video (the six strongest
-   *  of the period, the rest together, all slideshows as one), with the
-   *  previous period as a dashed line. */
+  /** The views chart: new views per day, stacked by format (or by format and
+   *  account, the strongest eight and the rest together), with the previous
+   *  period as a dashed line. */
   function renderVideoTrend() {
     const box = $('vid-trend');
     const legend = $('vid-legend');
     if (!videoData || videoError) return;
     if (!videoDaily) { box.replaceChildren(el('div', { class: 'empty', text: 'Lade Tageswerte …' })); legend.replaceChildren(); return; }
-    const g = viewGains();
+    const byAccount = vidView.group === 'account';
+    const g = viewGains(byAccount ? 'account' : 'format');
     if (!g || !g.byDay.size) {
       legend.replaceChildren();
       box.replaceChildren(el('div', { class: 'empty', text: videoDaily.failed
@@ -2086,27 +2244,37 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     const prevDays = daysBetween(pr.from, pr.to);
     const totals = new Map();
     for (const d of days) for (const [k, v] of g.byDay.get(d) || []) totals.set(k, (totals.get(k) || 0) + v);
-    const videos = [...totals.entries()].filter(([k, v]) => k !== '#slides' && v > 0).sort((a, b) => b[1] - a[1]);
-    const top = videos.slice(0, 6).map(([k]) => k);
-    const colors = ['var(--series-1)', 'var(--series-2)', 'var(--cat-3)', 'var(--cat-4)', 'var(--cat-5)', 'var(--cat-6)'];
-    const series = top.map((k, i) => ({ key: k, label: g.titles.get(k) || k, color: colors[i] }));
-    if (videos.length > top.length) series.push({ key: '#rest', label: 'Weitere Videos', color: 'var(--none)' });
-    if ((totals.get('#slides') || 0) > 0) series.push({ key: '#slides', label: 'Slideshows', color: 'var(--cat-slides)' });
+    const ranked = [...totals.entries()].filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([k]) => k);
+    const LIMIT = 8;
+    const top = byAccount ? ranked.slice(0, LIMIT) : ranked;
+    // By account: the accounts of one format next to each other, shades of the format's colour.
+    if (byAccount) top.sort((a, b) => (g.formats.get(a) === g.formats.get(b) ? totals.get(b) - totals.get(a) : ranked.indexOf(a) - ranked.indexOf(b)));
+    const seen = new Map();
+    const series = top.map((k) => {
+      const f = g.formats.get(k);
+      const n = seen.get(f) || 0;
+      seen.set(f, n + 1);
+      const color = byAccount && n ? `color-mix(in srgb, ${formatColor(f)} ${Math.max(35, 100 - n * 22)}%, var(--surface, #fff))` : formatColor(f);
+      return { key: k, label: g.titles.get(k) || k, color };
+    });
+    if (ranked.length > top.length) series.push({ key: '#rest', label: 'Weitere Konten', color: 'var(--none)' });
     const valueOf = (day, key) => {
       const m = g.byDay.get(day);
       if (!m) return 0;
-      if (key === '#rest') { let n = 0; for (const [k, v] of m) if (k !== '#slides' && !top.includes(k)) n += v; return n; }
+      if (key === '#rest') { let n = 0; for (const [k, v] of m) if (!top.includes(k)) n += v; return n; }
       return m.get(key) || 0;
     };
     const rows = days.map((day, i) => ({ day, values: series.map((se) => valueOf(day, se.key)), prev: prevDays[i] ? g.on(prevDays[i]) : null, prevDay: prevDays[i] }));
     const sumOf = (key) => days.reduce((a, d) => a + valueOf(d, key), 0);
     legend.replaceChildren(...series.map((se) => el('span', {}, [el('i', { style: `background:${se.color}` }), el('em', { text: se.label }), el('b', { text: fmt(sumOf(se.key)) })])));
-    $('vid-trend-sub').textContent = `Neue Aufrufe je Tag, gestapelt nach Video · zusammen ${fmt(g.sum(r.from, r.to))}, davor ${fmt(g.sum(pr.from, pr.to))}`;
+    const what = byAccount ? 'Format und Konto' : 'Format';
+    $('vid-trend-title').textContent = `Aufrufe pro Tag nach ${what}`;
+    $('vid-trend-sub').textContent = `Neue Aufrufe je Tag, gestapelt nach ${what} · zusammen ${fmt(g.sum(r.from, r.to))}, davor ${fmt(g.sum(pr.from, pr.to))}`;
     if (vidView.trend === 'table') {
       box.replaceChildren(dayTable(rows, series, 'Aufrufe'));
       return;
     }
-    barChart(box, rows, series, { label: 'Neue Aufrufe pro Tag nach Video', unit: 'Aufrufe' });
+    barChart(box, rows, series, { label: `Neue Aufrufe pro Tag nach ${what}`, unit: 'Aufrufe' });
   }
 
   /** Days as rows, one column per series, plus total and the day of the previous period. */
@@ -2345,6 +2513,11 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     goTo(b.dataset.page);
   });
   addEventListener('hashchange', () => goTo(pageOf(location.hash)));
+  $('vid-group-toggle').addEventListener('click', (e) => {
+    vidView.group = vidView.group === 'format' ? 'account' : 'format';
+    e.currentTarget.textContent = vidView.group === 'format' ? 'nach Konto' : 'nach Format';
+    renderVideoTrend();
+  });
   $('vid-trend-toggle').addEventListener('click', (e) => {
     vidView.trend = vidView.trend === 'chart' ? 'table' : 'chart';
     e.currentTarget.textContent = vidView.trend === 'chart' ? 'Tabelle' : 'Diagramm';
@@ -2543,7 +2716,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     let seed = 11;
     const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
     const titles = ['Eight Days', 'One Percent', 'Inside Jokes', 'The Scroll', 'A Thousand Evenings', 'Low Power Mode', 'Houseplant', 'Velcro', 'Elevator', '48 Days', 'Final Bosses', 'Day 47'];
-    const accounts = [['en', 'tiktok', 'truethings.en'], ['en', 'instagram', 'truethings.app'], ['de', 'tiktok', 'truethings.de'], ['de', 'instagram', 'truethings.de']];
+    const accounts = [['en', 'tiktok', 'lara65163'], ['en', 'instagram', 'truethings.app'], ['de', 'tiktok', 'sara.fdg'], ['de', 'instagram', 'truethings_app']];
     const today = new Date();
     const videos = [], gains = new Map(), byId = [];
     /** Spreads a post's views over its first days, the way they usually come in. */
@@ -2615,7 +2788,7 @@ footer { color: var(--muted); font-size: 12px; margin-top: 22px; line-height: 1.
     }
     return {
       generatedAt: new Date().toISOString(), cached: false, from: r.from, videos: videos.reverse(), slideshows: slideshows.reverse(), slideshowError: null, demoById: byId,
-      reconnect: [{ platform: 'instagram', username: 'truethings.de' }],
+      reconnect: [{ platform: 'instagram', username: 'truethings_app' }],
       demoDays: [...gains.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1)).map(([date, g]) => ({ date, ...g })),
     };
   }
